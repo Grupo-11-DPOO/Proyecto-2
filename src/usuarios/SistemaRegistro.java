@@ -92,7 +92,7 @@ public class SistemaRegistro {
     	                List<String> preguntasExamen = jsonArrayToList(actividadJson.getJSONArray("preguntas"));
     	                List<String> respuestasExamen = jsonArrayToList(actividadJson.getJSONArray("respuestas"));
     	                Estado estadoExamen = Estado.valueOf(actividadJson.getString("estado"));
-    	                actividad = new Examen(id, titulo, descripcion, objetivo, nivel, duracionMinutos, resultado, obligatorio, rating, resenas, preguntasExamen, respuestasExamen, estadoExamen, tipoActividad);
+    	                //actividad = new Examen(id, titulo, descripcion, objetivo, nivel, duracionMinutos, resultado, obligatorio, rating, resenas, preguntasExamen, respuestasExamen, estadoExamen, tipoActividad);
     	                this.actividades.put(id, actividad);
     	                break;
     	            case Encuesta:
@@ -115,7 +115,7 @@ public class SistemaRegistro {
     	                Map<String, String> explicacionOpcionesQuiz = jsonToMapString(actividadJson.getJSONObject("explicacionOpciones"));
     	                
     	                Estado estadoQuiz = Estado.valueOf(actividadJson.getString("estado"));
-    	                actividad = new Quiz(id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, preguntasQuiz, respuestasCorrectasQuiz, explicacionOpcionesQuiz, estadoQuiz, tipoActividad);
+    	                //actividad = new Quiz(id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, preguntasQuiz, respuestasCorrectasQuiz, explicacionOpcionesQuiz, estadoQuiz, tipoActividad);
     	                this.actividades.put(id, actividad);
     	                break;
     	        }

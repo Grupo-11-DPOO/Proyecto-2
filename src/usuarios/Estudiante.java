@@ -118,7 +118,7 @@ public class Estudiante extends Usuario {
 
 	public void setIntereses(List<String> intereses) throws UsuarioExistenteException {
 		this.intereses = intereses;
-		usuarios.cargarEstudiante(login, password, intereses, registro);
+		//usuarios.cargarEstudiante(login, password, intereses, registro);
 	}
 	
 	public void iniciarActividadEnCurso() throws Exception {
@@ -142,15 +142,15 @@ public class Estudiante extends Usuario {
 			Tarea tarea = (Tarea) actividadEnCurso;
 			tarea.realizarActividad();
 			this.actividadEnCurso = tarea;
-			registro.put(actividadEnCurso.getTitulo(), tarea.getEstadoTarea());
-			usuarios.cargarEstudiante(login, password, intereses, registro);
+			registroActividades.put(actividadEnCurso.getTitulo(), tarea.getEstadoTarea());
+			usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 			this.actividadEnCurso = tarea;
 		}
 		else if (tipoActividad==TipoActividades.Recurso) {
 			Recurso recurso = (Recurso) actividadEnCurso;
 			recurso.realizarActividad();
-			registro.put(actividadEnCurso.getTitulo(), recurso.getEstado());
-			usuarios.cargarEstudiante(login, password, intereses, registro);
+			registroActividades.put(actividadEnCurso.getTitulo(), recurso.getEstado());
+			usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 			this.actividadEnCurso = recurso;
 		}
 	}
