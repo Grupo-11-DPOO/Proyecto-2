@@ -8,15 +8,14 @@ public class Encuesta extends Actividad{
 	
 	private List<String> preguntas;
 	private List<String> respuestas;
-	private Estado estado;
+
 	
-	public Encuesta(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, List<String> prerequisitos,float rating,List<String> resenas,List<String> preguntasEncuesta, List<String> respuestasEncuestas,Estado estado,TipoActividades tipoActividad) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, null, null, tipoActividad);
-		this.estado =estado ;
-		this.preguntas= preguntasEncuesta;
-		this.respuestas = respuestasEncuestas;
-		
+	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+			boolean obligatorio, int tiempoLimite, List<Actividad> prerequisitos, List<String> preguntas,
+			List<String> respuestas) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite, prerequisitos);
+		this.preguntas = preguntas;
+		this.respuestas = respuestas;
 	}
 
 	public void agregarPregunta(String pregunta) {
@@ -54,13 +53,6 @@ public class Encuesta extends Actividad{
 		this.respuestas = respuestas;
 	}
 
-	public Estado getEstado() {
-		return estado;
-	}
-
-	protected void setEstado(Estado estado) {
-		this.estado = estado;
-	}
 
 	@Override
 	public void realizarActividad( ) throws Exception {

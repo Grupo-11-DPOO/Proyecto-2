@@ -2,7 +2,7 @@ package learningPaths;
 
 public interface Identificable {
 	
-	public String  crearId();
+	public void  crearId();
 	
 	public String getId();
 

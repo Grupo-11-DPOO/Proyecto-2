@@ -1,12 +1,11 @@
 package actividades;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
 import java.util.UUID;
-import java.time.LocalDate;
-import java.util.Calendar;
+
 import learningPaths.Identificable;
 import usuarios.Estudiante;
 
@@ -14,38 +13,73 @@ public abstract class Actividad implements Identificable {
 	
 	private String id;
 	public String titulo;
-	public String descripcion;
 	public String objetivo;
+	public String descripcion;
 	public String nivel;
 	public int duracionMinutos;
-	private String resultado;
 	public boolean obligatorio;
-	public Date fechaLimite;
-	public float rating;
+	public int tiempoLimite;
+	private float rating;
 	public List<Actividad> prerequisitos;
 	public int cantidadRating = 0;
 	public int sumaRating = 0;
-	public List<String> resenas;
-	public TipoActividades tipoActividad;
-	
+	public List<String> resenas; // las resenas que un estudiante ingresa a la actividad y pueda visualizar un profesor
+	private TipoActividades tipoActividad;
+	private Estado estado;
 	// Metodos
 	
 	public Actividad(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio, 
-			Date fechaLimite, List<Actividad> prerequisitos2, TipoActividades tipoActividad) {
+			int tiempoLimite, List<Actividad> prerequisitos) {
 		this.titulo = titulo;
 		this.objetivo = objetivo;
 		this.descripcion = descripcion;
+		this.nivel = nivel;
 		this.duracionMinutos = duracionMinutos;
 		this.obligatorio = obligatorio;
-		this.fechaLimite = fechaLimite;
-		this.prerequisitos = prerequisitos2;
-		this.tipoActividad= tipoActividad;
+		this.tiempoLimite = tiempoLimite;
+		this.prerequisitos = prerequisitos;
+		this.resenas = new ArrayList<String>();
+		this.rating = 0;
+		this.estado = Estado.PENDIENTE;
+		crearId();
+		
+		
 	}
 
-	public Actividad(String titulo2, String objetivo2, String descripcion2, String nivel2, int duracionMinutos2,
-			boolean obligatorio2, LocalDate fechaLimite2, List<String> prerrequisitos, double rating2,
-			List<String> resenas2, String medioEntrega, Estado estado, TipoActividades tipoActividad2) {
-		// TODO Auto-generated constructor stub
+	public int getTiempoLimite() {
+		return tiempoLimite;
+	}
+
+	public void setTiempoLimite(int tiempoLimite) {
+		this.tiempoLimite = tiempoLimite;
+	}
+
+	public int getCantidadRating() {
+		return cantidadRating;
+	}
+
+	public void setCantidadRating(int cantidadRating) {
+		this.cantidadRating = cantidadRating;
+	}
+
+	public int getSumaRating() {
+		return sumaRating;
+	}
+
+	public void setSumaRating(int sumaRating) {
+		this.sumaRating = sumaRating;
+	}
+
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
+
+	public void setResenas(List<String> resenas) {
+		this.resenas = resenas;
+	}
+
+	public void setTipoActividad(TipoActividades tipoActividad) {
+		this.tipoActividad = tipoActividad;
 	}
 
 	public String getTitulo() {
@@ -87,14 +121,7 @@ public abstract class Actividad implements Identificable {
 	public void setDuracionMinutos(int duracionMinutos) {
 		this.duracionMinutos = duracionMinutos;
 	}
-
-	public String getResultado() {
-		return resultado;
-	}
-
-	protected void setResultado(String resultado) {
-		this.resultado = resultado;
-	}
+	
 
 	public boolean isObligatorio() {
 		return obligatorio;
@@ -104,13 +131,6 @@ public abstract class Actividad implements Identificable {
 		this.obligatorio = obligatorio;
 	}
 
-	public Date getFechaLimite() {
-		return fechaLimite;
-	}
-
-	protected void setFechaLimite(Date fechaLimite) {
-		this.fechaLimite = fechaLimite;
-	}
 
 	public List<Actividad> getPrerequisitos() {
 		return prerequisitos;
@@ -153,35 +173,36 @@ public abstract class Actividad implements Identificable {
 			}
 		}
 	}
-	
-    public void establecerFechaLimite(Actividad actividadAnterior, int horasDespues) {
-        if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
-            System.out.println("La actividad anterior no es válida.");
-            this.fechaLimite = null;
-        } else {
-	        Calendar calendario = Calendar.getInstance();
-	        calendario.setTime(new Date());
-	        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
-	        calendario.add(Calendar.HOUR, horasDespues);        
-	        // Establece la nueva fecha límite
-        this.fechaLimite = calendario.getTime();
-        }
-    }
-    
-    // Método para verificar si la actividad se está realizando después de la fecha límite
-    protected boolean revisarFechaLimiteExcedida() {
-        if (fechaLimite != null) {
-            Date fechaActual = new Date();
-            if (fechaActual.after(fechaLimite)) {
-                System.out.println("Advertencia: Está realizando la actividad después de la fecha límite recomendada.");
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
+//	Falta revisar y reconstruir la funcion ya que se cambio el nombre de la variable a tiempoLimite y el tipo a int para mayor facilidad y diseño
+//    public void establecerFechaLimite(Actividad actividadAnterior, int horasDespues) {
+//        if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
+//            System.out.println("La actividad anterior no es válida.");
+//            this.tiempoLimite = null;
+//        } else {
+//	        Calendar calendario = Calendar.getInstance();
+//	        calendario.setTime(new Date());
+//	        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
+//	        calendario.add(Calendar.HOUR, horasDespues);        
+//	        // Establece la nueva fecha límite
+//        this.tiempoLimite = calendario.getTime();
+//        }
+//    }
+//    
+//    // Método para verificar si la actividad se está realizando después de la fecha límite
+//    protected boolean revisarFechaLimiteExcedida() {
+//        if (tiempolimite != null) {
+//            Date fechaActual = new Date();
+//            if (fechaActual.after(fechaLimite)) {
+//                System.out.println("Advertencia: Está realizando la actividad después de la fecha límite recomendada.");
+//                return true;
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
     
     // Se clona la actividad por si un profesor desea poder ser el nuevo dueño y modificarla.
+	
     public Actividad clonarActividad() {
         try {
             Actividad copia = (Actividad) this.clone();
@@ -194,10 +215,10 @@ public abstract class Actividad implements Identificable {
     }
 			
 	@Override
-	public String crearId() {
+	public void crearId() {
 		// Genera el ID
     	String id = UUID.randomUUID().toString();
-        return id;
+        this.id= id;
 	}
 
 	@Override
