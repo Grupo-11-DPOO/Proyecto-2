@@ -6,16 +6,12 @@ import java.util.List;
 
 public class Encuesta extends Actividad{
 	
-	private List<String> preguntas;
-	private List<String> respuestas;
-
-	
+	private List<String> preguntas;	
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, int tiempoLimite, List<Actividad> prerequisitos, List<String> preguntas,
-			List<String> respuestas) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite, prerequisitos);
-		this.preguntas = preguntas;
-		this.respuestas = respuestas;
+			boolean obligatorio, int tiempoLimite) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
+		this.preguntas = new ArrayList<String>();
+		this.tipoActividad = TipoActividades.Encuesta;
 	}
 
 	public void agregarPregunta(String pregunta) {
@@ -26,31 +22,22 @@ public class Encuesta extends Actividad{
 	}
 	
 	public void verPreguntas() {
+		int i =0;
 		for (String pregunta:preguntas) {
-			System.out.println(pregunta);
+			i++;
+			System.out.println(i+". "+pregunta);
 		}
 	}	
 	
-	public List<String> getPreguntas() {
+	public List<String> getListaPreguntas() {
 		if(this.preguntas==null) {
 		 this.preguntas= new ArrayList<String>();
 		}
-		return preguntas;
+		return this.preguntas;
 	}
 
-	public void setPreguntas(List<String> preguntas) {
+	public void setListaPreguntas(List<String> preguntas) {
 		this.preguntas = preguntas;
-	}
-
-	public List<String> getRespuestas() {
-		if(this.respuestas==null) {
-			 this.respuestas= new ArrayList<String>();
-		}
-		return respuestas;
-	}
-
-	public void setRespuestas(List<String> respuestas) {
-		this.respuestas = respuestas;
 	}
 
 
@@ -59,8 +46,4 @@ public class Encuesta extends Actividad{
 		verPreguntas();
 	}
 	
-	public void responder(String respuesta) {
-		respuestas.add(respuesta);
-		this.estado= Estado.EXITOSA;
-	}
 }

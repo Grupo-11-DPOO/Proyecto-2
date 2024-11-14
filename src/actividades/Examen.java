@@ -1,20 +1,17 @@
 package actividades;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Examen extends Actividad{
 	
-	private List<String> preguntas;
-	private List<String> respuestas;
-	private Estado estado;
-	
-	public Examen(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, String resultado,
-			boolean obligatorio,float rating, List<String> resenas,List<String> preguntasExamen,List<String> respuestasExamen, Estado estadoExamen, TipoActividades tipoActividad) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, null, null, tipoActividad);
-		this.estado = Estado.PENDIENTE;
+	private List<String> preguntas;	
+
+	public Examen(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+			boolean obligatorio, int tiempoLimite) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
+		this.preguntas = new ArrayList<>();
+		this.tipoActividad= TipoActividades.Examen;
 	}
 
 	public void agregarPregunta(String pregunta) {
@@ -39,27 +36,17 @@ public class Examen extends Actividad{
         }
     }
     
-	public List<String> getPreguntas() {
+	public List<String> getListaPreguntas() {
 		if(this.preguntas==null) {
 			this.preguntas = new ArrayList<String>();
 		}
 		return preguntas;
 	}
 
-	public void setPreguntas(List<String> preguntas) {
+	public void setListaPreguntas(List<String> preguntas) {
 		this.preguntas = preguntas;
 	}
 
-	public List<String> getRespuestas() {
-		if(this.respuestas==null) {
-			this.respuestas = new ArrayList<String>();
-		}
-		return respuestas;
-	}
-
-	public void setRespuestas(List<String> respuestas) {
-		this.respuestas = respuestas;
-	}
 
 	public Estado getEstado() {
 		return estado;
@@ -71,10 +58,6 @@ public class Examen extends Actividad{
 
 	public void realizarActividad( ) throws Exception {
 		verPreguntas();
-	}
-	
-	public void responder(String respuesta) {
-		respuestas.add(respuesta);
 	}
 }
 	
