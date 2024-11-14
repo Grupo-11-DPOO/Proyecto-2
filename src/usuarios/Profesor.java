@@ -113,7 +113,7 @@ public class Profesor extends Usuario {
 		
 	}
 
-	public void crearActividadRecurso(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+	private void crearActividadRecurso(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio,float rating, List<String> resenas ,String material,Estado estado, TipoActividades tipoActividad) throws Exception {
 		
 			Recurso recurso = new Recurso(id,titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio,rating, resenas, material,estado,tipoActividad);
@@ -126,7 +126,7 @@ public class Profesor extends Usuario {
 
 	}
 	
-	public void crearActividadTarea(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
+	private void crearActividadTarea(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
 			LocalDate fechaLimite, List<String> prerrequisitos,double rating,List<String> resenas,String medioEntrega,Estado estado,   TipoActividades tipoActividad) throws Exception {
 		
 			Tarea tarea = new Tarea(id,titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio, fechaLimite, prerrequisitos,rating,resenas ,medioEntrega, estado,tipoActividad);
@@ -134,7 +134,7 @@ public class Profesor extends Usuario {
 			System.out.println("Su actividad de tipo tarea ha sido creada y agregada con exito a sus actividades.");
 		}
 	
-	public void crearActividadExamen (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, String resultado,
+	private void crearActividadExamen (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, String resultado,
 			boolean obligatorio,float rating, List<String> resenas,List<String> preguntasExamen,List<String> respuestasExamen, Estado estadoExamen, TipoActividades tipoActividad) throws Exception {
 		
 		
@@ -144,7 +144,7 @@ public class Profesor extends Usuario {
 	
 		}
 	
-	public void crearActividadEncuesta (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+	private void crearActividadEncuesta (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, List<String> prerequisitos,float rating,List<String> resenas,List<String> preguntasEncuesta, List<String> respuestasEncuestas,Estado estado,TipoActividades tipoActividad) throws Exception {
 		
 			Encuesta encuesta= new Encuesta(id,titulo, objetivo, descripcion,nivel, duracionMinutos, obligatorio, prerequisitos,rating,resenas,preguntasEncuesta,respuestasEncuestas, estado,tipoActividad);
@@ -153,7 +153,7 @@ public class Profesor extends Usuario {
 	
 		}
 	
-	public void crearActividadQuiz (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+	private void crearActividadQuiz (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, Map<String, List<String>> preguntasQuiz, Map<String, String> respuestasCorrectasQuiz, Map<String, String> explicacionOpcionesQuiz,Estado estado,TipoActividades tipoActividad) throws UsuarioExistenteException{		
 		
 		Quiz quiz= new Quiz(id,titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, preguntasQuiz, respuestasCorrectasQuiz, explicacionOpcionesQuiz, estado, tipoActividad);

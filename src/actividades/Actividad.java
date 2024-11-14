@@ -11,7 +11,7 @@ import usuarios.Estudiante;
 
 public abstract class Actividad implements Identificable {
 	
-	private String id;
+	protected String id;
 	public String titulo;
 	public String objetivo;
 	public String descripcion;
@@ -20,16 +20,16 @@ public abstract class Actividad implements Identificable {
 	public boolean obligatorio;
 	public int tiempoLimite;
 	private float rating;
-	public List<Actividad> prerequisitos;
+	protected List<Actividad> prerequisitos;
 	public int cantidadRating = 0;
 	public int sumaRating = 0;
 	public List<String> resenas; // las resenas que un estudiante ingresa a la actividad y pueda visualizar un profesor
-	private TipoActividades tipoActividad;
-	private Estado estado;
+	protected TipoActividades tipoActividad;
+	protected Estado estado;
 	// Metodos
 	
 	public Actividad(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio, 
-			int tiempoLimite, List<Actividad> prerequisitos) {
+			int tiempoLimite) {
 		this.titulo = titulo;
 		this.objetivo = objetivo;
 		this.descripcion = descripcion;
@@ -37,7 +37,7 @@ public abstract class Actividad implements Identificable {
 		this.duracionMinutos = duracionMinutos;
 		this.obligatorio = obligatorio;
 		this.tiempoLimite = tiempoLimite;
-		this.prerequisitos = prerequisitos;
+		this.prerequisitos = new ArrayList<Actividad>();
 		this.resenas = new ArrayList<String>();
 		this.rating = 0;
 		this.estado = Estado.PENDIENTE;
@@ -203,6 +203,12 @@ public abstract class Actividad implements Identificable {
 //    }
     
     // Se clona la actividad por si un profesor desea poder ser el nuevo dueño y modificarla.
+	
+	public void agregarPrerrequisito(Actividad actividad) {
+		
+		this.prerequisitos.add(actividad);
+		
+	}
 	
     public Actividad clonarActividad() {
         try {

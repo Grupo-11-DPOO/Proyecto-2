@@ -6,12 +6,17 @@ import java.util.List;
 
 public class Encuesta extends Actividad{
 	
+<<<<<<< HEAD
 	private List<String> preguntas;
 	private List<String> respuestas;
 	private Estado estado;
 
 	
+=======
+	private List<String> preguntas;	
+>>>>>>> branch 'master' of https://github.com/Grupo-11-DPOO/Proyecto-2.git
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+<<<<<<< HEAD
 			boolean obligatorio, int tiempoLimite, List<Actividad> prerequisitos, List<String> preguntas,
 			List<String> respuestas) {
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite, prerequisitos);
@@ -20,6 +25,12 @@ public class Encuesta extends Actividad{
 		this.estado = Estado.PENDIENTE;
 		
 		
+=======
+			boolean obligatorio, int tiempoLimite) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
+		this.preguntas = new ArrayList<String>();
+		this.tipoActividad = TipoActividades.Encuesta;
+>>>>>>> branch 'master' of https://github.com/Grupo-11-DPOO/Proyecto-2.git
 	}
 
 	public void agregarPregunta(String pregunta) {
@@ -30,22 +41,25 @@ public class Encuesta extends Actividad{
 	}
 	
 	public void verPreguntas() {
+		int i =0;
 		for (String pregunta:preguntas) {
-			System.out.println(pregunta);
+			i++;
+			System.out.println(i+". "+pregunta);
 		}
 	}	
 	
-	public List<String> getPreguntas() {
+	public List<String> getListaPreguntas() {
 		if(this.preguntas==null) {
 		 this.preguntas= new ArrayList<String>();
 		}
-		return preguntas;
+		return this.preguntas;
 	}
 
-	public void setPreguntas(List<String> preguntas) {
+	public void setListaPreguntas(List<String> preguntas) {
 		this.preguntas = preguntas;
 	}
 
+<<<<<<< HEAD
 	public List<String> getRespuestas() {
 		if(this.respuestas==null) {
 			 this.respuestas= new ArrayList<String>();
@@ -61,14 +75,12 @@ public class Encuesta extends Actividad{
 		return estado;
 	}
 
+=======
+>>>>>>> branch 'master' of https://github.com/Grupo-11-DPOO/Proyecto-2.git
 
 	@Override
 	public void realizarActividad( ) throws Exception {
 		verPreguntas();
 	}
 	
-	public void responder(String respuesta) {
-		respuestas.add(respuesta);
-		this.estado= Estado.EXITOSA;
-	}
 }

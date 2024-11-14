@@ -1,9 +1,5 @@
-/actividades/
-/actividadesPruebas/
-/exceptions/
-/learningPathPruebas/
-/learningPaths/
 /modelo/
-/module-info.class
-/persistencia/
 /usuarios/
+/actividades/
+/learningPaths/
+/persistencia/

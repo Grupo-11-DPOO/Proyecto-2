@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import actividades.Actividad;
 import exceptions.UsuarioExistenteException;
 import persistencia.PersistenciaUsuarios;
 import usuarios.Estudiante;
@@ -19,14 +17,8 @@ import usuarios.SistemaRegistro;
 public class Consola {
 	
 	static SistemaRegistro sistemaRegistro = new SistemaRegistro();
-	private String loginGlobal;
-	private static HashMap<String, Profesor> datosProfesor = sistemaRegistro.getDatosProfesores();
-	private static Profesor profesorActual;
 	private static String[] opciones = {"Iniciar sesion", "Registrarse", "Salir"};
 	private static String[] opcionesRegistro = {"Crear usuario: Profesor", "Crear usuario: Estudiante", "Salir"};
-	private static String[] opcionesMenuProfesor = {"Crear LearningPath", "Editar LearningPath", "Crear actividad", "Clonar actividad", "Salir"};
-	private static String[] opcionesTipoActividad = {"Encuesta", "Examen", "Quiz", "Recurso", "Tarea"};
-	private static String[] opcionesClonar = {"Clonar con ID de actividad", "Volver"};
 	
 	// PRUEBA
     /**
@@ -261,8 +253,6 @@ public class Consola {
         	System.out.println("Bienvenido "+login+"!");
         	if (tipoUsuario == 1) {
         		//manda al menu de profesor
-        		profesorActual = datosProfesor.get(login);
-        		menuProfesor();
         	} else {
         		// manda al menu de estudiante
         	}
@@ -311,263 +301,43 @@ public class Consola {
     }
     
     public static void menuProfesor() {
-    	try {
-			int opcionSeleccionada = mostrarMenu("Menu Principal Profesores", opcionesMenuProfesor);
-			
-			switch (opcionSeleccionada) {
-			case 5:
-				System.out.println( "------------------------------------------------------" );
-				System.out.println("Saliendo del programa.");
-				System.out.println( "------------------------------------------------------" );
-                System.exit(0);
-			case 1:
-				//menu crear learning path
-                break;
-			case 2:
-				// menu editar learning path
-				break;
-			case 3:
-				// menu crear actividad
-				menuCrearActividad();
-				break;
-			case 4:
-				// menu clonar actividad
-				menuClonarActividad();
-				break;
-				
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    	
     	
     }
     
-    public static void menuCrearActividad() {
-		System.out.println( "------------------------------------------------------" );
-		System.out.println("Crear actividad");
-		try {
-			int opcionSeleccionada = mostrarMenu("Seleccione el tipo de actividad a crear", opcionesTipoActividad);
-			String titulo;
-			String objetivo;
-			String descripcion;
-			String nivel;
-			int duracionMinutos;
-			String obligatorioString;
-			boolean obligatorio;
-			
-			switch (opcionSeleccionada) {
-			case 1:
-				// Crear encuesta
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				String tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
-				}
-				// Atributos propios de encuesta
-				//profesorActual.crearActividadEncuesta(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
-				break;
-			case 2:
-				// Crear examen
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
-				}
-				// Atributos propios de encuesta
-				//profesorActual.crearActividadExamen(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
-				break;
-			case 3:
-				// Crea quiz
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
-				}
-				// Atributos propios de encuesta
-				//profesorActual.crearActividadQuiz(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
-				break;
-			case 4:
-				// Crea recurso
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
-				}
-				// Atributos propios de recurso
-				//profesorActual.crearActividadRecurso(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
-				break;
-			case 5:
-				// Crea tarea
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
-				}
-				// Atributos propios de tarea
-				//profesorActual.crearActividadTarea(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
-				break;
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-    }
-    
-    public static List<Actividad> crearPrerequisitos(){
-    	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Agregar Prerequisitos");
-    	System.out.println( "------------------------------------------------------" );
-    	// imprimir lista total de actividades
-    	List<Actividad> listaPrerequisitos = new ArrayList<>();
-    	int cantidadPrerequisitos = pedirEnteroAlUsuario("Ingrese la cantidad de ");
-    	int i = 0;
-//    	while (i <= cantidadPrerequisitos) {
-//	    	String codigoActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a agregar");
-//	    	// toma la lista de actividadades totales y las filtra.
-//	    	for (Actividad actividad: actividadesTotales) {
-//	    		if (actividad.getId().equals(codigoActividad)) {
-//	    			listaPrerequisitos.add(actividad);
-//	    		}
-//	    	}
-//	    	i++;
-//    	}
-		return listaPrerequisitos;
-    	
-    }
-    
-    public static void menuClonarActividad() {
-		System.out.println( "------------------------------------------------------" );
-		System.out.println("Clonar actividad");
-		System.out.println( "------------------------------------------------------" );
-		System.out.println("Lista actividades:");
-		// imprime las actividades, id y nombre 
-		try {
-			int opcionSeleccionada = mostrarMenu("¿Desea clonar?", opcionesClonar);
-			
-			switch (opcionSeleccionada) {
-			case 1:
-				String idActividadAClonar = pedirCadenaAlUsuario("Ingrese ID");
-				// clona la actividad
-				menuProfesor();
-				break;
-			case 2:
-				menuProfesor();
-				break;
-			}
-		}
-			catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-    }
-    	
+	
 
-	public static void main(String[] args)  {		
+	public static void main(String[] args)  {
+		
 		// Tengo que cargar todos los datos
 		// Cuando toda la informacion este cargada se revisa	
 		
 		String tituloConsola = "Bienvenido al Sistema Operativo de LearningPaths G11!";
 		sistemaRegistro = new SistemaRegistro();
 
-		int opcionSeleccionada = 0;
 		
 		while (true) {
-		try {
-			opcionSeleccionada = mostrarMenu(tituloConsola, opciones);
-		} catch (Exception e) {
-			e.printStackTrace();
+			int opcionSeleccionada = 0;
+			try {
+				opcionSeleccionada = mostrarMenu(tituloConsola, opciones);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
+			switch (opcionSeleccionada) {
+				case 3:
+					System.out.println( "------------------------------------------------------" );
+					System.out.println("Saliendo del programa.");
+					System.out.println( "------------------------------------------------------" );
+	                System.exit(0);
+				case 1:
+					iniciarSesion();
+					break;
+				case 2:
+					crearUsuario(opcionesRegistro);
+					
+			}
 		}
-	
-		switch (opcionSeleccionada) {
-			case 3:
-				System.out.println( "------------------------------------------------------" );
-				System.out.println("Saliendo del programa.");
-				System.out.println( "------------------------------------------------------" );
-                System.exit(0);
-			case 1:
-				iniciarSesion();
-				break;
-			case 2:
-				crearUsuario(opcionesRegistro);
-		}
-	}
+		
+		
 	}
 }
