@@ -2,6 +2,7 @@ package actividades;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
@@ -167,8 +168,9 @@ public abstract class Actividad implements Identificable {
 		if (!prerequisitos.isEmpty()) {
 			ListIterator<Actividad> listaPrerequisitosIterable = prerequisitos.listIterator();
 			for (Actividad act:prerequisitos) {
-				estudiante.getRegistro();
-				if (!estudiante.registrolistaActividadesCompletadas.contains(act)) {
+				String codigoAct = act.getId();
+				HashMap<String, Estado> registroActividadesEstudiante = estudiante.getRegistroActividades();
+				if (!registroActividadesEstudiante.containsKey(codigoAct)) {
 					throw new Exception("Usted no cumple con los prerequisitos de la actividad pero puede continuar bajo su responsabilidad.");
 				}
 			}
