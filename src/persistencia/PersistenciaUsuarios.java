@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.json.*;
 
+import actividades.Estado;
 import exceptions.UsuarioExistenteException;
 import usuarios.*;
 
@@ -91,7 +92,7 @@ public class PersistenciaUsuarios {
     }
     
     
-    public void cargarEstudiante(String login,String password,List<String> intereses, HashMap<String,String> registro ) throws UsuarioExistenteException {
+    public void cargarEstudiante(String login,String password,List<String> intereses, HashMap<String, Estado> registro ) throws UsuarioExistenteException {
         crearArchivo();
         getUsuarios();  
         
@@ -109,13 +110,10 @@ public class PersistenciaUsuarios {
         nuevoEstudiante.put("tipoUsuario", "Estudiante");
         nuevoEstudiante.put("login", login);
         nuevoEstudiante.put("password", password);
-        
-        JSONObject jsonActividades = new JSONObject();
         //for (Map.Entry<String, String> entry : registro.entrySet()) {
             //jsonActividades.put(entry.getKey(),entry.getValue());
         //}
         nuevoEstudiante.put("intereses", intereses);
-        nuevoEstudiante.put("learningPaths", new JSONArray());
         nuevoEstudiante.put("learningPathEnCurso", "");
         nuevoEstudiante.put("actividadEnCurso", "");
 

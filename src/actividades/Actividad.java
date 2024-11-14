@@ -167,9 +167,10 @@ public abstract class Actividad implements Identificable {
 		if (!prerequisitos.isEmpty()) {
 			ListIterator<Actividad> listaPrerequisitosIterable = prerequisitos.listIterator();
 			for (Actividad act:prerequisitos) {
-				//if (!usuarios.Estudiante.estudiante.listaActividadesCompletadas.contains(act)) {
+				estudiante.getRegistro();
+				if (!estudiante.registrolistaActividadesCompletadas.contains(act)) {
 					throw new Exception("Usted no cumple con los prerequisitos de la actividad pero puede continuar bajo su responsabilidad.");
-				//}
+				}
 			}
 		}
 	}

@@ -543,7 +543,9 @@ public class Consola {
 	public static void main(String[] args)  {		
 		// Tengo que cargar todos los datos
 		// Cuando toda la informacion este cargada se revisa	
+		
 		String tituloConsola = "Bienvenido al Sistema Operativo de LearningPaths G11!";
+		sistemaRegistro = new SistemaRegistro();
 
 		int opcionSeleccionada = 0;
 		

@@ -8,6 +8,7 @@ public class Encuesta extends Actividad{
 	
 	private List<String> preguntas;
 	private List<String> respuestas;
+	private Estado estado;
 
 	
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
@@ -16,6 +17,9 @@ public class Encuesta extends Actividad{
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite, prerequisitos);
 		this.preguntas = preguntas;
 		this.respuestas = respuestas;
+		this.estado = Estado.PENDIENTE;
+		
+		
 	}
 
 	public void agregarPregunta(String pregunta) {
@@ -51,6 +55,10 @@ public class Encuesta extends Actividad{
 
 	public void setRespuestas(List<String> respuestas) {
 		this.respuestas = respuestas;
+	}
+	
+	public Estado getEstado() {
+		return estado;
 	}
 
 

@@ -4,9 +4,7 @@ import java.util.HashMap;
 
 import java.util.List;
 
-import actividades.Actividad;
 import actividades.*;
-import actividades.TipoActividades;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
 import persistencia.PersistenciaUsuarios;
@@ -17,31 +15,32 @@ public class Estudiante extends Usuario {
 	private PersistenciaUsuarios usuarios;
 	private Actividad actividadEnCurso;
 	private LearningPath learningPathEnCurso;
-	private HashMap<String, String> registro; //llave idActividades, clave Resultados
-	private List<String> learningPaths;
+	private HashMap<String, Estado> registroActividades; //llave idActividades, valor Estado
+	private HashMap<String, Double> registroLearningPaths; //llave idLearningPaths, valor double del progeso 0 a 1
+	private List<LearningPath> learningPaths;
 	private List<String> intereses;
 	
-	public Estudiante(HashMap<String, String> registro, PersistenciaUsuarios usuarios, String nLogin, String nPassword, List<String> intereses, List<String> learningPaths, Actividad actividadEnCurso, LearningPath learningPathEnCurso) {
+	public Estudiante(HashMap<String, Estado> registroActividades, HashMap<String, Double> registroLearningPaths, PersistenciaUsuarios usuarios, String nLogin, String nPassword, List<String> intereses, Actividad actividadEnCurso, LearningPath learningPathEnCurso) {
 		super(nLogin, nPassword);
 		this.usuarios = usuarios;
-		this.learningPaths= learningPaths;
 		this.usuarios=usuarios;
 		this.actividadEnCurso = actividadEnCurso;
 		this.learningPathEnCurso= learningPathEnCurso;
-		this.registro= registro;
+		this.registroActividades= registroActividades;
+		this.registroLearningPaths= registroLearningPaths;
 	}
 	
 	
-	public LearningPath getLearningPath(String titulo) {
-		LearningPath learningPathEncontrado= learningPaths.get(titulo);
-		if (learningPathEncontrado!=null) {
-			System.out.println("Se encontró el siguiente learningPath: ");
-			mostrarLearningPath(learningPathEncontrado);
-			return learningPathEncontrado;
-		} else {
-			System.out.println("Lo siento no se encontró un learningPath con ese titulo");
+	public LearningPath getLearningPath(String id) {
+		for (LearningPath learningPath: learningPaths) {
+			if (learningPath.getId().equals(id)) {
+				System.out.println("Se encontró el siguiente learningPath: ");
+				mostrarLearningPath(learningPath);
+				return learningPath;
+			}
 		}
-		return learningPathEncontrado;
+		System.out.println("Lo siento no se encontró un learningPath con ese titulo");
+		return null;
 	}
 	
 	public void mostrarLearningPath(LearningPath learning) {
@@ -97,19 +96,19 @@ public class Estudiante extends Usuario {
 		this.learningPathEnCurso = learningPathEnCurso;
 	}
 
-	public HashMap<String, String> getRegistro() {
-		return registro;
+	public HashMap<String, Estado> getRegistroActividades() {
+		return registroActividades;
 	}
 
-	public void setRegistro(HashMap<String, String> registro) {
-		this.registro = registro;
+	public void registroActividades(HashMap<String, Estado> registroActividades) {
+		this.registroActividades = registroActividades;
 	}
 
-	public List<String> getLearningPaths() {
+	public List<LearningPath> getLearningPaths() {
 		return learningPaths;
 	}
 
-	public void setLearningPaths(List<String> learningPaths) {
+	public void setLearningPaths(List<LearningPath> learningPaths) {
 		this.learningPaths = learningPaths;
 	}
 
@@ -143,14 +142,14 @@ public class Estudiante extends Usuario {
 			Tarea tarea = (Tarea) actividadEnCurso;
 			tarea.realizarActividad();
 			this.actividadEnCurso = tarea;
-			registro.put(actividadEnCurso.getTitulo(), tarea.getEstadoTarea().name());
+			registro.put(actividadEnCurso.getTitulo(), tarea.getEstadoTarea());
 			usuarios.cargarEstudiante(login, password, intereses, registro);
 			this.actividadEnCurso = tarea;
 		}
 		else if (tipoActividad==TipoActividades.Recurso) {
 			Recurso recurso = (Recurso) actividadEnCurso;
 			recurso.realizarActividad();
-			registro.put(actividadEnCurso.getTitulo(), recurso.getEstado().name());
+			registro.put(actividadEnCurso.getTitulo(), recurso.getEstado());
 			usuarios.cargarEstudiante(login, password, intereses, registro);
 			this.actividadEnCurso = recurso;
 		}
@@ -168,8 +167,8 @@ public class Estudiante extends Usuario {
 		
 		Examen examen = (Examen) actividadEnCurso; 
 		examen.responder(respuesta);
-		registro.put(examen.getTitulo(), examen.getEstado().name());
-		usuarios.cargarEstudiante(login, password, intereses, registro);
+		registro.put(examen.getTitulo(), examen.getEstado());
+		//usuarios.cargarEstudiante(login, password, intereses, registro);
 	}
 	
 	public void responderQuiz(List<String> respuesta) throws Exception {
@@ -178,7 +177,7 @@ public class Estudiante extends Usuario {
 		quiz.agregarRespuestas(respuesta);
 		quiz.calificar(respuesta);
 		quiz.mostrarExplicaciones();
-		registro.put(quiz.getTitulo(), quiz.getEstado().name());
+		registro.put(quiz.getTitulo(), quiz.getEstado());
 		usuarios.cargarEstudiante(login, password, intereses, registro);
 	}
 	
@@ -186,7 +185,8 @@ public class Estudiante extends Usuario {
 		
 		Encuesta encuesta = (Encuesta) actividadEnCurso; 
 		encuesta.responder(respuesta);
-		registro.put(encuesta.getTitulo(), encuesta.getEstado().name());
-		usuarios.cargarEstudiante(login, password, intereses, registro);
+		registro.put(encuesta.getTitulo(), encuesta.getEstado());
+		//usuarios.cargarEstudiante(login, password, intereses, registro);
+		// deberia ser actualozar estudiante NO CARGAR
 	}
 }

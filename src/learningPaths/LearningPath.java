@@ -3,8 +3,12 @@ package learningPaths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import actividades.*;
 
@@ -106,11 +110,37 @@ public class LearningPath implements Identificable{
 	public List<Actividad> getListaActividades(){
 		return actividades;
 	}
+	
+	public JSONObject toJSON() {
+	    JSONObject json = new JSONObject();
+
+	    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+	    json.put("id", this.id);
+	    json.put("titulo", this.titulo);
+	    json.put("descripcion", this.descripcion);
+	    json.put("nivel", this.nivel);
+	    json.put("duracion", this.duracion);
+	    json.put("rating", this.rating);
+	    json.put("version", this.version);
+	    json.put("fechaCreacion", this.fechaCreacion.format(formatter));
+	    json.put("fechaModificacion", this.fechaModificacion.format(formatter));
+
+	    // Convertir la lista de actividades en un array de JSON
+	    JSONArray actividadesJSON = new JSONArray();
+	    for (Actividad actividad : this.actividades) {
+	        actividadesJSON.put(actividad.toJSON());
+	    }
+
+	    json.put("actividades", actividadesJSON);
+
+	    return json;
+	}
 
 	@Override
-	public String crearId() {
+	public void crearId() {
 		String id = UUID.randomUUID().toString(); // Genera un ID único
-	    return id;
+	    this.id = id;
 	}
 
 	@Override

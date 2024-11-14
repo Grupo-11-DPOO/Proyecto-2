@@ -36,14 +36,12 @@ public class SistemaRegistro {
 	//private HashMap<String, >
 	
 	public SistemaRegistro() {
-		// TODO Auto-generated constructor stub
 		this.usuarios = new PersistenciaUsuarios();
 		this.persistenciaActividades= new PersistenciaActividades();
 		this.persistenciaLearningPath = new PersistenciaLearningPath();
 		try {
 			cargarDatos();
 		} catch (UsuarioExistenteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +99,7 @@ public class SistemaRegistro {
     	                List<String> preguntasEncuesta = jsonArrayToList(actividadJson.getJSONArray("preguntas"));
     	                List<String> respuestasEncuesta = jsonArrayToList(actividadJson.getJSONArray("respuestas"));
     	                Estado estadoEncuesta = Estado.valueOf(actividadJson.getString("estado"));
-    	                actividad = new Encuesta(id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, prerrequisitos,rating, resenas, preguntasEncuesta, respuestasEncuesta, estadoEncuesta, tipoActividad);
+    	                //actividad = new Encuesta(id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, prerrequisitos,rating, resenas, preguntasEncuesta, respuestasEncuesta, estadoEncuesta, tipoActividad);
     	                this.actividades.put(id, actividad);
     	                break;
     	            case Recurso:
@@ -196,23 +194,21 @@ public class SistemaRegistro {
 	        } else if (tipoUsuario.equals("Estudiante")) {
 
 	        	List<String> interesesEstudiante = jsonArrayToList(usuarioJson.getJSONArray("intereses"));
-	            List<String> learningPathsEstudiante = jsonArrayToList(usuarioJson.getJSONArray("learningPaths"));
 	            String learningPathEnCursoID = usuarioJson.getString("learningPathEnCurso");
-	            //LearningPath learningPathEnCurso = learningPaths.get(learningPathEnCursoID); // error esta aca
+	            LearningPath learningPathEnCurso = learningPaths.get(learningPathEnCursoID); 
 	            String actividadEnCursoID = usuarioJson.getString("actividadEnCurso");
 	            Actividad actividadEnCurso = actividades.get(actividadEnCursoID);
 
 	            Estudiante estudiante = new Estudiante(
 	            	// registro no se como manejarlo
 	                null,
+	                null, 
 	                usuarios, 
 	                login, 
 	                password,
 	                interesesEstudiante,
-	                learningPathsEstudiante, 
 	                actividadEnCurso, 
-	                null
-	                //learningPathEnCurso
+	                learningPathEnCurso
 	            );
 
 	            this.datosEstudiantes.put(login, estudiante);
@@ -291,9 +287,9 @@ public class SistemaRegistro {
 	
 	public Estudiante registrarEstudiante(String login, String passWord, List<String> intereses) throws UsuarioExistenteException {
 		
-		Estudiante estudiante = new Estudiante(null, usuarios,login, passWord, intereses, null, null, null);
+		Estudiante estudiante = new Estudiante(null, null, usuarios,login, passWord, intereses, null, null);
 		
-		usuarios.cargarEstudiante(login, passWord, intereses, estudiante.getRegistro());
+		usuarios.cargarEstudiante(login, passWord, intereses, estudiante.getRegistroActividades());
 		
 		return estudiante;
 	}
