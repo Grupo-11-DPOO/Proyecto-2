@@ -39,5 +39,18 @@
             "Cerveza"
         ],
         "actividadEnCurso": ""
+    },
+    {
+        "password": "millos123",
+        "learningPaths": [],
+        "learningPathEnCurso": "",
+        "tipoUsuario": "Estudiante",
+        "login": "David",
+        "intereses": [
+            "futbol",
+            "basket",
+            "natacion"
+        ],
+        "actividadEnCurso": ""
     }
 ]

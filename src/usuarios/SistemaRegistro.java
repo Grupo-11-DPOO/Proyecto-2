@@ -198,7 +198,6 @@ public class SistemaRegistro {
 	        	List<String> interesesEstudiante = jsonArrayToList(usuarioJson.getJSONArray("intereses"));
 	            List<String> learningPathsEstudiante = jsonArrayToList(usuarioJson.getJSONArray("learningPaths"));
 	            String learningPathEnCursoID = usuarioJson.getString("learningPathEnCurso");
-	            System.out.println(usuarioJson);
 	            //LearningPath learningPathEnCurso = learningPaths.get(learningPathEnCursoID); // error esta aca
 	            String actividadEnCursoID = usuarioJson.getString("actividadEnCurso");
 	            Actividad actividadEnCurso = actividades.get(actividadEnCursoID);

@@ -251,6 +251,11 @@ public class Consola {
         }
         if (resultado) {
         	System.out.println("Bienvenido "+login+"!");
+        	if (tipoUsuario == 1) {
+        		//manda al menu de profesor
+        	} else {
+        		// manda al menu de estudiante
+        	}
         } else {
         	System.out.println("Credenciales incorrectos.");
         	iniciarSesion();
@@ -294,6 +299,11 @@ public class Consola {
             return mostrarMenu( nombreMenu, opciones );
         }
     }
+    
+    public static void menuProfesor() {
+    	
+    }
+    
 	
 
 	public static void main(String[] args)  {
@@ -319,6 +329,7 @@ public class Consola {
 	                System.exit(0);
 				case 1:
 					iniciarSesion();
+					break;
 				case 2:
 					crearUsuario(opcionesRegistro);
 					
