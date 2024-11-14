@@ -7,10 +7,37 @@
         "actividades": []
     },
     {
-        "password": "boyacaTierraBonita",
-        "learningPaths": [null],
+        "password": "123",
+        "learningPaths": [],
         "tipoUsuario": "Profesor",
-        "login": "ivan salazar",
+        "login": "Raul",
         "actividades": []
+    },
+    {
+        "password": "987",
+        "learningPaths": [],
+        "tipoUsuario": "Profesor",
+        "login": "Pepe",
+        "actividades": []
+    },
+    {
+        "password": "ortiz",
+        "learningPaths": [],
+        "tipoUsuario": "Profesor",
+        "login": "Camilo",
+        "actividades": []
+    },
+    {
+        "password": "123",
+        "learningPaths": [],
+        "learningPathEnCurso": "",
+        "tipoUsuario": "Estudiante",
+        "login": "Sebas",
+        "intereses": [
+            "Futbol",
+            "Juegos",
+            "Cerveza"
+        ],
+        "actividadEnCurso": ""
     }
 ]

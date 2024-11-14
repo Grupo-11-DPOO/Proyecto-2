@@ -35,22 +35,28 @@ public class SistemaRegistro {
 	private HashMap<String, Actividad> actividades;
 	//private HashMap<String, >
 	
-	public SistemaRegistro() throws UsuarioExistenteException {
+	public SistemaRegistro() {
 		// TODO Auto-generated constructor stub
 		this.usuarios = new PersistenciaUsuarios();
 		this.persistenciaActividades= new PersistenciaActividades();
 		this.persistenciaLearningPath = new PersistenciaLearningPath();
-		cargarDatos(usuarios,persistenciaLearningPath,persistenciaActividades);
+		try {
+			cargarDatos();
+		} catch (UsuarioExistenteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public void cargarDatos(PersistenciaUsuarios usuarios, PersistenciaLearningPath learningPath, PersistenciaActividades actividades) throws UsuarioExistenteException{
+	public void cargarDatos() throws UsuarioExistenteException{
 		this.datosProfesores = new HashMap<String,Profesor>();
 		this.datosEstudiantes = new HashMap<String,Estudiante>();
 		JSONArray datosUsuarios = usuarios.getUsuarios();
-		JSONArray datosLearningPaths = learningPath.getLearningPath();
-		JSONArray datosActividades = actividades.getActividades();
+		JSONArray datosLearningPaths = persistenciaLearningPath.getLearningPath();
+		JSONArray datosActividades = persistenciaActividades.getActividades();
+		
 		this.actividades = new HashMap<String,Actividad>();
-		if (datosActividades!= null) {
+		if (datosActividades== null) {
 	    for (int i = 0; i < datosActividades.length(); i++) {
 	    	try {
                 JSONObject actividadJson = datosActividades.getJSONObject(i);
@@ -114,18 +120,15 @@ public class SistemaRegistro {
     	                actividad = new Quiz(id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, preguntasQuiz, respuestasCorrectasQuiz, explicacionOpcionesQuiz, estadoQuiz, tipoActividad);
     	                this.actividades.put(id, actividad);
     	                break;
-    	      
-
     	        }
-    	        
-    	    
+    	      
             } catch (JSONException e) {
                 System.out.println("Error processing activity at index " + i + ": " + e.getMessage());
             }
         }
-	    	
+		}	
 	        
-	    if (datosLearningPaths!=null) {
+	    if (datosLearningPaths==null) {
 	    	
 	    
 	    for (int i = 0; i < datosLearningPaths.length(); i++) {
@@ -163,11 +166,10 @@ public class SistemaRegistro {
                 System.out.println("Error processing learning path at index " + i + ": " + e.getMessage());
             }
 
-	        
+	    }    
 	    }
-	    if (datosUsuarios!=null) {
-	    	
 	    
+	    if (datosUsuarios!=null) {
 	    for (int i = 0; i < datosUsuarios.length(); i++) {
 	        JSONObject usuarioJson = datosUsuarios.getJSONObject(i);
 	        String tipoUsuario = usuarioJson.getString("tipoUsuario");
@@ -175,48 +177,52 @@ public class SistemaRegistro {
 	        String password = usuarioJson.getString("password");
 
 	        if (tipoUsuario.equals("Profesor")) {
-	            List<String> idLearningPathsProfesor = jsonArrayToList(usuarioJson.getJSONArray("learningPaths"));
-	            List<String> idActividadesProfesor = jsonArrayToList(usuarioJson.getJSONArray("actividades"));
-
+	            List<String> learningPathsProfesor = jsonArrayToList(usuarioJson.getJSONArray("learningPaths"));
+	            List<String> actividadesProfesor = jsonArrayToList(usuarioJson.getJSONArray("actividades"));
+	            
 	            Profesor profesor = new Profesor(
 	                usuarios, 
 	                persistenciaLearningPath, 
 	                persistenciaActividades, 
 	                login, 
 	                password, 
-	                learningPaths, 
-	                this.actividades, 
-	                idActividadesProfesor, 
-	                idLearningPathsProfesor
+	                learningPathsProfesor, 
+	                actividadesProfesor
 	            );
-	            asociarLearningPathsYActividades(profesor, idLearningPathsProfesor, idActividadesProfesor);
+	            asociarLearningPathsYActividades(profesor, learningPathsProfesor, actividadesProfesor);
 
-	  
 	            this.datosProfesores.put(login, profesor);
+	            
 	        } else if (tipoUsuario.equals("Estudiante")) {
 
-	            HashMap<String, String> notaActividadEstudiante = (HashMap<String, String>) jsonToMapString(usuarioJson.getJSONObject("notasActividades"));
-	            List<String> idActividadesEstudiante = jsonArrayToList(usuarioJson.getJSONArray("actividades"));
+	        	List<String> interesesEstudiante = jsonArrayToList(usuarioJson.getJSONArray("intereses"));
+	            List<String> learningPathsEstudiante = jsonArrayToList(usuarioJson.getJSONArray("learningPaths"));
+	            String learningPathEnCursoID = usuarioJson.getString("learningPathEnCurso");
+	            System.out.println(usuarioJson);
+	            //LearningPath learningPathEnCurso = learningPaths.get(learningPathEnCursoID); // error esta aca
+	            String actividadEnCursoID = usuarioJson.getString("actividadEnCurso");
+	            Actividad actividadEnCurso = actividades.get(actividadEnCursoID);
 
 	            Estudiante estudiante = new Estudiante(
-	                notaActividadEstudiante, 
+	            	// registro no se como manejarlo
+	                null,
 	                usuarios, 
 	                login, 
-	                password, 
-	                idActividadesEstudiante, 
-	                null, 
-	                null, 
+	                password,
+	                interesesEstudiante,
+	                learningPathsEstudiante, 
+	                actividadEnCurso, 
 	                null
+	                //learningPathEnCurso
 	            );
-
 
 	            this.datosEstudiantes.put(login, estudiante);
 	        
 	        }
 	    }
 	    }
-	    }
-		}
+	    
+		
 	    
 	}
 
@@ -275,42 +281,42 @@ public class SistemaRegistro {
 	
 	public Profesor registrarProfesor(String login, String passWord) throws UsuarioExistenteException {
 		
-		Profesor profesor = new Profesor(usuarios,persistenciaLearningPath,persistenciaActividades,login, passWord, null, null, idActividades,idLearningPaths);
+		Profesor profesor = new Profesor(usuarios,persistenciaLearningPath,persistenciaActividades,login, passWord, null, null);
 		
 		
-		usuarios.cargarProfesor(login, passWord, idLearningPaths, idActividades);
+		usuarios.cargarProfesor(login, passWord, null, null);
 		
 		return profesor;
 		
 	}
 	
-	public Estudiante registrarEstudiante(String login, String passWord) {
+	public Estudiante registrarEstudiante(String login, String passWord, List<String> intereses) throws UsuarioExistenteException {
 		
-		Estudiante estudiante = new Estudiante(notaActividad, usuarios,login, passWord, idActividades, null, null, null);
+		Estudiante estudiante = new Estudiante(null, usuarios,login, passWord, intereses, null, null, null);
 		
-		usuarios.cargarEstudiante(login, passWord, idActividades, notaActividad);
+		usuarios.cargarEstudiante(login, passWord, intereses, estudiante.getRegistro());
 		
 		return estudiante;
 	}
 
 	
-	public Profesor iniciarSesionProfesor(String login, String password) {
+	public boolean iniciarSesionProfesor(String login, String password) {
 	    for (Map.Entry<String, Profesor> entry : datosProfesores.entrySet()) {
 	        Profesor profesor = entry.getValue();
 	        if (profesor.getLogin().equals(login) && profesor.getPassword().equals(password)) {
-	            return profesor;
+	            return true;
 	        }
 	    }
-	    return null;  
+	    return false;  
 	}
-	public Estudiante iniciarSesionEstudiante(String login, String password) {
+	public boolean iniciarSesionEstudiante(String login, String password) {
 	    for (Map.Entry<String, Estudiante> entry : datosEstudiantes.entrySet()) {
 	        Estudiante estudiante = entry.getValue();
 	        if (estudiante.getLogin().equals(login) && estudiante.getPassword().equals(password)) {
-	            return estudiante;
+	            return true;
 	        }
 	    }
-	    return null;  
+	    return false;  
 	}
 
 	public HashMap<String, Profesor> getDatosProfesores() {

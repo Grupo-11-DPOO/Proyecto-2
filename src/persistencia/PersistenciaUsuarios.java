@@ -35,39 +35,34 @@ public class PersistenciaUsuarios {
     }
 
     public JSONArray getUsuarios() {
-        if (archivo.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
-                StringBuilder stringBuilder = new StringBuilder();
-                String linea;
+        try (BufferedReader reader = new BufferedReader(new FileReader(ruta))) {
+		    StringBuilder stringBuilder = new StringBuilder();
+		    String linea;
 
-                while ((linea = reader.readLine()) != null) {
-                    stringBuilder.append(linea);
-                }
+		    while ((linea = reader.readLine()) != null) {
+		        stringBuilder.append(linea);
+		    }
 
-                String jsonString = stringBuilder.toString();
+		    String jsonString = stringBuilder.toString();
 
-               
-                if (jsonString.trim().isEmpty()) {
-                    usuariosArray = new JSONArray();
-                } else {
-                    
-                    try {
-                        usuariosArray = new JSONArray(jsonString);
-                    } catch (JSONException e) {
-                        System.err.println("El contenido del archivo no es un JSONArray válido.");
-                        e.printStackTrace();
-                        usuariosArray = new JSONArray(); 
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
- 
-        } else {
-            usuariosArray = new JSONArray(); 
-        }
+		   
+		    if (jsonString.trim().isEmpty()) {
+		        usuariosArray = new JSONArray();
+		    } else {
+		        
+		        try {
+		            usuariosArray = new JSONArray(jsonString);
+		        } catch (JSONException e) {
+		            System.err.println("El contenido del archivo no es un JSONArray válido.");
+		            e.printStackTrace();
+		            usuariosArray = new JSONArray(); 
+		        }
+		    }
+		} catch (FileNotFoundException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
 		return usuariosArray;
     }
 
@@ -80,23 +75,12 @@ public class PersistenciaUsuarios {
             String loginExistente = usuarioExistente.getString("login");
             
             if (loginExistente.equals(login)) {
-            	JSONObject nuevoProfesor =usuarioExistente;
-                nuevoProfesor.put("tipoUsuario", TipoUsuario.Profesor.name());
-                nuevoProfesor.put("login", login);
-                nuevoProfesor.put("password", password);
-                JSONArray LearningPaths = new JSONArray(idLearningPaths);
-                JSONArray actividades = new JSONArray(idActividades);
-                nuevoProfesor.put("learningPaths", LearningPaths);
-                nuevoProfesor.put("actividades", actividades);
-                escribirJsonEnArchivo(nuevoProfesor);
-                return; 
-            } else {
             	throw new UsuarioExistenteException();
             }
         }
         
         JSONObject nuevoProfesor = new JSONObject();
-        nuevoProfesor.put("tipoUsuario", TipoUsuario.Profesor.name());
+        nuevoProfesor.put("tipoUsuario", "Profesor");
         nuevoProfesor.put("login", login);
         nuevoProfesor.put("password", password);
         JSONArray LearningPaths = new JSONArray(idLearningPaths);
@@ -105,7 +89,9 @@ public class PersistenciaUsuarios {
         nuevoProfesor.put("actividades", actividades);
         escribirJsonEnArchivo(nuevoProfesor);
     }
-    public void cargarEstudiante(String login,String password,List<String> intereses, HashMap<String,String> registro ) {
+    
+    
+    public void cargarEstudiante(String login,String password,List<String> intereses, HashMap<String,String> registro ) throws UsuarioExistenteException {
         crearArchivo();
         getUsuarios();  
         
@@ -114,23 +100,25 @@ public class PersistenciaUsuarios {
             String loginExistente = usuarioExistente.getString("login");
             
             if (loginExistente.equals(login)) {
-                System.out.println("El usuario con el login '" + login + "' ya está registrado.");
-                return; 
+            	throw new UsuarioExistenteException();
             }
         }
         
         
         JSONObject nuevoEstudiante = new JSONObject();
+        nuevoEstudiante.put("tipoUsuario", "Estudiante");
         nuevoEstudiante.put("login", login);
         nuevoEstudiante.put("password", password);
         
         JSONObject jsonActividades = new JSONObject();
-        for (Map.Entry<String, String> entry : registro.entrySet()) {
-            jsonActividades.put(entry.getKey(),entry.getValue());
-        }
-        JSONObject jsonIntereses = new JSONObject();
-        nuevoEstudiante.put("Intereses", jsonIntereses);
-        nuevoEstudiante.put("Actividades", jsonActividades);
+        //for (Map.Entry<String, String> entry : registro.entrySet()) {
+            //jsonActividades.put(entry.getKey(),entry.getValue());
+        //}
+        nuevoEstudiante.put("intereses", intereses);
+        nuevoEstudiante.put("learningPaths", new JSONArray());
+        nuevoEstudiante.put("learningPathEnCurso", "");
+        nuevoEstudiante.put("actividadEnCurso", "");
+
         escribirJsonEnArchivo(nuevoEstudiante);
     }
     

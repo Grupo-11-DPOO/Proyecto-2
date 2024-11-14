@@ -26,22 +26,20 @@ public class Profesor extends Usuario {
 	private String login;
 	private String password;
 	private HashMap<String, Actividad> actividades;
-	private HashMap<String, LearningPath> LearningPaths;
+	private HashMap<String, LearningPath> learningPaths;
 	private PersistenciaActividades actividadesExistentes;
 	private PersistenciaLearningPath learningPathExistentes;
 	private PersistenciaUsuarios usuarios;
 	private List<String> idActividades;
 	private List<String> idLearningPaths;
 	
-	public Profesor(PersistenciaUsuarios usuarios, PersistenciaLearningPath learninPathExistentes,PersistenciaActividades actividadesExistentes, String nLogin, String nPassword, HashMap<String, LearningPath> learningPaths2, HashMap<String, Actividad> actividades2, List<String> idActividades, List<String> idLearningPaths) {
+	public Profesor(PersistenciaUsuarios usuarios, PersistenciaLearningPath learninPathExistentes,PersistenciaActividades actividadesExistentes, String nLogin, String nPassword, List<String> idActividades, List<String> idLearningPaths) {
 		super(nLogin, nPassword);
 		this.usuarios= usuarios;
 		this.actividadesExistentes= actividadesExistentes;
 		this.learningPathExistentes= learninPathExistentes;
 		this.login = nLogin;
 		this.password = nPassword;
-		this.actividades = actividades2;
-		this.LearningPaths =learningPaths2 ;
 		this.idActividades = idActividades;
 		this.idLearningPaths = idLearningPaths;
 		}
@@ -65,10 +63,10 @@ public class Profesor extends Usuario {
 		return idLearningPaths;
 	}
 
-	public void setLearningPaths(List<LearningPath> learningPaths) throws UsuarioExistenteException {
-		this.LearningPaths = (HashMap<String, LearningPath>) learningPaths;
+	public void setLearningPaths(HashMap<String, LearningPath> learningPaths) throws UsuarioExistenteException {
+		this.learningPaths = learningPaths;
 		this.idLearningPaths = new ArrayList<String>();
-		for(LearningPath learning: learningPaths) {
+		for(LearningPath learning: learningPaths.values()) {
 			String idLearning = learning.getId();
 			this.idLearningPaths.add(idLearning);
 			
@@ -95,13 +93,13 @@ public class Profesor extends Usuario {
 	}
 
 	public void agregarLearningPath(LearningPath learnPath) throws UsuarioExistenteException {
-		if (this.LearningPaths== null) {
-			this.LearningPaths = new HashMap<String,LearningPath>();
+		if (this.learningPaths== null) {
+			this.learningPaths = new HashMap<String,LearningPath>();
 		}
 		if (this.idLearningPaths==null) {
 			this.idLearningPaths= new ArrayList<String>();
 		}
-		LearningPaths.put(learnPath.getId(),learnPath);
+		learningPaths.put(learnPath.getId(),learnPath);
 		learningPathExistentes.cargarLearningPath(learnPath);
 		this.idLearningPaths.add(learnPath.getId());
 		usuarios.cargarProfesor(login, password, idLearningPaths, idActividades);

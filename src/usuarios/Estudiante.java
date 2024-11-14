@@ -7,6 +7,7 @@ import java.util.List;
 import actividades.Actividad;
 import actividades.*;
 import actividades.TipoActividades;
+import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
 import persistencia.PersistenciaUsuarios;
 
@@ -17,10 +18,10 @@ public class Estudiante extends Usuario {
 	private Actividad actividadEnCurso;
 	private LearningPath learningPathEnCurso;
 	private HashMap<String, String> registro; //llave idActividades, clave Resultados
-	private HashMap<String, LearningPath> learningPaths;
+	private List<String> learningPaths;
 	private List<String> intereses;
 	
-	public Estudiante(HashMap<String, String> registro, PersistenciaUsuarios usuarios, String nLogin, String nPassword, List<String> intereses,HashMap<String,LearningPath> learningPaths, Actividad actividadEnCurso, LearningPath learningPathEnCurso) {
+	public Estudiante(HashMap<String, String> registro, PersistenciaUsuarios usuarios, String nLogin, String nPassword, List<String> intereses, List<String> learningPaths, Actividad actividadEnCurso, LearningPath learningPathEnCurso) {
 		super(nLogin, nPassword);
 		this.usuarios = usuarios;
 		this.learningPaths= learningPaths;
@@ -104,11 +105,11 @@ public class Estudiante extends Usuario {
 		this.registro = registro;
 	}
 
-	public HashMap<String, LearningPath> getLearningPaths() {
+	public List<String> getLearningPaths() {
 		return learningPaths;
 	}
 
-	public void setLearningPaths(HashMap<String, LearningPath> learningPaths) {
+	public void setLearningPaths(List<String> learningPaths) {
 		this.learningPaths = learningPaths;
 	}
 
@@ -116,7 +117,7 @@ public class Estudiante extends Usuario {
 		return intereses;
 	}
 
-	public void setIntereses(List<String> intereses) {
+	public void setIntereses(List<String> intereses) throws UsuarioExistenteException {
 		this.intereses = intereses;
 		usuarios.cargarEstudiante(login, password, intereses, registro);
 	}
