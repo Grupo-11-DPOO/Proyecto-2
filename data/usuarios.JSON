@@ -1,0 +1,16 @@
+[
+    {
+        "password": "boyacaTierraBonita",
+        "learningPaths": [],
+        "tipoUsuario": "Profesor",
+        "login": "ivan salazar",
+        "actividades": []
+    },
+    {
+        "password": "boyacaTierraBonita",
+        "learningPaths": [null],
+        "tipoUsuario": "Profesor",
+        "login": "ivan salazar",
+        "actividades": []
+    }
+]

@@ -1,0 +1,1183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>576</x>
+      <y>438</y>
+      <w>288</w>
+      <h>312</h>
+    </coordinates>
+    <panel_attributes>LearningPath
+--
+-id: String
+#titulo: String
+#descripcion: String
+#nivel: String
+#duracion: int
+-rating: double
+-fechaCreacion: LocalDateTime
+-fechaModificacion: LocalDateTime
+-version: int
++actividades: List&lt;Actividad&gt;
+--
++LearningPath(titulo: String, descripcion: String, nivel: String, duracion: int)
++getTitulo():String
++getDescripcion():String
++getNivel():String
++calcularRating(listaActividades: List&lt;Actividad&gt;):double
++getDuracion():int
++getRating():double
++getFechaCreacion():LocalDateTime
++getFechaModificacion():LocalDateTime
++getVersion():int
+#setTitulo(titulo: String): void
+#setDescripcion(descripcion: String):void
+#setNivel(nivel: String): void
+#setDuracion(duracion: int): void
++setFechaModificacion(fechaModificacion Date): void
++setVersion(version: int): void
++getActividad(actividad: Actividad): Actividad
++getListaActividades():List&lt;Actividad&gt;
++crearId(): String
++getId(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>984</x>
+      <y>324</y>
+      <w>456</w>
+      <h>486</h>
+    </coordinates>
+    <panel_attributes>/Actividad/
+--
+-id: int
++titulo: String
++descripcion: String
++objetivo: String
++nivel: String
++duracionMinutos: int
+-resultado: String
++obligatorio: boolean
++fechaLimite: Date 
++rating: float
++prerrequisitos:List&lt;Actividad&gt;
++cantidadRating: int
++sumaRating: int
++resenas: List&lt;String&gt;
++tipoActividad: TipoActividades
+--
++Actividad(titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int, obligatorio: boolean,
+	+setTitulo():StringfechaLimite:Date, prerrequisitos:List&lt;Acitivdad&gt;, tipoActividad: TipoActividades)
++getTitulo():String
++setTitulo():String
++getDescripcion():String
++setDescripcion(descipcion: String):void
++getObjetivo():String
++setObjetivo(objetivo: String):void
++getNivel():String
++setNivel(nivel: String):void
++getDuracionMinutos():int
++setDuracionMinutos(duracionMinutos: int):void
++getResultado(): String
+#setResultado(resultado: String):void
++isObligatorio():boolean
++setObligatorio(obligatorio: boolean):void
++getFechaLimite():Date
+#setFechaLimite(fechaLimite: Date):void
++getPrerrequisitos():List&lt;Actividad&gt;
++setPrerrequisitos(prerequisitos: List&lt;Actividad&gt;):void
+#agregarRating(ratingPersonal: int): void
++getRating():float
++agregarResenas(resenaInput: String): void
++getResenas(): List&lt;String&gt;
+#advertenciaPrerequisitos(estudiante: Estudiante): void
++establecerFechaLimite( actividadAnterior: Actividad, horasDespues: int): void
+#revisarRechaLimiteExcedida():boolean
+#clonarActividad(): Actividad
++crearId(): int
++guardarActividad(): void
++getId(): int
++getTipoActividad(): TipoActividades
+/+realizarActividad():void/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1530</x>
+      <y>186</y>
+      <w>468</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Recurso
+--
+-material: String
+-estado: Estado
+--
++Recurso(titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int,
+         obligatorio: boolean, fechaLimite: Date, prerequisitos: List&lt;Actividad&gt;, material: String, tipoActividad: TipoActividades)
++getEstado(): Estado
++setEstado(estado Estado): void
++getMaterial(): String
++setMaterial(material String): void
++realizarActividad(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1512</x>
+      <y>30</y>
+      <w>462</w>
+      <h>138</h>
+    </coordinates>
+    <panel_attributes>Tarea
+--
+-estado: Estado
+-medioEntrega: String
+-contenido: String
+--
++Tarea(titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int, obligatorio: boolean,
+			fechaLimite: Date, prerequisitos: List&lt;Actividad&gt;, medioEntrega: String, contenido: String, tipoActividad: TipoActividades)
++enviarTarea(): void
++getMedioEntrega(): String
++marcarComoExitosa(exitosa: boolean): void
++getEstadoTarea(): Estado
++getContenido(): String
++setContenido(contenido: String): void
++realizarActividad(): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1530</x>
+      <y>312</y>
+      <w>504</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>Quiz
+--
++calificacionMinima: float
++preguntas: HashMap&lt;String, List&lt;String&gt;&gt;
+-respuestasCorrectas: HashMap&lt;String, String&gt;
+-explicacionOpciones: HashMap&lt;String, String&gt;
++estado: Estado
+-respuestas: List&lt;String&gt;
+--
++Quiz(titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int,
+         obligatorio: boolean, fechaLimite: Date, prerequisitos: List&lt;Actividad&gt;, tipoActividad: TiposActividades, calificacionMinima: float)
++crearYEditarPreguntaOpcionMultiple(enunciado: String, opciones List&lt;String&gt;, opcionCorrecta String, explicacionOpciones String)
++getPreguntas(): HashMap&lt;String, List&lt;String&gt;&gt;
++setPreguntas(preguntas: HashMap&lt;String, List&lt;String&gt;): void
++getRespuestasCorrectas(): HashMap&lt;String, String&gt;
++setRespuestasCorrectas(respuestas: HashMap&lt;String, String&gt;): void
++getExplicacionOpciones(): HashMap&lt;String, String&gt;
++setExplicacionOpciones(explicacionOpciones: HashMap&lt;String, String&gt;): void
++getEstado(): Estado
++setEstado(estado: Estado): void
++getRespuestas(): List&lt;String&gt;
++setRespuestas(respuestas: List&lt;String&gt;): void
+#eliminarPregunta(enunciado String): void
++getCalificacionMinima(): float
++agregarRespuestas(respuestas List&lt;String&gt;): void
++verPreguntas(): void
+#calificar(respuestas: List&lt;String): void
++mostrarExplicaciones(): void
++realizarActividad(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1560</x>
+      <y>588</y>
+      <w>432</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Encuesta
+--
+-preguntas: List&lt;String&gt;
+-respuestas: List&lt;String&gt;
+-estado: Estado
+--
++Encuesta(titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int,
+             obligatorio: boolean, fechaLimite: Date, prerequisitos: List&lt;Actividad&gt;, tipoActividad: TipoActividades)
++agregarPregunta(pregunta: String): void
++verPreguntas(): void
++setPreguntas(preguntas: List&lt;String&gt;): void
++getRespuestas(): List&lt;String&gt;
++setRespuestas(respuestas List&lt;String&gt;): void
++getEstado(): Estado
+#setEstado(estado: Estado): void
++realizarActividad(): void
+
++responder(respuesta: String): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1590</x>
+      <y>744</y>
+      <w>420</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Examen
+--
+-preguntas: List&lt;String&gt;
+-respuestas: List&lt;String&gt;
+-estado: Estado
+--
++Examen(titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int,
+         obligatorio: boolean, fechaLimite: Date, prerequisitos: List&lt;Actividad&gt;, tipoActividad: TipoActividades)
++agregarPregunta(pregunta: String): void
++verPreguntas(): void
+#marcarComoExitosa(exitosa: boolean):void
++getPreguntas(): List&lt;String&gt;
++setPreguntas(pregunta List&lt;String&gt;): void
++getRespuestas(): List&lt;String&gt;
++setRespuestas(respuestas List&lt;String&gt;): void
++getEstado(): Estado
++setEstado(estado Estado): void
++realizarActividad(): void
++responder(respuesta String): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>1224</y>
+      <w>744</w>
+      <h>378</h>
+    </coordinates>
+    <panel_attributes>Profesor
+--
+-login: String
+-password: String
+-actividades: HashMap&lt;String, Actividad&gt;
+-learningPaths: HashMap&lt;String, LearningPath&gt;
+-actividadesExistentes: PersistenciaActividades
+-learningPathExistentes: PersistenciaLearningPath
+-usuarios: PersistenciaUsuarios
+-idActividades: List&lt;String&gt;
+-idLearningPaths: List&lt;String&gt;
+--
++Profesor(usuarios: PersistenciaUsuarios, learningPathExistentes: PersistenciaLearningPath, actividadesExistentes: PersistenciaActividades, nLogin: String,
+        nPassword: String, learningPaths2: HashMap&lt;String, LearningPath&gt;, actividad2: HashMap&lt;String, Actividad&gt;, idActividades: List&lt;String&gt;, idLearningPaths: List&lt;String&gt;)
++getActividades(): HashMap&lt;String, Actividad&gt;
++setActividades(actividades: List&lt;Actividad&gt;): void
++getLearningPaths():List&lt;String&gt;
++setLearningPaths(learningPaths List&lt;LearningPath&gt;): void
+#getPassword(): String
+#setPassword(password String): void
+#getLogin(): String
+#setLogin(login String): void
++agregarLearningPath(learnPath: LearningPath):void
+-clonarActividad(actividad: Actividad): void
+-crearActividadRecurso(id: String, titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int, obligatorio: boolean,
+           rating: float, resenas: List&lt;String&gt;, material: String, estado: Estado, tipoActividad: TipoActividades)
++agregarActividadALearningPath(learningPath LearningPath, actividad: Actividad): void
+-crearActividadTarea(id: String, titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int, obligatorio: boolean,
+           fechaLimite: LocalDate, prerequisitos: List&lt;String&gt;, rating: double, resenas: List&lt;String&gt;, medioEntrega: String, estado: Estado, tipoActividad: TipoActividades): void
+-crearActividadExamen(id: String, titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int, resultado: String, obligatorio: boolean,
+           rating: float, resenas: List&lt;String&gt;, preguntasExamen: List&lt;String&gt;, respuestasExamen: List&lt;String&gt;, estadoExamen: Estado, tipoActividad: TipoActividades): void
+-crearActividadEncuesta(id: String, titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int, obligatorio: boolean, rating: float,
+           resenas: List&lt;String&gt;, preguntasEncuesta: List&lt;String&gt;, respuestasEncuesta: List&lt;String&gt;, estado: Estado, tipoActividad: TipoActividades): void
+-crearActividadQuiz(id: String, titulo: String, objetivo: String, descripcion: String, nivel: String, duracionMinutos: int, obligatorio: boolean,
+           preguntasQuiz: Map&lt;String, List&lt;String&gt;&gt;, respuestasCorrectasQuiz: Map&lt;String, String&gt;, explicacionOpcionesQuiz: Map&lt;String, String&gt;, estado: Estado, tipoActividad: TipoActividades): void
+-marcarTareaComoExitosa(actividad: Actividad, exitosos: boolean): void
++guardarActividad(actividad: Actividad): void
+-agregarActividad(actividad: Actividad, learnPath: LearningPath): void
+-mostrarREsenas(learnPath: LearningPath): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1116</x>
+      <y>1524</y>
+      <w>522</w>
+      <h>312</h>
+    </coordinates>
+    <panel_attributes>Estudiante
+--
+-usuarios: PersistenciaUsuarios
+-actividadEnCurso: Actividad
+-learningPathEnCurso: LearningPath
+-registro: HashMap&lt;String, String&gt;
+-learningPaths: HashMap&lt;String, LearningPath&gt;
+-intereses: List&lt;String&gt;
+--
++Estudiante(registro: HashMap&lt;String, String&gt;, usuarios: PersistenciaUsuarios, nLogin: String, nPassword: String, intereses: List&lt;String&gt;,
+           learningPaths: HashMap&lt;String, LearningPath&gt;, actividadEnCurso: Actividad, learningPathEnCurso: LearningPath
++getLearningPath(titulo: String): LearningPath
++mostrarLearningPath(learning: LearningPath):void
++agregarLearningPath(learning: LearningPath): void
++mostrarActividadesLearningEnCurso(): void
++elegirActividad(titulo: String): void
++getUsuarios(): PersistenciaUsuarios
++setUsuarios(usuarios: PersistenciaUsuarios): void
++getActividadEnCurso(): Actividad
++setActividadEnCurso(actividadEnCurso: Actividad): void
++getLearningPathEnCurso(): LearningPath
++setLearningPathEnCurso(learningPath: LearningPath): void
++getRegistro(): HashMap&lt;String, String&gt;
++setRegistro(registro: HashMap&lt;String, String&gt;): void
++getLearningPaths(): HashMap&lt;String, LearningPath&gt;
++setLearningPaths(learningPaths: HashMap&lt;String, LearningPath&gt;): void
++getIntereses(): List&lt;String&gt;
+#getLogin(): String
+#getPassword(): String
++iniciarActividadEnCurso(): void
++responderExamen(respuesta: String): void
++responderQuiz(respuesta: List&lt;String&gt;): void
++responderEncuesta(respuesta: String): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>912</x>
+      <y>348</y>
+      <w>84</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=*
+prerequisitos</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0;10.0;80.0;120.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1434</x>
+      <y>78</y>
+      <w>90</w>
+      <h>294</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;470.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1434</x>
+      <y>198</y>
+      <w>108</w>
+      <h>186</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;290.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1434</x>
+      <y>750</y>
+      <w>168</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>858</x>
+      <y>426</y>
+      <w>138</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1..*
+</panel_attributes>
+    <additional_attributes>10.0;190.0;110.0;190.0;110.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>228</y>
+      <w>72</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+Identificable
+--
++crearId():int
++getId():int
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>276</y>
+      <w>18</w>
+      <h>174</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>858</x>
+      <y>264</y>
+      <w>330</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;530.0;10.0;530.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>474</x>
+      <y>660</y>
+      <w>84</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Nota..
+El rating se calcula 
+en base del promedio 
+de cada rating de
+una actividad</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1428</x>
+      <y>1218</y>
+      <w>306</w>
+      <h>258</h>
+    </coordinates>
+    <panel_attributes>SistemaRegistro
+--
+-usuarios: PersistenciaUsuarios
+-idLearningPaths: List&lt;String&gt;
+-idActividades: List&lt;String&gt;
+-persistenciaActividades: PersistenciaActividades
+-persistenciaLearningPath: PersistenciaLearningPath
+-notaActividad: HashMap&lt;String, String&gt;
+-datosProfesores: HashMap&lt;String, Profesor&gt;
+-learningPaths: HashMap&lt;String, LearningPath&gt;
+-actividades: HashMap&lt;String, Actividad&gt;
+--
++SistemaRegistro()
++cargarDatos(usuarios: PersistenciaUsuarios, learningPath: PersistenciaLearningPath, actividades: PersistenciaActividades): void
+-asociarLearningPathsYActividades(profesor: Profesor, idLearningPaths: List&lt;String&gt;, idActividades: List&lt;String&gt;): void 
+-obtenerActividadPorId(idActividad: String): Actividad
+-jsonArrayToList(jsonArray: JSONArray): List&lt;String&gt;
+-jsonToMap(jsonObject: JSONObject): Map&lt;String, List&lt;String&gt;&gt;
+-jsonToMapString(jsonObject: JSONObject): Map&lt;String, String&gt;
++registrarProfesor(login: String, password: String): Profesor
++registrarEstudiante(login: String, password: String): Estudiante
++iniciarSesionProfesor(login: String, password: String): Profesor
++iniciarSesionEstudiante(login: String, password: String): Estudiante
++getDatosProfesores(): HashMap&lt;String, Profesor&gt;
++setDatosProfesores(datosProfesores: HashMap&lt;String, Profesor&gt;): void
++getDatosEstudiantes(): HashMap&lt;String, Estudiante&gt;
++setDatosEstudiantes(datosEstudiantes: HashMap&lt;String, Estudiante&gt;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1200</x>
+      <y>1476</y>
+      <w>84</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Nota:
+Solo se puede iniciar
+una actividad a la 
+vez</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1152</x>
+      <y>1380</y>
+      <w>156</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/Usuario/
+--
+#login: String
+#password: String
+--
++Usuario(login:String,password:String)
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>444</x>
+      <y>1050</y>
+      <w>114</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Nota:
+PersistenciaUsuarios
+es un objeto que se va a 
+encargar de cargar y 
+obtener los 
+usuarios de 
+loggeaar en un archivo JSON
+y este archivo es igual para 
+todos los usuarios
+, es por eso que usuarios
+es de tipo estatica final</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>240</x>
+      <y>1296</y>
+      <w>84</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>Nota:
+Al crear o editar un
+learning path
+se debe tener 
+presente los atributos 
+de fecha de creacion 
+y modificacion y 
+versión, ya que son 
+los metadatos</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>2004</x>
+      <y>84</y>
+      <w>84</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Nota..
+El resultado será de 
+"enviada" cuando el 
+estudiante envíe la 
+tarea, hasta que el 
+profesor la marque 
+como exitosa o no
+exitosa</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>2046</x>
+      <y>390</y>
+      <w>96</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Nota..
+Se marca por defecto
+como exitosa apenas
+se realiza la actividad</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1434</x>
+      <y>600</y>
+      <w>138</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1434</x>
+      <y>330</y>
+      <w>108</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;190.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>2070</x>
+      <y>510</y>
+      <w>84</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Nota..
+Estado depende de
+cuanto saque y la 
+calificacion minima</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1464</x>
+      <y>798</y>
+      <w>84</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Nota..
+El resultado será de 
+"enviada" cuando el 
+estudiante envíe la 
+tarea, hasta que el 
+profesor la marque 
+como exitosa o no
+exitosa</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>2004</x>
+      <y>666</y>
+      <w>96</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Nota..
+Se marca por defecto
+como enviada apenas
+se realiza la actividad</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1326</x>
+      <y>1476</y>
+      <w>96</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>Nota:
+Cada acción del
+estudiante será 
+registrada por registro</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>336</x>
+      <y>462</y>
+      <w>108</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Nota:
+Tomará acción cada vez
+que el estudiante busque
+Learning Paths y son como
+el  nombre indica 
+tan solo sugerencias.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>234</x>
+      <y>552</y>
+      <w>306</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>SugeridorLearningPaths
+--
++listaCompletaLearningPaths: List&lt;LearningPath&gt;
+--
++SugeridorLearningPaths(listaCompletaLearningPaths: List&lt;LearningPath&gt;)
++calcularSimilitud(estudiante: Estudiante, learningPath: LearningPath): int
++recomendarLearningPath(estudiante: Estudiante): List&lt;LearningPath&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1518</x>
+      <y>1104</y>
+      <w>126</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Consola
+--
+_+main(args: String[]): void_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1872</x>
+      <y>1242</y>
+      <w>216</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>UsuarioExistenteException
+--
++UsuarioExistenteException()
++UsuarioExistenteException(mensaje: String): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>660</x>
+      <y>954</y>
+      <w>216</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>PersistenciaLearningPath
+--
+-archivo: File
+_-ruta: String_
++learningPathArray: JSONArray
++idActividades: List&lt;String&gt;
+--
++PersistenciaLearningPath()
++crearArchivo(): void
++getLearningPath(): JSONArray
++cargarLearningPath(learningPath: LearningPath): void
++escribirJsonEnArchivo(jsonObject: JSONObject): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1272</x>
+      <y>204</y>
+      <w>126</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+TipoActividades
+--
+Recurso
+Tarea
+Quiz
+Examen
+Encuesta</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1968</x>
+      <y>54</y>
+      <w>516</w>
+      <h>354</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>840.0;570.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1992</x>
+      <y>264</y>
+      <w>492</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>800.0;260.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2004</x>
+      <y>450</y>
+      <w>516</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>840.0;10.0;840.0;530.0;10.0;530.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1362</x>
+      <y>276</y>
+      <w>18</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2472</x>
+      <y>384</y>
+      <w>90</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+Estado
+--
+PENDIENTE
+ENVIADA
+EXITOSA
+NO_EXITOSA</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1188</x>
+      <y>1278</y>
+      <w>72</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+TipoUsuario
+--
+Profesor
+Estudiante</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1986</x>
+      <y>450</y>
+      <w>510</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>830.0;10.0;580.0;480.0;10.0;480.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2028</x>
+      <y>438</y>
+      <w>456</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>740.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>1482</y>
+      <w>126</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>CargarEstudiante
+--
++CargarEstudiante(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1242</x>
+      <y>954</y>
+      <w>216</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>PersistenciaActividades
+--
+-archivo: File
+_-ruta: String_
++actividadesArray: JSONArray
++idActividadesPrerequisitos: List&lt;String&gt;
+-id: String
++titulo: String
++descripcion: String
++nivel: String
++int: duracionMinutos
+-resultado: String
++obligatorio: boolean
++fechaLimite: Date
++rating: float
++prerequisitos: List&lt;Actividad&gt;
++resenas: List&lt;String&gt;
++tipoActividad: TipoActividades
+--
++PersistenciaActividades()
++getActividades(): JSONArray
++cargarActividad(actividad: Actividad): void
++escribirJsonEnArchivo(jsonObject: JSONObject): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>1080</y>
+      <w>432</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>PersistenciaUsuarios
+--
+-archivo: File
+_-ruta: String_
++usuariosArray: JSONArray
+--
++PersistenciaUsuarios()
++crearArchivo(): void
++getUsuarios(): JSONArray
++cargarProfesor(login; String, password: String, idLearningPaths: List&lt;String&gt;, idActividades: List&lt;String&gt;): void
++cargarEstudiante(login: String, password: String, intereses: List&lt;String&gt;, registro: HashMap&lt;String, String&gt;): void
++escribirJsonEnArchivo(jsonObject: JSONObject): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1476</x>
+      <y>1470</y>
+      <w>18</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>1326</y>
+      <w>18</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>744</x>
+      <y>744</y>
+      <w>30</w>
+      <h>222</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>174</x>
+      <y>576</y>
+      <w>954</w>
+      <h>1134</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0;10.0;1870.0;1570.0;1870.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1344</x>
+      <y>804</y>
+      <w>18</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;250.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1116</x>
+      <y>1176</y>
+      <w>876</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;1440.0;10.0;1440.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1158</x>
+      <y>1434</y>
+      <w>18</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1068</x>
+      <y>1398</y>
+      <w>96</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>126</x>
+      <y>444</y>
+      <w>1614</w>
+      <h>1452</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>750.0;10.0;10.0;10.0;10.0;2140.0;1580.0;2140.0;1580.0;2400.0;2670.0;2390.0;2670.0;1720.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>612</x>
+      <y>744</y>
+      <w>30</w>
+      <h>492</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1..n</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;800.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1104</x>
+      <y>1182</y>
+      <w>336</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+1.1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;540.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1572</x>
+      <y>1134</y>
+      <w>18</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1620</x>
+      <y>1494</y>
+      <w>78</w>
+      <h>102</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0;110.0;150.0;30.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>912</x>
+      <y>0</y>
+      <w>1674</w>
+      <h>936</h>
+    </coordinates>
+    <panel_attributes>actividades
+--
+bg=green</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>204</x>
+      <y>198</y>
+      <w>702</w>
+      <h>594</h>
+    </coordinates>
+    <panel_attributes>learningPaths
+--
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1812</x>
+      <y>1200</y>
+      <w>336</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>exceptions
+--
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1506</x>
+      <y>1068</y>
+      <w>150</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>modelo
+--
+bg=pink</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>648</x>
+      <y>936</y>
+      <w>822</w>
+      <h>258</h>
+    </coordinates>
+    <panel_attributes>persistencias
+--
+bg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>234</x>
+      <y>1200</y>
+      <w>1530</w>
+      <h>708</h>
+    </coordinates>
+    <panel_attributes>usuarios
+--
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
