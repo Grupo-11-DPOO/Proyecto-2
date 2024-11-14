@@ -10,6 +10,7 @@ public class Consola {
 	
 	private static String[] opciones = {"Iniciar sesion: Profesor", "Iniciar sesion: Estudiante", "Registrarse","Salir"};
 	
+	// PRUEBA
     /**
      * Le pide al usuario que ingrese una cadena de caracteres
      * @param mensaje El mensaje con el que se solicita la información
