@@ -32,7 +32,7 @@ public class SistemaRegistro {
 	private HashMap<String,Profesor>datosProfesores;
 	private HashMap<String,Estudiante>datosEstudiantes;
 	private HashMap<String,LearningPath> learningPaths;
-	private HashMap<String, Actividad> actividades;
+	public HashMap<String, Actividad> actividades;
 	//private HashMap<String, >
 	
 	public SistemaRegistro() {

@@ -29,15 +29,13 @@ public abstract class Actividad implements Identificable {
 	protected Estado estado;
 	// Metodos
 	
-	public Actividad(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio, 
-			int tiempoLimite) {
+	public Actividad(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) {
 		this.titulo = titulo;
 		this.objetivo = objetivo;
 		this.descripcion = descripcion;
 		this.nivel = nivel;
 		this.duracionMinutos = duracionMinutos;
 		this.obligatorio = obligatorio;
-		this.tiempoLimite = tiempoLimite;
 		this.prerequisitos = new ArrayList<Actividad>();
 		this.resenas = new ArrayList<String>();
 		this.rating = 0;

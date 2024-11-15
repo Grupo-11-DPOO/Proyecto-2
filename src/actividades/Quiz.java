@@ -16,8 +16,8 @@ public class Quiz extends Actividad{
 	
 	
 	public Quiz(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, int tiempoLimite, float calificacionMinima) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
+			boolean obligatorio, float calificacionMinima) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.calificacionMinima = calificacionMinima;
 		this.preguntas = new HashMap<String,HashMap<String,String>>();
 		this.respuestasCorrectas = new HashMap<String,String>();
@@ -48,9 +48,10 @@ public class Quiz extends Actividad{
 		this.respuestasCorrectas = respuestasCorrectas;
 	}
 	
-	public void agregarPregunta(String enunciado) {
+	public void agregarPregunta(String enunciado, String opcionCorrecta) {
 		
 		preguntas.put(enunciado, new HashMap<String,String>());
+		respuestasCorrectas.put(enunciado, opcionCorrecta);
 	}
 	
 	public void agregarOpcion(String pregunta, String opcion, String explicacion) {
@@ -112,7 +113,7 @@ public class Quiz extends Actividad{
 	}
 	
 	public void mostrarExplicaciones() {
-		  for (Map.Entry<String, String> entradaPregunta : explicacionOpciones.entrySet()) {
+		  for (Map.Entry<String, String> entradaPregunta : preguntas.values()) {
 		        String enunciadoPregunta = entradaPregunta.getKey();
 		        System.out.println("Pregunta: " + enunciadoPregunta+" \n Opciones:");
 		        System.out.println("Explicacion:" + entradaPregunta.getValue());      

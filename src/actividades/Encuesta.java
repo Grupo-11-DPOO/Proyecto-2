@@ -6,31 +6,19 @@ import java.util.List;
 
 public class Encuesta extends Actividad{
 	
-<<<<<<< HEAD
 	private List<String> preguntas;
 	private List<String> respuestas;
 	private Estado estado;
 
-	
-=======
-	private List<String> preguntas;	
->>>>>>> branch 'master' of https://github.com/Grupo-11-DPOO/Proyecto-2.git
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-<<<<<<< HEAD
 			boolean obligatorio, int tiempoLimite, List<Actividad> prerequisitos, List<String> preguntas,
 			List<String> respuestas) {
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite, prerequisitos);
 		this.preguntas = preguntas;
 		this.respuestas = respuestas;
 		this.estado = Estado.PENDIENTE;
-		
-		
-=======
-			boolean obligatorio, int tiempoLimite) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
 		this.preguntas = new ArrayList<String>();
 		this.tipoActividad = TipoActividades.Encuesta;
->>>>>>> branch 'master' of https://github.com/Grupo-11-DPOO/Proyecto-2.git
 	}
 
 	public void agregarPregunta(String pregunta) {
@@ -59,7 +47,6 @@ public class Encuesta extends Actividad{
 		this.preguntas = preguntas;
 	}
 
-<<<<<<< HEAD
 	public List<String> getRespuestas() {
 		if(this.respuestas==null) {
 			 this.respuestas= new ArrayList<String>();
@@ -74,9 +61,6 @@ public class Encuesta extends Actividad{
 	public Estado getEstado() {
 		return estado;
 	}
-
-=======
->>>>>>> branch 'master' of https://github.com/Grupo-11-DPOO/Proyecto-2.git
 
 	@Override
 	public void realizarActividad( ) throws Exception {

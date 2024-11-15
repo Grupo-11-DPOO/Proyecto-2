@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import actividades.Actividad;
+import actividades.Quiz;
 import exceptions.UsuarioExistenteException;
 import persistencia.PersistenciaUsuarios;
 import usuarios.Estudiante;
@@ -18,9 +19,10 @@ import usuarios.SistemaRegistro;
 
 public class Consola {
 	
-	static SistemaRegistro sistemaRegistro = new SistemaRegistro();
+	public static SistemaRegistro sistemaRegistro = new SistemaRegistro();
 	private String loginGlobal;
 	private static HashMap<String, Profesor> datosProfesor = sistemaRegistro.getDatosProfesores();
+	public static HashMap<String, Actividad> actividades = sistemaRegistro.actividades;
 	private static Profesor profesorActual;
 	private static String[] opciones = {"Iniciar sesion", "Registrarse", "Salir"};
 	private static String[] opcionesRegistro = {"Crear usuario: Profesor", "Crear usuario: Estudiante", "Salir"};
@@ -85,9 +87,9 @@ public class Consola {
      * @param mensaje El mensaje con el que se solicita la información
      * @return El valor introducido por el usuario
      */
-    protected static double pedirNumeroAlUsuario( String mensaje )
+    protected static float pedirNumeroAlUsuario( String mensaje )
     {
-        double valorResultado = Integer.MIN_VALUE;
+        float valorResultado = Integer.MIN_VALUE;
         while( valorResultado == Integer.MIN_VALUE )
         {
             try
@@ -95,12 +97,12 @@ public class Consola {
                 System.out.print( mensaje + ": " );
                 BufferedReader reader = new BufferedReader( new InputStreamReader( System.in ) );
                 String input = reader.readLine( );
-                double numero = Double.parseDouble( input );
+                float numero = Float.parseFloat( input );
                 valorResultado = numero;
             }
             catch( NumberFormatException nfe )
             {
-                System.out.println( "El valor digitado no es un entero" );
+                System.out.println( "El valor digitado no es un número" );
             }
             catch( IOException e )
             {
@@ -425,12 +427,38 @@ public class Consola {
 				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
 				tienePrerequisitosString.toLowerCase();
 				// Por defecto no tiene
+				List<Actividad> listaPrerequisitos = null;
 				if (tienePrerequisitosString.equals("si")) {
 					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
+					listaPrerequisitos = crearPrerequisitos();
 				}
-				// Atributos propios de encuesta
-				//profesorActual.crearActividadQuiz(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+				// Atributos propios de quiz
+				float calificacionMinima = pedirNumeroAlUsuario("Calificación mínima (0 a 100)");
+				
+				Quiz quiz = profesorActual.crearActividadQuiz(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima);
+				quiz.setPrerequisitos(listaPrerequisitos);
+				
+				int cantidadPreguntas = pedirEnteroAlUsuario("Cantidad de preguntas");
+				int i = 0;
+				while (i < cantidadPreguntas) {
+					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
+					String opcionCorrecta = pedirCadenaAlUsuario("Opción correcta");
+					quiz.agregarPregunta(enunciado, opcionCorrecta);
+					// Opcion A
+					String explicacionA = pedirCadenaAlUsuario("Opción A");
+					quiz.agregarOpcion(enunciado, "A", explicacionA);
+					// Opcion B
+					String explicacionB = pedirCadenaAlUsuario("Opción B");
+					quiz.agregarOpcion(enunciado, "B", explicacionB);
+					// Opcion C
+					String explicacionC = pedirCadenaAlUsuario("Opción C");
+					quiz.agregarOpcion(enunciado, "C", explicacionC);
+					// Opcion D
+					String explicacionD = pedirCadenaAlUsuario("Opción D");
+					quiz.agregarOpcion(enunciado, "D", explicacionD);
+					i++;
+				}
+				profesorActual.guardarActividad(quiz);
 				
 				break;
 			case 4:
@@ -452,7 +480,7 @@ public class Consola {
 				// Por defecto no tiene
 				if (tienePrerequisitosString.equals("si")) {
 					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
+					listaPrerequisitos = crearPrerequisitos();
 				}
 				// Atributos propios de recurso
 				//profesorActual.crearActividadRecurso(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
@@ -477,7 +505,7 @@ public class Consola {
 				// Por defecto no tiene
 				if (tienePrerequisitosString.equals("si")) {
 					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
+					listaPrerequisitos = crearPrerequisitos();
 				}
 				// Atributos propios de tarea
 				//profesorActual.crearActividadTarea(null, null, null, null, null, null, null, null, null, null, null, null, null, null);

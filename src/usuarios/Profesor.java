@@ -17,6 +17,7 @@ import actividades.Tarea;
 import actividades.TipoActividades;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
+import modelo.Consola;
 import persistencia.PersistenciaActividades;
 import persistencia.PersistenciaLearningPath;
 import persistencia.PersistenciaUsuarios;
@@ -25,7 +26,7 @@ public class Profesor extends Usuario {
 	
 	private String login;
 	private String password;
-	private HashMap<String, Actividad> actividades;
+	private HashMap<String, Actividad> actividades = Consola.actividades;
 	private HashMap<String, LearningPath> learningPaths;
 	private PersistenciaActividades actividadesExistentes;
 	private PersistenciaLearningPath learningPathExistentes;
@@ -153,12 +154,13 @@ public class Profesor extends Usuario {
 	
 		}
 	
-	private void crearActividadQuiz (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, Map<String, List<String>> preguntasQuiz, Map<String, String> respuestasCorrectasQuiz, Map<String, String> explicacionOpcionesQuiz,Estado estado,TipoActividades tipoActividad) throws UsuarioExistenteException{		
+	@SuppressWarnings("unused")
+	public Quiz crearActividadQuiz (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+			boolean obligatorio, float calificacionMinima) {	
 		
-		Quiz quiz= new Quiz(id,titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, preguntasQuiz, respuestasCorrectasQuiz, explicacionOpcionesQuiz, estado, tipoActividad);
-		guardarActividad(quiz);
-		System.out.println("Su actividad de tipo quiz ha sido creada y agregada con exito a sus actividades.");
+		Quiz quiz= new Quiz(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima);
+		System.out.println("Su actividad de tipo quiz ha sido creada.");
+		return quiz;
 		
 	}
 	
