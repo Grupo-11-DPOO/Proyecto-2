@@ -115,7 +115,7 @@ public class Profesor extends Usuario {
 		
 	}
 
-	private Recurso crearActividadRecurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+	public Recurso crearActividadRecurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, String material) throws Exception {
 		
 			Recurso recurso = new Recurso(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, material);
@@ -128,34 +128,30 @@ public class Profesor extends Usuario {
 
 	}
 	
-	public Tarea crearActividadTarea(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
-			LocalDate fechaLimite, List<String> prerrequisitos,double rating,List<String> resenas,String medioEntrega,Estado estado,   TipoActividades tipoActividad) throws Exception {
+	public Tarea crearActividadTarea(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
+			String contenidoIndicaciones, String medioEntrega) throws Exception {
 		
-			Tarea tarea = new Tarea(id,titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio, fechaLimite, prerrequisitos,rating,resenas ,medioEntrega, estado,tipoActividad);
+			Tarea tarea = new Tarea(titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio, contenidoIndicaciones , medioEntrega);
 			System.out.println("Su actividad de tipo tarea ha sido creada.");
 			return tarea;
 		}
 	
-	public Examen crearActividadExamen (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, String resultado,
-			boolean obligatorio,float rating, List<String> resenas,List<String> preguntasExamen,List<String> respuestasExamen, Estado estadoExamen, TipoActividades tipoActividad) throws Exception {
+	public Examen crearActividadExamen (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) throws Exception {
 		
 		
-			Examen examen= new Examen(id,titulo, objetivo, descripcion,nivel ,duracionMinutos, resultado,obligatorio, rating, resenas,preguntasExamen,respuestasExamen,estadoExamen,tipoActividad);
+			Examen examen= new Examen(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			System.out.println("Su actividad de tipo examen ha sido creada.");
 			return examen;
 	
 		}
 	
-	public Encuesta crearActividadEncuesta (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, List<String> prerequisitos,float rating,List<String> resenas,List<String> preguntasEncuesta, List<String> respuestasEncuestas,Estado estado,TipoActividades tipoActividad) throws Exception {
-		
-			Encuesta encuesta= new Encuesta(id,titulo, objetivo, descripcion,nivel, duracionMinutos, obligatorio, prerequisitos,rating,resenas,preguntasEncuesta,respuestasEncuestas, estado,tipoActividad);
+	public Encuesta crearActividadEncuesta (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) throws Exception {
+			Encuesta encuesta= new Encuesta(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			System.out.println("Su actividad de tipo examen ha sido creada.");
 			return encuesta;
 	
 		}
 	
-	@SuppressWarnings("unused")
 	public Quiz crearActividadQuiz (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, float calificacionMinima) {	
 		

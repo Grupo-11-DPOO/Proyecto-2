@@ -8,8 +8,8 @@ public class Examen extends Actividad{
 	private List<String> preguntas;	
 
 	public Examen(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, int tiempoLimite) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
+			boolean obligatorio) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.preguntas = new ArrayList<>();
 		this.tipoActividad= TipoActividades.Examen;
 	}

@@ -122,13 +122,34 @@ public class Quiz extends Actividad{
 	 }
 	
 	public String generarMostrarExplicaciones() {
+	    StringBuffer sb = new StringBuffer();
+
+	    for (Map.Entry<String, HashMap<String, String>> entradaPregunta : preguntas.entrySet()) {
+	    	// El enunciado de la pregunta
+	        String enunciadoPregunta = entradaPregunta.getKey(); 
+	        // El mapa de opciones y explicaciones
+	        HashMap<String, String> opciones = entradaPregunta.getValue(); 
+
+	        sb.append("Pregunta: ").append(enunciadoPregunta).append("\n");
+	        sb.append("Opciones y explicaciones:\n");
+
+	        for (Map.Entry<String, String> entradaOpcion : opciones.entrySet()) {
+	            String opcion = entradaOpcion.getKey(); 
+	            String explicacion = entradaOpcion.getValue();
+
+	            sb.append("  - Opción: ").append(opcion).append("\n");
+	            sb.append("    Explicación: ").append(explicacion).append("\n");
+	        }
+
+	        sb.append("\n");
+	    }
+
+	    return sb.toString();
+	}
+
+	@Override
+	public void realizarActividad() throws Exception {
+		// TODO Auto-generated method stub
 		
-		StringBuffer sb = new StringBuffer( );
-		for (Map.Entry<String, String> entradaPregunta : preguntas.values()) {
-		        String enunciadoPregunta = entradaPregunta.getKey();
-		        sb.append("Pregunta: " + enunciadoPregunta+" \n Opciones:");
-		        sb.append("Explicacion:" + entradaPregunta.getValue()+"\n");      
-		  } 
-		  return sb.toString();
 	}
 }

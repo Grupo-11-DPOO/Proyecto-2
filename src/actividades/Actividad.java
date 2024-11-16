@@ -1,14 +1,10 @@
 package actividades;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.UUID;
 
 import learningPaths.Identificable;
-import usuarios.Estudiante;
 
 public abstract class Actividad implements Identificable {
 	

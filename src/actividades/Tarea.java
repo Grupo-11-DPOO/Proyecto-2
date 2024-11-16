@@ -1,20 +1,16 @@
 package actividades;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-
 public class Tarea extends Actividad{
 	
 	private Estado estado;
     private String medioEntrega;
     private String contenido;
-    private String id;
-	public Tarea(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
-			LocalDate fechaLimite, List<String> prerrequisitos,double rating,List<String> resenas,String medioEntrega,Estado estado,   TipoActividades tipoActividad) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, fechaLimite, prerrequisitos,rating,resenas,medioEntrega,estado,tipoActividad);
-		this.id = id;
+    
+	public Tarea(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
+			String contenido, String medioEntrega) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.medioEntrega = medioEntrega;
+		this.contenido = contenido;
     	this.estado = Estado.PENDIENTE;
 	}
 	

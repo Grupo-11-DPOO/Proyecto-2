@@ -1,19 +1,18 @@
 package actividades;
 
-import java.util.List;
 
 public class Recurso extends Actividad{
 
 	private String material;
 	private Estado estado;
 	
-	public Recurso(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio,float rating,List<String> resenas ,String material,Estado estado,TipoActividades tipoActividad) {
+	public Recurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+			boolean obligatorio, String material) {
 			// Llamado al constructor padre
-			super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, null, null,tipoActividad);
+			super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			// Agregamos material puesto que es una actividad.
 			this.material = material;
-			this.estado = estado;
+			this.estado = Estado.PENDIENTE;
 	}
 	
 	public Estado getEstado() {

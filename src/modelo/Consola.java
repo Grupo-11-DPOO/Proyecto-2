@@ -415,7 +415,7 @@ public class Consola {
 				int i1 = 0;
 				while (i1 < cantidadPreguntas1) {
 					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
-					encuesta.agregarPregunta(enunciado);
+					examen.agregarPregunta(enunciado);
 				}
 				profesorActual.guardarActividad(examen);
 				idActividad = examen.getId();

@@ -10,8 +10,8 @@ public class Encuesta extends Actividad{
 	private HashMap<String, ArrayList<String>> respuestas;
 
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, int tiempoLimite) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
+			boolean obligatorio) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.preguntas = new ArrayList<String>();
 		this.respuestas = new HashMap<>();
 		this.tipoActividad = TipoActividades.Encuesta;
@@ -61,6 +61,12 @@ public class Encuesta extends Actividad{
 	}
 
 	
-	public void contestarExamen(String idEstudiante, String)
+	public void contestarExamen(String idEstudiante, String nose) {
 	
+	}
+
+	@Override
+	public void realizarActividad() throws Exception {
+		// TODO Auto-generated method stub
+	}
 }
