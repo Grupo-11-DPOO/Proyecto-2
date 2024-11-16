@@ -93,15 +93,15 @@ class LearningPathTest {
 
     @Test
     void getActividadPorIdTest() {
-        String idActividad = actividad1.getId();
+        String idActividad = quiz1.getId();
         Actividad resultado = learnPath.getActividad(learnPath.actividades, idActividad);
-        assertEquals(actividad1, resultado, "No se encontró la actividad por ID.");
+        assertEquals(quiz1, resultado, "No se encontró la actividad por ID.");
     }
 
     @Test
     void getActividadPorTituloTest() {
-    	Actividad resultado = learnPath.getActividad("", learnPath.actividades);
-        assertEquals(actividad2, resultado, "No se encontró la actividad por título.");
+    	Actividad resultado = learnPath.getActividad("Asignacion", learnPath.actividades);
+        assertEquals(quiz2, resultado, "No se encontró la actividad por título.");
     }
 
     @Test
