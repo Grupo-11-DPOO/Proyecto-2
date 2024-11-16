@@ -39,7 +39,7 @@ public abstract class Actividad implements Identificable {
 		this.prerequisitos = new ArrayList<Actividad>();
 		this.resenas = new ArrayList<String>();
 		this.rating = 0;
-		this.estado = Estado.PENDIENTE;
+		this.setEstado(Estado.PENDIENTE);
 		crearId();
 		
 		
@@ -238,5 +238,13 @@ public abstract class Actividad implements Identificable {
 	}
 	
 	// Este metodo se implementara por los distintos tipos de actividad.
-	public abstract void realizarActividad( ) throws Exception;	
+	public abstract void realizarActividad( ) throws Exception;
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}	
 }

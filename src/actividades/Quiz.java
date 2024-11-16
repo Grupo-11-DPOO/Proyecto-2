@@ -28,8 +28,8 @@ public class Quiz extends Actividad{
 		return calificacionMinima;
 	}
 
-	public void setCalificacionMinima(float calificacionMinima) {
-		this.calificacionMinima = calificacionMinima;
+	public void setCalificacionMinima(float d) {
+		this.calificacionMinima = d;
 	}
 
 	public HashMap<String, HashMap<String, String>> getPreguntas() {
@@ -66,29 +66,32 @@ public class Quiz extends Actividad{
 		}
 		
 	}
-	
-	public void verPreguntas() {
-		
-		if(!this.preguntas.isEmpty()) {	
-		    for (Map.Entry<String, HashMap<String, String>> entradaPregunta : preguntas.entrySet()) {
-		        String enunciadoPregunta = entradaPregunta.getKey();
-		        HashMap<String,String> opciones = entradaPregunta.getValue();
-		        
-		        System.out.println("Pregunta: " + enunciadoPregunta+" \n Opciones:");
-		        if(!opciones.isEmpty()) {
-			        for(Map.Entry<String,String> entradaOpciones: opciones.entrySet()) {
-			        	
-			        	System.out.println( entradaPregunta.getValue());
-			        }
-		        }
-		    }
-		}
-		else {
-			System.out.println("No hay preguntas que mostrar");
-		}
+	public String verPreguntas() {
+	    StringBuilder resultado = new StringBuilder();
+	    
+	    if (!this.preguntas.isEmpty()) {
+	        for (Map.Entry<String, HashMap<String, String>> entradaPregunta : preguntas.entrySet()) {
+	            String enunciadoPregunta = entradaPregunta.getKey();
+	            HashMap<String, String> opciones = entradaPregunta.getValue();
+
+	            resultado.append("Pregunta: ").append(enunciadoPregunta).append("\nOpciones:\n");
+	            if (!opciones.isEmpty()) {
+	                for (Map.Entry<String, String> entradaOpciones : opciones.entrySet()) {
+	                    String claveOpcion = entradaOpciones.getKey();
+	                    String textoOpcion = entradaOpciones.getValue();
+	                    resultado.append(claveOpcion).append(": ").append(textoOpcion).append("\n");
+	                }
+	            }
+	        }
+	    } else {
+	        return "No hay preguntas que mostrar";
+	    }
+
+	    return resultado.toString();
 	}
+
 	
-	public void calificar(List<String> respuestas) throws Exception{
+	public String calificar(List<String> respuestas) throws Exception{
 		if (preguntas.size()==respuestas.size()) {
 			int cantidadPreguntas = preguntas.size();
 			int contadorCorrectas = 0;
@@ -101,27 +104,31 @@ public class Quiz extends Actividad{
 			}
 			float calificacion = (contadorCorrectas/cantidadPreguntas)*100;
 			if (calificacion >= calificacionMinima) {
-				this.estado = Estado.EXITOSA;
+				this.setEstado(Estado.EXITOSA);
 			} else {
-				this.estado = Estado.NO_EXITOSA;
+				this.setEstado(Estado.NO_EXITOSA);
 			}
 		} else {
 			throw new Exception("La cantidad de respuestas no coincide con el número de preguntas.");
 		}
-		 this.estado=Estado.NO_EXITOSA;
-		 mostrarExplicaciones();
+		 this.setEstado(Estado.NO_EXITOSA);
+		 String explicaciones =generarMostrarExplicaciones();
+		 return explicaciones;
+		 
 	}
 	
-	public void mostrarExplicaciones() {
-		  for (Map.Entry<String, String> entradaPregunta : preguntas.values()) {
+	public Estado getEstado(){
+		 return this.estado;
+	 }
+	
+	public String generarMostrarExplicaciones() {
+		
+		StringBuffer sb = new StringBuffer( );
+		for (Map.Entry<String, String> entradaPregunta : preguntas.values()) {
 		        String enunciadoPregunta = entradaPregunta.getKey();
-		        System.out.println("Pregunta: " + enunciadoPregunta+" \n Opciones:");
-		        System.out.println("Explicacion:" + entradaPregunta.getValue());      
+		        sb.append("Pregunta: " + enunciadoPregunta+" \n Opciones:");
+		        sb.append("Explicacion:" + entradaPregunta.getValue()+"\n");      
 		  } 
-	}
-	
-	@Override
-	public void realizarActividad( ) throws Exception {
-		verPreguntas();
+		  return sb.toString();
 	}
 }

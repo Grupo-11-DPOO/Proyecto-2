@@ -28,8 +28,8 @@ public class Examen extends Actividad{
 	}
 	
     public void marcarComoExitosa(boolean exitosa) {
-        if (estado == Estado.ENVIADA) {
-            this.estado = exitosa ? Estado.EXITOSA : Estado.NO_EXITOSA;
+        if (getEstado() == Estado.ENVIADA) {
+            this.setEstado(exitosa ? Estado.EXITOSA : Estado.NO_EXITOSA);
             System.out.println("La tarea ha sido marcada como " + (exitosa ? "exitosa." : "no exitosa."));
         } else {
             System.out.println("La tarea no ha sido enviada todavía.");

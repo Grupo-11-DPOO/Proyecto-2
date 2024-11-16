@@ -3,12 +3,8 @@ package learningPaths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import actividades.*;
 
@@ -27,13 +23,16 @@ public class LearningPath implements Identificable{
 	
 	// Metodos
 	
-	public LearningPath(String id, String titulo, String descripcion, String nivel, int duracion, double rating2, int version2, LocalDateTime fechaCreacion2, LocalDateTime fechaModificacion2, List<Actividad> actividades1) {
+	public LearningPath(String titulo, String descripcion, String nivel, int duracion) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.nivel = nivel;
 		this.duracion = duracion;
 		this.fechaCreacion = LocalDateTime.now();
+		this.fechaModificacion = LocalDateTime.now();
 		this.actividades = new ArrayList<Actividad>();
+		this.rating = 0;
+		this.id = this.crearId();
 	}
 
 	public String getTitulo() {
@@ -103,44 +102,36 @@ public class LearningPath implements Identificable{
 		this.version = version;
 	}
 	
-	public Actividad getActividad(Actividad actividad) {
-		return actividad;
+	public Actividad getActividad(List<Actividad> actividades, String id) {
+		Actividad activ = null;
+		for(Actividad actividad: actividades) {
+			String id_activ = actividad.getId();
+			if(id_activ == id) {
+				activ = actividad;
+			}
+		}
+		return activ;
+	}
+	
+	public Actividad getActividad(String nombre, List<Actividad> actividades) {
+		Actividad activ = null;
+		for(Actividad actividad: actividades) {
+			String tituloActiv = actividad.getTitulo();
+			if(tituloActiv == nombre) {
+				activ = actividad;
+			}
+		}
+		return activ;
 	}
 	
 	public List<Actividad> getListaActividades(){
 		return actividades;
 	}
-	
-	public JSONObject toJSON() {
-	    JSONObject json = new JSONObject();
-
-	    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-	    json.put("id", this.id);
-	    json.put("titulo", this.titulo);
-	    json.put("descripcion", this.descripcion);
-	    json.put("nivel", this.nivel);
-	    json.put("duracion", this.duracion);
-	    json.put("rating", this.rating);
-	    json.put("version", this.version);
-	    json.put("fechaCreacion", this.fechaCreacion.format(formatter));
-	    json.put("fechaModificacion", this.fechaModificacion.format(formatter));
-
-	    // Convertir la lista de actividades en un array de JSON
-	    JSONArray actividadesJSON = new JSONArray();
-	    for (Actividad actividad : this.actividades) {
-	        actividadesJSON.put(actividad.toJSON());
-	    }
-
-	    json.put("actividades", actividadesJSON);
-
-	    return json;
-	}
 
 	@Override
-	public void crearId() {
+	public String crearId() {
 		String id = UUID.randomUUID().toString(); // Genera un ID único
-	    this.id = id;
+	    return id;
 	}
 
 	@Override
