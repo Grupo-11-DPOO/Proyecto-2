@@ -1,23 +1,19 @@
 package actividades;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Encuesta extends Actividad{
 	
 	private List<String> preguntas;
-	private List<String> respuestas;
-	private Estado estado;
+	private HashMap<String, ArrayList<String>> respuestas;
 
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, int tiempoLimite, List<Actividad> prerequisitos, List<String> preguntas,
-			List<String> respuestas) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite, prerequisitos);
-		this.preguntas = preguntas;
-		this.respuestas = respuestas;
-		this.estado = Estado.PENDIENTE;
+			boolean obligatorio, int tiempoLimite) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
 		this.preguntas = new ArrayList<String>();
+		this.respuestas = new HashMap<>();
 		this.tipoActividad = TipoActividades.Encuesta;
 	}
 
@@ -28,6 +24,16 @@ public class Encuesta extends Actividad{
 		preguntas.add(pregunta);
 	}
 	
+	public void eliminarPregunta(String pregunta) {
+		
+		boolean x = this.preguntas.contains(pregunta);
+		
+		if (x) {
+			
+			this.preguntas.remove(pregunta);
+		}
+	}
+	
 	public void verPreguntas() {
 		int i =0;
 		for (String pregunta:preguntas) {
@@ -36,35 +42,25 @@ public class Encuesta extends Actividad{
 		}
 	}	
 	
-	public List<String> getListaPreguntas() {
-		if(this.preguntas==null) {
-		 this.preguntas= new ArrayList<String>();
-		}
-		return this.preguntas;
+	
+
+	public List<String> getPreguntas() {
+		return preguntas;
 	}
 
-	public void setListaPreguntas(List<String> preguntas) {
+	public void setPreguntas(List<String> preguntas) {
 		this.preguntas = preguntas;
 	}
 
-	public List<String> getRespuestas() {
-		if(this.respuestas==null) {
-			 this.respuestas= new ArrayList<String>();
-		}
+	public HashMap<String, ArrayList<String>> getRespuestas() {
 		return respuestas;
 	}
 
-	public void setRespuestas(List<String> respuestas) {
+	public void setRespuestas(HashMap<String, ArrayList<String>> respuestas) {
 		this.respuestas = respuestas;
 	}
-	
-	public Estado getEstado() {
-		return estado;
-	}
 
-	@Override
-	public void realizarActividad( ) throws Exception {
-		verPreguntas();
-	}
+	
+	public void contestarExamen(String idEstudiante, String)
 	
 }
