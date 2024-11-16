@@ -157,8 +157,8 @@ public class SistemaRegistro {
     	            }
     	        }
     	        
-    	        LearningPath learningPath1 = new LearningPath(id, titulo, descripcion, nivel, duracion, rating, version, fechaCreacion, fechaModificacion, actividades1);
-    	        learningPaths.put(learningPath1.getId(), learningPath1);
+    	        //LearningPath learningPath1 = new LearningPath(id, titulo, descripcion, nivel, duracion, rating, version, fechaCreacion, fechaModificacion, actividades1);
+    	        //learningPaths.put(learningPath1.getId(), learningPath1);
     	    }
              catch (JSONException e) {
                 System.out.println("Error processing learning path at index " + i + ": " + e.getMessage());

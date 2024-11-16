@@ -8,9 +8,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import actividades.Actividad;
+import actividades.Encuesta;
+import actividades.Examen;
 import actividades.Quiz;
+import actividades.Recurso;
+import actividades.Tarea;
 import exceptions.UsuarioExistenteException;
 import persistencia.PersistenciaUsuarios;
 import usuarios.Estudiante;
@@ -260,6 +265,7 @@ public class Consola {
         	iniciarSesion();
         }
         if (resultado) {
+        	System.out.println( "------------------------------------------------------" );
         	System.out.println("Bienvenido "+login+"!");
         	if (tipoUsuario == 1) {
         		//manda al menu de profesor
@@ -358,89 +364,75 @@ public class Consola {
 			int duracionMinutos;
 			String obligatorioString;
 			boolean obligatorio;
+			// Parametros que todas las actividades tienen:
+			titulo = pedirCadenaAlUsuario("Ingrese el titulo");
+			objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
+			descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
+			nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
+			duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
+			obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
+			obligatorioString.toLowerCase();
+			// Por defecto no es
+			obligatorio = false;
+			if (obligatorioString.equals("si")) {
+				obligatorio = true;
+			}
+			String tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
+			tienePrerequisitosString.toLowerCase();
+			// Por defecto no tiene
+			List<Actividad> listaPrerequisitos = null;
+			if (tienePrerequisitosString.equals("si")) {
+				// Entro al metodo para agregar prerequisitos
+				listaPrerequisitos = crearPrerequisitos();
+			}
+			String idActividad;
 			
 			switch (opcionSeleccionada) {
 			case 1:
 				// Crear encuesta
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				String tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
-				}
+				Encuesta encuesta = profesorActual.crearActividadEncuesta(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
+				encuesta.setPrerequisitos(listaPrerequisitos);
 				// Atributos propios de encuesta
-				//profesorActual.crearActividadEncuesta(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
+				// Agregamos preguntas
+				int cantidadPreguntas = pedirEnteroAlUsuario("Cantidad de preguntas de la encuesta");
+				int i = 0;
+				while (i < cantidadPreguntas) {
+					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
+					encuesta.agregarPregunta(enunciado);
+				}
+				profesorActual.guardarActividad(encuesta);
+				idActividad = encuesta.getId();
+				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				break;
+				
 			case 2:
 				// Crear examen
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					List<Actividad> listaPrerequisitos = crearPrerequisitos();
-				}
+				Examen examen = profesorActual.crearActividadExamen(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
+				examen.setPrerequisitos(listaPrerequisitos);
 				// Atributos propios de encuesta
-				//profesorActual.crearActividadExamen(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
+				// Agregamos preguntas
+				int cantidadPreguntas1 = pedirEnteroAlUsuario("Cantidad de preguntas del examen");
+				int i1 = 0;
+				while (i1 < cantidadPreguntas1) {
+					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
+					encuesta.agregarPregunta(enunciado);
+				}
+				profesorActual.guardarActividad(examen);
+				idActividad = examen.getId();
+				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				break;
+				
 			case 3:
-				// Crea quiz
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				List<Actividad> listaPrerequisitos = null;
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					listaPrerequisitos = crearPrerequisitos();
-				}
+				// Crear quiz
 				// Atributos propios de quiz
 				float calificacionMinima = pedirNumeroAlUsuario("Calificación mínima (0 a 100)");
 				
 				Quiz quiz = profesorActual.crearActividadQuiz(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima);
 				quiz.setPrerequisitos(listaPrerequisitos);
-				
-				int cantidadPreguntas = pedirEnteroAlUsuario("Cantidad de preguntas");
-				int i = 0;
-				while (i < cantidadPreguntas) {
+				// Agregamos preguntas
+				int cantidadPreguntas2 = pedirEnteroAlUsuario("Cantidad de preguntas");
+				int i2 = 0;
+				while (i2 < cantidadPreguntas2) {
 					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
 					String opcionCorrecta = pedirCadenaAlUsuario("Opción correcta");
 					quiz.agregarPregunta(enunciado, opcionCorrecta);
@@ -456,60 +448,36 @@ public class Consola {
 					// Opcion D
 					String explicacionD = pedirCadenaAlUsuario("Opción D");
 					quiz.agregarOpcion(enunciado, "D", explicacionD);
-					i++;
+					i2++;
 				}
 				profesorActual.guardarActividad(quiz);
-				
+				idActividad = quiz.getId();
+				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				break;
+				
 			case 4:
-				// Crea recurso
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					listaPrerequisitos = crearPrerequisitos();
-				}
+				// Crear recurso
 				// Atributos propios de recurso
-				//profesorActual.crearActividadRecurso(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-				
+				String contenidoRecurso = pedirCadenaAlUsuario("Ingrese el link del contenido del recurso");
+				Recurso recurso = profesorActual.crearActividadRecurso(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, contenidoRecurso);
+				recurso.setPrerequisitos(listaPrerequisitos);
+				// Guardamos
+				profesorActual.guardarActividad(recurso);
+				idActividad = recurso.getId();
+				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				break;
-			case 5:
-				// Crea tarea
-				titulo = pedirCadenaAlUsuario("Ingrese el titulo");
-				objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
-				descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
-				nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
-				duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
-				obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-				obligatorioString.toLowerCase();
-				// Por defecto no es
-				obligatorio = false;
-				if (obligatorioString.equals("si")) {
-					obligatorio = true;
-				}
-				tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-				tienePrerequisitosString.toLowerCase();
-				// Por defecto no tiene
-				if (tienePrerequisitosString.equals("si")) {
-					// Entro al metodo para agregar prerequisitos
-					listaPrerequisitos = crearPrerequisitos();
-				}
-				// Atributos propios de tarea
-				//profesorActual.crearActividadTarea(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 				
+			case 5:
+				// Crear tarea
+				// Atributos propios de tarea
+				String contenidoIndicaciones = pedirCadenaAlUsuario("Ingrese las instrucciones de la tarea");
+				String medioEntrega = pedirCadenaAlUsuario("Ingrese el medio de entrega");
+				Tarea tarea = profesorActual.crearActividadTarea(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, contenidoIndicaciones, medioEntrega);
+				tarea.setPrerequisitos(listaPrerequisitos);
+				// Guardamos
+				profesorActual.guardarActividad(tarea);
+				idActividad = tarea.getId();
+				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				break;
 			}
 			
@@ -523,20 +491,29 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Agregar Prerequisitos");
     	System.out.println( "------------------------------------------------------" );
-    	// imprimir lista total de actividades
+    	// Imprime todas las actividades, solo id y titulo 
+		 for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
+	            String id = entry.getKey();
+	            Object titulo = entry.getValue();
+	
+	            if (titulo instanceof Map) {
+	                Map<?, ?> valueMap = (Map<?, ?>) titulo;
+	                Object tituloOb = valueMap.get("titulo");
+	                System.out.println(String.format("%-10s | %-20s", id, tituloOb));
+	            } else {
+	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
+	            }
+	        }
     	List<Actividad> listaPrerequisitos = new ArrayList<>();
-    	int cantidadPrerequisitos = pedirEnteroAlUsuario("Ingrese la cantidad de ");
+    	int cantidadPrerequisitos = pedirEnteroAlUsuario("Ingrese la cantidad de prerequisitos");
     	int i = 0;
-//    	while (i <= cantidadPrerequisitos) {
-//	    	String codigoActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a agregar");
-//	    	// toma la lista de actividadades totales y las filtra.
-//	    	for (Actividad actividad: actividadesTotales) {
-//	    		if (actividad.getId().equals(codigoActividad)) {
-//	    			listaPrerequisitos.add(actividad);
-//	    		}
-//	    	}
-//	    	i++;
-//    	}
+    	while (i <= cantidadPrerequisitos) {
+	    	String codigoActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a agregar");
+	    	// toma la lista de actividadades totales y las filtra.
+	    	Actividad actividadAgregar = actividades.get(codigoActividad);
+	    	listaPrerequisitos.add(actividadAgregar);
+	    	i++;
+    	}
 		return listaPrerequisitos;
     	
     }
@@ -546,14 +523,29 @@ public class Consola {
 		System.out.println("Clonar actividad");
 		System.out.println( "------------------------------------------------------" );
 		System.out.println("Lista actividades:");
-		// imprime las actividades, id y nombre 
+		// Imprime todas las actividades, solo id y titulo 
+		 for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
+	            String id = entry.getKey();
+	            Object titulo = entry.getValue();
+
+	            if (titulo instanceof Map) {
+	                Map<?, ?> valueMap = (Map<?, ?>) titulo;
+	                Object tituloOb = valueMap.get("titulo");
+	                System.out.println(String.format("%-10s | %-20s", id, tituloOb));
+	            } else {
+	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
+	            }
+	        }
+	  
 		try {
 			int opcionSeleccionada = mostrarMenu("¿Desea clonar?", opcionesClonar);
 			
 			switch (opcionSeleccionada) {
 			case 1:
 				String idActividadAClonar = pedirCadenaAlUsuario("Ingrese ID");
-				// clona la actividad
+				Actividad actividad = actividades.get(idActividadAClonar);
+				profesorActual.clonarActividad(actividad);
+				System.out.println("La actividad fue clonada exitosamente.");
 				menuProfesor();
 				break;
 			case 2:

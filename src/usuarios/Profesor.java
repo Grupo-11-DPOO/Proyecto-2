@@ -107,19 +107,20 @@ public class Profesor extends Usuario {
 		
 	}
 	
-	private void clonarActividad(Actividad actividad) throws UsuarioExistenteException {
+	public void clonarActividad(Actividad actividad) throws UsuarioExistenteException {
+		
 		Actividad acti = actividad.clonarActividad();
 		actividadesExistentes.cargarActividad(acti);
 		guardarActividad(acti);	
 		
 	}
 
-	private void crearActividadRecurso(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio,float rating, List<String> resenas ,String material,Estado estado, TipoActividades tipoActividad) throws Exception {
+	private Recurso crearActividadRecurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+			boolean obligatorio, String material) throws Exception {
 		
-			Recurso recurso = new Recurso(id,titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio,rating, resenas, material,estado,tipoActividad);
-			guardarActividad(recurso);
-			System.out.println("Su actividad de tipo recurso ha sido creada y agregada con exito a sus actividades.");
+			Recurso recurso = new Recurso(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, material);
+			System.out.println("Su actividad de tipo recurso ha sido creada.");
+			return recurso;
 	}
 	
 	public void agregarActividadALearningPath(LearningPath learningPath, Actividad actividad) {
@@ -127,30 +128,30 @@ public class Profesor extends Usuario {
 
 	}
 	
-	private void crearActividadTarea(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
+	public Tarea crearActividadTarea(String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
 			LocalDate fechaLimite, List<String> prerrequisitos,double rating,List<String> resenas,String medioEntrega,Estado estado,   TipoActividades tipoActividad) throws Exception {
 		
 			Tarea tarea = new Tarea(id,titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio, fechaLimite, prerrequisitos,rating,resenas ,medioEntrega, estado,tipoActividad);
-			guardarActividad(tarea);
-			System.out.println("Su actividad de tipo tarea ha sido creada y agregada con exito a sus actividades.");
+			System.out.println("Su actividad de tipo tarea ha sido creada.");
+			return tarea;
 		}
 	
-	private void crearActividadExamen (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, String resultado,
+	public Examen crearActividadExamen (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, String resultado,
 			boolean obligatorio,float rating, List<String> resenas,List<String> preguntasExamen,List<String> respuestasExamen, Estado estadoExamen, TipoActividades tipoActividad) throws Exception {
 		
 		
 			Examen examen= new Examen(id,titulo, objetivo, descripcion,nivel ,duracionMinutos, resultado,obligatorio, rating, resenas,preguntasExamen,respuestasExamen,estadoExamen,tipoActividad);
-			guardarActividad(examen);
-			System.out.println("Su actividad de tipo examen ha sido creada y agregada con exito a sus actividades.");
+			System.out.println("Su actividad de tipo examen ha sido creada.");
+			return examen;
 	
 		}
 	
-	private void crearActividadEncuesta (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+	public Encuesta crearActividadEncuesta (String id, String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, List<String> prerequisitos,float rating,List<String> resenas,List<String> preguntasEncuesta, List<String> respuestasEncuestas,Estado estado,TipoActividades tipoActividad) throws Exception {
 		
 			Encuesta encuesta= new Encuesta(id,titulo, objetivo, descripcion,nivel, duracionMinutos, obligatorio, prerequisitos,rating,resenas,preguntasEncuesta,respuestasEncuestas, estado,tipoActividad);
-			guardarActividad(encuesta);
-			System.out.println("Su actividad de tipo examen ha sido creada y agregada con exito a sus actividades.");
+			System.out.println("Su actividad de tipo examen ha sido creada.");
+			return encuesta;
 	
 		}
 	
