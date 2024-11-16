@@ -162,18 +162,18 @@ public abstract class Actividad implements Identificable {
 		return resenas;
 	}
 	
-	protected void advertenciaPrerequisitos(Estudiante estudiante) throws Exception {
-		if (!prerequisitos.isEmpty()) {
-			ListIterator<Actividad> listaPrerequisitosIterable = prerequisitos.listIterator();
-			for (Actividad act:prerequisitos) {
-				String codigoAct = act.getId();
-				HashMap<String, Estado> registroActividadesEstudiante = estudiante.getRegistroActividades();
-				if (!registroActividadesEstudiante.containsKey(codigoAct)) {
-					throw new Exception("Usted no cumple con los prerequisitos de la actividad pero puede continuar bajo su responsabilidad.");
-				}
-			}
-		}
-	}
+//	protected void advertenciaPrerequisitos(Estudiante estudiante) throws Exception {
+//		if (!prerequisitos.isEmpty()) {
+//			ListIterator<Actividad> listaPrerequisitosIterable = prerequisitos.listIterator();
+//			for (Actividad act:prerequisitos) {
+//				String codigoAct = act.getId();
+//				HashMap<String, Estado> registroActividadesEstudiante = estudiante.getRegistroActividades();
+//				if (!registroActividadesEstudiante.containsKey(codigoAct)) {
+//					throw new Exception("Usted no cumple con los prerequisitos de la actividad pero puede continuar bajo su responsabilidad.");
+//				}
+//			}
+//		}
+//	}
 //	Falta revisar y reconstruir la funcion ya que se cambio el nombre de la variable a tiempoLimite y el tipo a int para mayor facilidad y diseño
 //    public void establecerFechaLimite(Actividad actividadAnterior, int horasDespues) {
 //        if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
