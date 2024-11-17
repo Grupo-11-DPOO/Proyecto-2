@@ -1,10 +1,14 @@
 package actividades;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import learningPaths.Identificable;
+import usuarios.Estudiante;
 
 public abstract class Actividad implements Identificable {
 	
@@ -15,7 +19,7 @@ public abstract class Actividad implements Identificable {
 	public String nivel;
 	public int duracionMinutos;
 	public boolean obligatorio;
-	public int tiempoLimite;
+	public Date tiempoLimite;
 	private float rating;
 	protected List<Actividad> prerequisitos;
 	public int cantidadRating = 0;
@@ -41,11 +45,11 @@ public abstract class Actividad implements Identificable {
 		
 	}
 
-	public int getTiempoLimite() {
+	public Date getTiempoLimite() {
 		return tiempoLimite;
 	}
 
-	public void setTiempoLimite(int tiempoLimite) {
+	public void setTiempoLimite(Date tiempoLimite) {
 		this.tiempoLimite = tiempoLimite;
 	}
 
@@ -158,45 +162,48 @@ public abstract class Actividad implements Identificable {
 		return resenas;
 	}
 	
-//	protected void advertenciaPrerequisitos(Estudiante estudiante) throws Exception {
-//		if (!prerequisitos.isEmpty()) {
-//			ListIterator<Actividad> listaPrerequisitosIterable = prerequisitos.listIterator();
-//			for (Actividad act:prerequisitos) {
-//				String codigoAct = act.getId();
-//				HashMap<String, Estado> registroActividadesEstudiante = estudiante.getRegistroActividades();
-//				if (!registroActividadesEstudiante.containsKey(codigoAct)) {
-//					throw new Exception("Usted no cumple con los prerequisitos de la actividad pero puede continuar bajo su responsabilidad.");
-//				}
-//			}
-//		}
-//	}
-//	Falta revisar y reconstruir la funcion ya que se cambio el nombre de la variable a tiempoLimite y el tipo a int para mayor facilidad y diseño
-//    public void establecerFechaLimite(Actividad actividadAnterior, int horasDespues) {
-//        if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
-//            System.out.println("La actividad anterior no es válida.");
-//            this.tiempoLimite = null;
-//        } else {
-//	        Calendar calendario = Calendar.getInstance();
-//	        calendario.setTime(new Date());
-//	        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
-//	        calendario.add(Calendar.HOUR, horasDespues);        
-//	        // Establece la nueva fecha límite
-//        this.tiempoLimite = calendario.getTime();
-//        }
-//    }
-//    
-//    // Método para verificar si la actividad se está realizando después de la fecha límite
-//    protected boolean revisarFechaLimiteExcedida() {
-//        if (tiempolimite != null) {
-//            Date fechaActual = new Date();
-//            if (fechaActual.after(fechaLimite)) {
-//                System.out.println("Advertencia: Está realizando la actividad después de la fecha límite recomendada.");
-//                return true;
-//            }
-//            return false;
-//        }
-//        return false;
-//    }
+	public boolean advertenciaPrerequisitos(Estudiante estudiante) throws Exception {
+		boolean valido = true;
+		if (!prerequisitos.isEmpty()) {
+			for (Actividad act:prerequisitos) {
+				String codigoAct = act.getId();
+				HashMap<String, Estado> registroActividadesEstudiante = estudiante.getRegistroActividades();
+				if (!registroActividadesEstudiante.containsKey(codigoAct)) {
+					valido = false;
+					throw new Exception("Usted no cumple con los prerequisitos de la actividad pero puede continuar bajo su responsabilidad.");
+				}
+			}
+		}
+		return valido;
+	}
+	
+	// Falta revisar y reconstruir la funcion ya que se cambio el nombre de la variable a tiempoLimite y el tipo a int para mayor facilidad y diseño
+    public void establecerFechaLimite(Actividad actividadAnterior, int horasDespues) {
+        if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
+            System.out.println("La actividad anterior no es válida.");
+            this.tiempoLimite = null;
+        } else {
+	        Calendar calendario = Calendar.getInstance();
+	        calendario.setTime(new Date());
+	        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
+	        calendario.add(Calendar.HOUR, horasDespues);        
+	        // Establece la nueva fecha límite
+	        this.tiempoLimite = calendario.getTime();
+        }
+    }
+    
+    // Método para verificar si la actividad se está realizando después de la fecha límite
+    protected boolean revisarFechaLimiteExcedida() {
+        if (tiempoLimite != null) {
+            Date fechaActual = new Date();
+            if (fechaActual.after(tiempoLimite)) {
+                System.out.println("Advertencia: Está realizando la actividad después de la fecha límite recomendada.");
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
     
     // Se clona la actividad por si un profesor desea poder ser el nuevo dueño y modificarla.
 	

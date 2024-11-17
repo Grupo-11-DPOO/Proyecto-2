@@ -33,6 +33,7 @@ public class LearningPath implements Identificable{
 		this.rating = 0;
 		this.version = 1;
 		crearId();
+		setDuracion();
 	}
 
 	public String getTitulo() {

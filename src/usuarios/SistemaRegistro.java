@@ -84,7 +84,7 @@ public class SistemaRegistro {
     	            case Tarea:
     	                String medioEntrega = actividadJson.getString("medioEntrega");
     	                Estado estadoTarea = Estado.valueOf(actividadJson.getString("estado"));       
-    	                actividad = new Tarea(id, titulo, objetivo, descripcion,nivel, duracionMinutos, obligatorio, fechaLimite, prerrequisitos,rating, resenas, medioEntrega, estadoTarea,tipoActividad);
+    	                //actividad = new Tarea(id, titulo, objetivo, descripcion,nivel, duracionMinutos, obligatorio, fechaLimite, prerrequisitos,rating, resenas, medioEntrega, estadoTarea,tipoActividad);
     	                this.actividades.put(id, actividad);
     	                break;
     	            case Examen:
@@ -104,7 +104,7 @@ public class SistemaRegistro {
     	            case Recurso:
     	                String material = actividadJson.getString("material");
     	                Estado estadoRecurso = Estado.valueOf(actividadJson.getString("estado"));
-    	                actividad = new Recurso(id, titulo, objetivo, descripcion, nivel, duracionMinutos,  obligatorio,  rating, resenas, material, estadoRecurso, tipoActividad);
+    	                //actividad = new Recurso(id, titulo, objetivo, descripcion, nivel, duracionMinutos,  obligatorio,  rating, resenas, material, estadoRecurso, tipoActividad);
     	                this.actividades.put(id, actividad);
     	                break;
     	            case Quiz:
@@ -205,9 +205,7 @@ public class SistemaRegistro {
 	                usuarios, 
 	                login, 
 	                password,
-	                interesesEstudiante,
-	                actividadEnCurso, 
-	                learningPathEnCurso
+	                interesesEstudiante
 	            );
 
 	            this.datosEstudiantes.put(login, estudiante);
@@ -286,7 +284,7 @@ public class SistemaRegistro {
 	
 	public Estudiante registrarEstudiante(String login, String passWord, List<String> intereses) throws UsuarioExistenteException {
 		
-		Estudiante estudiante = new Estudiante(null, null, usuarios,login, passWord, intereses, null, null);
+		Estudiante estudiante = new Estudiante(null, null, usuarios,login, passWord, intereses);
 		
 		usuarios.cargarEstudiante(login, passWord, intereses, estudiante.getRegistroActividades());
 		

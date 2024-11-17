@@ -3,6 +3,7 @@ package modelo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import actividades.Recurso;
 import actividades.Tarea;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
+import usuarios.Estudiante;
 import usuarios.Profesor;
 import usuarios.SistemaRegistro;
 
@@ -24,24 +26,28 @@ public class Consola {
 	
 	public static SistemaRegistro sistemaRegistro = new SistemaRegistro();
 	private static HashMap<String, Profesor> datosProfesor = sistemaRegistro.getDatosProfesores();
+	private static HashMap<String, Estudiante> datosEstudiante = sistemaRegistro.getDatosEstudiantes();
 	public static HashMap<String, Actividad> actividades = sistemaRegistro.actividades;
 	public static HashMap<String, LearningPath> learningPaths = sistemaRegistro.learningPaths;
 	private static Profesor profesorActual;
-	private static String[] opciones = {"Iniciar sesion", "Registrarse", "Salir"};
+	private static Estudiante estudianteActual;
+	private static String[] opciones = {"Iniciar sesión", "Registrarse", "Salir"};
 	private static String[] opcionesRegistro = {"Crear usuario: Profesor", "Crear usuario: Estudiante", "Salir"};
 	private static String[] opcionesMenuProfesor = {"Crear LearningPath", "Ver y Editar LearningPath", "Crear Actividad", "Clonar Actividad",
-			"Ver y Editar Actividades", "Agregar reseñas a actividad", "Salir"};
+			"Ver y Editar Actividades", "Agregar reseñas y/o rating a actividad", "Salir"};
 	private static String[] opcionesTipoActividad = {"Encuesta", "Examen", "Quiz", "Recurso", "Tarea"};
 	private static String[] opcionesClonar = {"Clonar con ID de actividad", "Volver"};
 	private static String[] opcionesCrearLearningPath = {"Agregar actividad propia existente", "Crear nueva actividad"};
 	private static String[] opcionesSiNo = {"Si", "No"};
 	private static String[] opcionesLogin = {"Profesor", "Estudiante"};
 	private static String[] opcionResenaRating = {"Reseña", "Rating"};
-	private static String[] opcionesEditarLearningPath = {"Titulo", "Descripción", "Nivel", "Agregar actividades existentes"};
-	private static String[] opcionesVerYEditarActividades = {"Ver prerequisitos", "Ver reseñas", "Editar titulo", "Editar objetivo",
+	private static String[] opcionesEditarLearningPath = {"Título", "Descripción", "Nivel", "Agregar actividades existentes"};
+	private static String[] opcionesVerYEditarActividades = {"Ver prerequisitos", "Ver reseñas", "Editar título", "Editar objetivo",
 			"Editar descripción", "Editar nivel", "Editar si es obligatorio", "Volver"};
+	private static String[] opcionesMenuEstudiantes = {"Ver Learning Paths", "Iniciar actividad del Learning Path actual", 
+			"Completar actividad en curso", "Agregar reseñas y/o rating a actividad", "Salir"};
+	private static String[] opcionesOfertaLearningPaths = {"Oferta total de Learning Paths", "Recomendación a partir de sus intereses.", "Volver"};
 	
-	// PRUEBA
     /**
      * Le pide al usuario que ingrese una cadena de caracteres
      * @param mensaje El mensaje con el que se solicita la información
@@ -273,14 +279,13 @@ public class Consola {
         		profesorActual = datosProfesor.get(login);
         		menuProfesor();
         	} else {
-        		// manda al menu de estudiante
+        		estudianteActual = datosEstudiante.get(login);
+        		menuEstudiante();
         	}
         } else {
         	System.out.println("Credenciales incorrectos.");
         	iniciarSesion();
-        }
-        
-        
+        } 
     }
     
 
@@ -441,9 +446,10 @@ public class Consola {
 	                Object nivel = valueMap.get("nivel");
 	                Object fechaCreacion = valueMap.get("fechaCreacion");
 	                Object fechaModificacion = valueMap.get("fechaModificacion");
+	                Object duracion = valueMap.get("duracion");
 	                Object rating = valueMap.get("rating");
 	                Object version = valueMap.get("version");
-	                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s", id, titulo, descripcion, nivel, fechaCreacion, fechaModificacion, rating, version));
+	                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, descripcion, nivel, fechaCreacion, fechaModificacion, duracion, rating, version));
 	            } else {
 	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
 	            }
@@ -460,7 +466,7 @@ public class Consola {
     		switch (opcionSeleccionada) {
     		case 1:
     			System.out.println( "------------------------------------------------------" );
-    			System.out.println("Editar titulo");
+    			System.out.println("Editar título");
     			System.out.println( "------------------------------------------------------" );
     			String nuevoTitulo = pedirCadenaAlUsuario("Ingrese el nuevo titulo");
     			learningPathEditar.setTitulo(nuevoTitulo);
@@ -578,7 +584,7 @@ public class Consola {
 			String obligatorioString;
 			boolean obligatorio;
 			// Parametros que todas las actividades tienen:
-			titulo = pedirCadenaAlUsuario("Ingrese el titulo");
+			titulo = pedirCadenaAlUsuario("Ingrese el título");
 			objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
 			descripcion = pedirCadenaAlUsuario("Ingrese la descripción");
 			nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
@@ -856,13 +862,228 @@ public class Consola {
 			}
     	}
     }
+    
+    public static void menuEstudiante() {
+    	try {
+			int opcionSeleccionada = mostrarMenu("Menu Principal Estudiantes", opcionesMenuEstudiantes);
+			
+			switch (opcionSeleccionada) {
+			case 5:
+				System.out.println( "------------------------------------------------------" );
+				System.out.println("Saliendo del programa.");
+				System.out.println( "------------------------------------------------------" );
+                System.exit(0);
+			case 1:
+				verOfertaLearningPaths();
+                break;
+			case 2:
+				iniciarActividadLearningPathActual();
+				break;
+			case 3:
+				// Terminar actividad en curso es lo mismo que iniciarla. No se pueden dejar actividades a medias.
+				Actividad actividadEnCurso = estudianteActual.getActividadEnCurso();
+				iniciarActividadEnCurso(actividadEnCurso);
+				break;
+			case 4:
+				menuAgregarResenaORating();
+				break;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+    }
+    
+    public static void verOfertaLearningPaths() throws Exception {
+    	int opcion = mostrarMenu("Escoja la opción que más se adecue a sus necesidades.", opcionesOfertaLearningPaths);
+    	switch (opcion) {
+    	case 1:
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println( "Lista de todos los Learning Paths disponibles:" );
+    		System.out.println( "------------------------------------------------------" );    		
+    		verLearningPathsTotales();
+    		inscribirseLearningPath();
+    		int arrancarActividad = mostrarMenu("¿Desea empezar alguna actividad del Learning Path?", opcionesSiNo);
+    		if (arrancarActividad==1) {
+    			iniciarActividadLearningPathActual();
+    		}
+    		break;
+    	case 2:
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println( "Lista de los Learning Paths organizados para usted:" );
+    		System.out.println( "------------------------------------------------------" ); 
+    		verLearningPathsIntereses();
+    		inscribirseLearningPath();
+    		inscribirseLearningPath();
+    		int arrancarActividad1 = mostrarMenu("¿Desea empezar alguna actividad del Learning Path?", opcionesSiNo);
+    		if (arrancarActividad1==1) {
+    			iniciarActividadLearningPathActual();
+    		}
+    		break;
+    	case 3:
+    		menuEstudiante();
+    		break;
+    	}
+
+    }
+    
+    public static void verLearningPathsTotales() {
+    	for (Map.Entry<String, LearningPath> entry : learningPaths.entrySet()) {
+            String id = entry.getKey();
+            Object learning = entry.getValue();
+
+            if (learning instanceof Map) {
+                Map<?, ?> valueMap = (Map<?, ?>) learning;
+                Object titulo = valueMap.get("titulo");
+                Object descripcion = valueMap.get("descripcion");
+                Object nivel = valueMap.get("nivel");
+                Object fechaCreacion = valueMap.get("fechaCreacion");
+                Object fechaModificacion = valueMap.get("fechaModificacion");
+                Object duracion = valueMap.get("duracion");
+                Object rating = valueMap.get("rating");
+                Object version = valueMap.get("version");
+                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, descripcion, nivel, fechaCreacion, fechaModificacion, duracion, rating, version));
+            } else {
+                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
+            }
+        }
+    }
+    
+    public static void verLearningPathsIntereses() {
+    	List<LearningPath> listaOrganizadaIntereses = estudianteActual.recomendarLearningPaths(learningPaths);
+        System.out.println(String.format("%-10s | %-20s | %-30s | %-10s | %-20s | %-20s | %-10s | %-10s | %-10s", 
+                "ID", "Título", "Descripción", "Nivel", "Fecha Creación", "Fecha Modificación", "Duración", "Rating", "Versión"));
+
+        System.out.println("=".repeat(160));
+
+        // Iterar y formatear cada LearningPath
+        for (int i = 0; i < listaOrganizadaIntereses.size(); i++) {
+            LearningPath learningPath = listaOrganizadaIntereses.get(i);
+            System.out.println(String.format("%-10s | %-20s | %-30s | %-10s | %-20s | %-20s | %-10s | %-10s | %-10s", 
+			learningPath.getId(), 
+			learningPath.getTitulo(), 
+			learningPath.getDescripcion(), 
+			learningPath.getNivel(), 
+			learningPath.getFechaCreacion(), 
+			learningPath.getFechaModificacion(), 
+			learningPath.getDuracion(), 
+			learningPath.getRating(), 
+			learningPath.getVersion()));
+            System.out.println( "------------------------------------------------------" );
+        }
+    }
+    
+    public static void verLearningPathEspecifico(LearningPath learningPath) {
+    	System.out.println("ID: "+learningPath.getId());
+    	System.out.println("Título: "+learningPath.getTitulo());
+    	System.out.println("Descripción: "+learningPath.getDescripcion());
+    	System.out.println("Nivel: "+learningPath.getNivel());
+    	System.out.println("Fecha creación: "+learningPath.getFechaCreacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+    	System.out.println("Fecha modificación: "+learningPath.getFechaModificacion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+    	System.out.println("Cantidad de actividades: "+learningPath.getListaActividades().size());
+    	System.out.println("Duración: "+learningPath.getDuracion());
+    	System.out.println("Rating: "+learningPath.getRating());
+    	System.out.println("Versión: "+learningPath.getVersion());
+    	System.out.println( "------------------------------------------------------" );
+    	int opcion = mostrarMenu("¿Desea ver la estructura de actividades?", opcionesSiNo);
+    	if (opcion == 1) {
+        	System.out.println( "------------------------------------------------------" );
+    		System.out.println( "Lista de las actividades del Learning Path" );
+    		System.out.println( "------------------------------------------------------" );
+    		for (Actividad actividad : learningPath.getListaActividades()) {
+    			System.out.println("ID: "+actividad.getId());
+    	    	System.out.println("Título: "+actividad.getTitulo());
+    	    	System.out.println("Tipo actividad: "+actividad.getTipoActividad());
+    	    	System.out.println("Objetivo: "+actividad.getObjetivo());
+    	    	System.out.println("Descripción: "+actividad.getDescripcion());
+    	    	System.out.println("Nivel: "+actividad.getNivel());
+    	    	System.out.println("Duración en minutos: "+actividad.getDuracionMinutos());
+    	    	System.out.println("Obligatorio: "+actividad.isObligatorio());
+    	    	System.out.println("Rating: "+actividad.getRating());
+    	    	System.out.println("Cantidad prerequisitos: "+actividad.getPrerequisitos().size());
+    	    	System.out.println( "------------------------------------------------------" );
+            }
+    	} else {
+    		return;
+    	}
+    }
+    
+    public static void inscribirseLearningPath() {
+    	System.out.println( "------------------------------------------------------" );    		    		
+		String idLearning = pedirCadenaAlUsuario( "Ingrese el id del Learning Path que quiere ver detalladamente" );
+		LearningPath learningPath = learningPaths.get(idLearning);
+		System.out.println( "------------------------------------------------------" );    		    		
+		verLearningPathEspecifico(learningPath);
+		int inscribirse = mostrarMenu("¿Desea inscribirse en el Learning Path "+learningPath.getTitulo(), opcionesSiNo);
+		if (inscribirse == 1) {
+			// Verificar que no tenga un LearningPath actual
+			if (estudianteActual.getLearningPathEnCurso() != null) {
+				System.out.println("Usted ya está en un Learning Path en este momento. Solo puede tener uno a la vez.");
+			} else {
+				estudianteActual.setLearningPathEnCurso(learningPath);
+				System.out.println("Ha sido inscrito en el Learning Path "+learningPath.getTitulo()+" exitosamente.");
+				return;
+			}
+			
+		} else {
+			int volverEmpezarOSalir = mostrarMenu("¿Desea inscribirse a otro? Si no, vuelve al menú principal.", opcionesSiNo);
+			if (volverEmpezarOSalir == 1) {
+				// Vuelve recursivamente a esta función
+				inscribirseLearningPath();
+			} else {
+				return;
+			}
+		}
+    }
+    
+    public static void iniciarActividadLearningPathActual() throws Exception {
+    	// Se revisa primero que no tenga una actividad en curso
+    	if (estudianteActual.getActividadEnCurso()!=null) {
+    		System.out.println("Ya tiene una actividad en curso. Debe terminarla primero para empezar una nueva.");
+    		return;
+    	} else {
+	    	System.out.println( "------------------------------------------------------" );
+			System.out.println( "Actividades disponibles en orden del Learning Path:" );
+			System.out.println( "------------------------------------------------------" );  
+			LearningPath learningPath = estudianteActual.getLearningPathEnCurso();
+			for (Actividad actividad : learningPath.getListaActividades()) {
+				System.out.println("ID: "+actividad.getId());
+		    	System.out.println("Título: "+actividad.getTitulo());
+		    	System.out.println("Tipo actividad: "+actividad.getTipoActividad());
+		    	System.out.println("Objetivo: "+actividad.getObjetivo());
+		    	System.out.println("Descripción: "+actividad.getDescripcion());
+		    	System.out.println("Nivel: "+actividad.getNivel());
+		    	System.out.println("Duración en minutos: "+actividad.getDuracionMinutos());
+		    	System.out.println("Obligatorio: "+actividad.isObligatorio());
+		    	System.out.println("Rating: "+actividad.getRating());
+		    	System.out.println("Cantidad prerequisitos: "+actividad.getPrerequisitos().size());
+		    	System.out.println( "------------------------------------------------------" );
+	        }
+			System.out.println("Se recomienda que las ejecute en orden. Sin embargo, no es obligatorio hacerlo.");
+			String idActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a ejecutar");
+			Actividad actividad = actividades.get(idActividad);
+			verPrerequisitosActividad(actividad);
+			boolean apto = actividad.advertenciaPrerequisitos(estudianteActual);
+			if (apto) {
+				System.out.println("Usted comple con todos los prerequisitos, felicitaciones.");
+			} else {
+				System.out.println("A pesar que no cumple con los prerequisitos, puede continuar bajo su propia responsabilidad.");
+			}
+			// Iniciar actividad. Se llama iniciar actividad en curso ya que oficialmente esta en curso
+			iniciarActividadEnCurso(actividad);
+    	}
+    }
+    
+    public static void iniciarActividadEnCurso(Actividad actividad) {
+    	// TODO
+    	// Deberia hacer el if por cada tipo de actividad
+    	// a partir de eso se responde y se guarda al registro
+    }
     	
 
 	public static void main(String[] args)  {		
-		// Tengo que cargar todos los datos
-		// Cuando toda la informacion este cargada se revisa	
+		// Tengo que cargar todos los datos. Se hace desde los parametros statics.
 		String tituloConsola = "Bienvenido al Sistema Operativo de LearningPaths G11!";
-
 		int opcionSeleccionada = 0;
 		
 		while (true) {

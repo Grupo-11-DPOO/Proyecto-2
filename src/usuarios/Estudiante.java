@@ -1,8 +1,10 @@
 package usuarios;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import actividades.*;
 import exceptions.UsuarioExistenteException;
@@ -20,14 +22,14 @@ public class Estudiante extends Usuario {
 	private List<LearningPath> learningPaths;
 	private List<String> intereses;
 	
-	public Estudiante(HashMap<String, Estado> registroActividades, HashMap<String, Double> registroLearningPaths, PersistenciaUsuarios usuarios, String nLogin, String nPassword, List<String> intereses, Actividad actividadEnCurso, LearningPath learningPathEnCurso) {
+	public Estudiante(HashMap<String, Estado> registroActividades, HashMap<String, Double> registroLearningPaths, PersistenciaUsuarios usuarios, String nLogin, String nPassword, List<String> intereses) {
 		super(nLogin, nPassword);
 		this.usuarios = usuarios;
 		this.usuarios=usuarios;
-		this.actividadEnCurso = actividadEnCurso;
-		this.learningPathEnCurso= learningPathEnCurso;
 		this.registroActividades= registroActividades;
 		this.registroLearningPaths= registroLearningPaths;
+		this.actividadEnCurso = null;
+		this.learningPathEnCurso = null;
 	}
 	
 	
@@ -189,4 +191,33 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registro);
 		// deberia ser actualozar estudiante NO CARGAR
 	}
+	
+    // Calculamos un índice de similitud entre los intereses y el nombre/descripción de un Learning Path.
+	public int calcularSimilitud(LearningPath learningPath) {
+        int puntuacion = 0;
+        List<String> intereses = getIntereses().stream().map(String::toLowerCase).collect(Collectors.toList());
+        String titulo = learningPath.getTitulo().toLowerCase();
+        String descripcion = learningPath.getDescripcion().toLowerCase();
+
+        for (String interes : intereses) {
+            if (titulo.contains(interes) || descripcion.contains(interes)) {
+                puntuacion++;
+            }
+        }
+        return puntuacion;
+    }
+
+    // Método principal que ordena los Learning Paths en orden de preferencia al estudiante.
+    public List<LearningPath> recomendarLearningPaths(HashMap<String, LearningPath> totalLearningPaths) {
+        // Crear lista a partir del HashMap
+        List<LearningPath> listaCompletaLearningPaths = new ArrayList<>(totalLearningPaths.values());
+
+        // Ordenar según la similitud
+        listaCompletaLearningPaths.sort((lp1, lp2) -> {
+            int similitud1 = calcularSimilitud(lp1);
+            int similitud2 = calcularSimilitud(lp2);
+            return Integer.compare(similitud2, similitud1); });
+
+        return listaCompletaLearningPaths;
+    }
 }
