@@ -123,7 +123,7 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registro);
 	}
 	
-	public void iniciarActividadEnCurso() throws Exception {
+	public void realizarActividad() {
 		TipoActividades tipoActividad = actividadEnCurso.getTipoActividad();
 		if(tipoActividad==TipoActividades.Encuesta) {
 			Encuesta encuesta = (Encuesta) actividadEnCurso;
@@ -150,6 +150,9 @@ public class Estudiante extends Usuario {
 		}
 		else if (tipoActividad==TipoActividades.Recurso) {
 			Recurso recurso = (Recurso) actividadEnCurso;
+			recurso.realizarRecurso();
+			
+			// DE ACA PARA ABAJO NO HE REVISADO
 			recurso.realizarActividad();
 			registroActividades.put(actividadEnCurso.getTitulo(), recurso.getEstado());
 			usuarios.cargarEstudiante(login, password, intereses, registroActividades);

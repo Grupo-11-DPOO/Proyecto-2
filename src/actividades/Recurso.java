@@ -31,12 +31,8 @@ public class Recurso extends Actividad{
 		this.material = material;
 	}
 	
-	@Override
-	public void realizarActividad() throws Exception {
-		//super.advertenciaPrerequisitos(estudiante); no entiendo como se implementa eso, genera error
-		getMaterial();
-		// Al obtener el material, se confia en que el estudiante haya usado el recurso.
-		// El estado se pone como exitoso (true).
+	public Estado realizarRecurso() {
 		estado = Estado.EXITOSA;
+		return estado;
 	}
 }

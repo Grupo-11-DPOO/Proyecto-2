@@ -17,6 +17,7 @@ import actividades.Examen;
 import actividades.Quiz;
 import actividades.Recurso;
 import actividades.Tarea;
+import actividades.TipoActividades;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
 import usuarios.Estudiante;
@@ -1074,9 +1075,46 @@ public class Consola {
     }
     
     public static void iniciarActividadEnCurso(Actividad actividad) {
+    	// Dependiendo del tipo de actividad empieza un metodo distinto
+    	TipoActividades tipoActividad = actividad.getTipoActividad();
+    	if (tipoActividad == TipoActividades.Encuesta) {
+    		// Inciar actividad encuesta
+  
+    	} else if (tipoActividad == TipoActividades.Examen) {
+    		// Iniciar actividad examen
+    		
+    	} else if (tipoActividad == TipoActividades.Quiz) {
+    		// Iniciar actividad quiz
+    		
+    	} else if (tipoActividad == TipoActividades.Recurso) {
+    		// Iniciar actividad recurso
+    		Recurso recurso = (Recurso) actividad;
+    		realizarRecurso(recurso);
+    		
+    	} else {
+    		// Iniciar actividad tarea
+    		
+    	}
+    	
     	// TODO
     	// Deberia hacer el if por cada tipo de actividad
     	// a partir de eso se responde y se guarda al registro
+    }
+    
+    public static void realizarRecurso(Recurso recurso) {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Material del recurso");
+    	System.out.println( "------------------------------------------------------" );
+    	// Imprimir el material
+    	System.out.println(recurso.getMaterial());
+    	// Realizar
+    	estudianteActual.realizarActividad();
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println( "------------------------------------------------------" );
+    	
+    	
+    	
     }
     	
 	public static void main(String[] args)  {		

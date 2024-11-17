@@ -7,13 +7,13 @@ import java.util.List;
 public class Encuesta extends Actividad{
 	
 	private List<String> preguntas;
-	private HashMap<String, ArrayList<String>> respuestas;
+	private HashMap<String, ArrayList<String>> respuestasDeTodos;
 
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio) {
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.preguntas = new ArrayList<String>();
-		this.respuestas = new HashMap<>();
+		this.respuestasDeTodos = new HashMap<>();
 		this.tipoActividad = TipoActividades.Encuesta;
 	}
 
@@ -59,17 +59,17 @@ public class Encuesta extends Actividad{
 	}
 
 	public HashMap<String, ArrayList<String>> getRespuestas() {
-		return respuestas;
+		return respuestasDeTodos;
 	}
 
 	public void setRespuestas(HashMap<String, ArrayList<String>> respuestas) {
-		this.respuestas = respuestas;
+		this.respuestasDeTodos = respuestas;
 	}
 
 	
 	public Estado contestarEncuesta(String idEstudiante, ArrayList<String> respuestas) {
 	
-		this.respuestas.put(idEstudiante, respuestas);
+		this.respuestasDeTodos.put(idEstudiante, respuestas);
 		return Estado.EXITOSA;
 	}
 
