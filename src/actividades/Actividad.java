@@ -136,7 +136,7 @@ public abstract class Actividad implements Identificable {
 	}
 	
 	// Los ratings deben estar entre 0 y 5.
-	protected void agregarRating(int ratingPersonal) throws Exception{
+	public void agregarRating(float ratingPersonal) throws Exception{
 		if (ratingPersonal <= 0 || ratingPersonal > 5) {
 			throw new Exception("Rating debe estar entre 0 y 5.");
 		} else {

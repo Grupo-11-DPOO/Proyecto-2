@@ -36,6 +36,7 @@ public class Consola {
 	private static String[] opcionesCrearLearningPath = {"Agregar actividad propia existente", "Crear nueva actividad"};
 	private static String[] opcionesSiNo = {"Si", "No"};
 	private static String[] opcionesLogin = {"Profesor", "Estudiante"};
+	private static String[] opcionResenaRating = {"Reseña", "Rating"};
 	private static String[] opcionesEditarLearningPath = {"Titulo", "Descripción", "Nivel", "Agregar actividades existentes"};
 	private static String[] opcionesVerYEditarActividades = {"Ver prerequisitos", "Ver reseñas", "Editar titulo", "Editar objetivo",
 			"Editar descripción", "Editar nivel", "Editar si es obligatorio", "Volver"};
@@ -344,7 +345,7 @@ public class Consola {
 				menuVerYEditarActividad();
 				break;
 			case 6:
-				menuAgregarResena();
+				menuAgregarResenaORating();
 			}
 			
 		} catch (Exception e) {
@@ -540,6 +541,30 @@ public class Consola {
         }
     }
     
+    public static void imprimirActividadesTotales() {
+    	System.out.println( "------------------------------------------------------" );
+		System.out.println( "Lista de sus actividades" );
+		System.out.println( "------------------------------------------------------" );
+		for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
+            String id = entry.getKey();
+            Object learning = entry.getValue();
+            if (learning instanceof Map) {
+                Map<?, ?> valueMap = (Map<?, ?>) learning;
+                Object titulo = valueMap.get("titulo");
+                Object objetivo = valueMap.get("objetivo");
+                Object descripcion = valueMap.get("descripcion");
+                Object nivel = valueMap.get("nivel");
+                Object duracionMinutos = valueMap.get("duracionMinutos");
+                Object obligatorio = valueMap.get("obligatorio");
+                Object rating = valueMap.get("rating");
+                Object tipo = valueMap.get("tipoActividad");
+                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, rating, tipo));
+            } else {
+                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
+            }
+        }
+    }
+    
     public static void menuCrearActividad() {
 		System.out.println( "------------------------------------------------------" );
 		System.out.println("Crear actividad");
@@ -711,20 +736,8 @@ public class Consola {
 		System.out.println("Clonar actividad");
 		System.out.println( "------------------------------------------------------" );
 		System.out.println("Lista actividades:");
-		// Imprime todas las actividades, solo id y titulo 
-		 for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
-	            String id = entry.getKey();
-	            Object titulo = entry.getValue();
-
-	            if (titulo instanceof Map) {
-	                Map<?, ?> valueMap = (Map<?, ?>) titulo;
-	                Object tituloOb = valueMap.get("titulo");
-	                System.out.println(String.format("%-10s | %-20s", id, tituloOb));
-	            } else {
-	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
-	            }
-	        }
-	  
+		// Imprime todas las actividades
+		imprimirActividadesTotales();
 		try {
 			int opcionSeleccionada = mostrarMenu("¿Desea clonar?", opcionesClonar);
 			
@@ -810,18 +823,38 @@ public class Consola {
     	}
     }
     
-    public static void menuAgregarResena() {
-    	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Agregar reseña a una actividad");
-    	System.out.println( "------------------------------------------------------" );
-    	List<String> idActividadesPropias = profesorActual.getActividadesPropias();
-    	imprimirActividadesPropiasProfesor(idActividadesPropias);
-    	System.out.println( "------------------------------------------------------" );
-    	String idActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a dejar la reseña");
-    	Actividad actividad = actividades.get(idActividad);
-    	String resena = pedirCadenaAlUsuario("Ingrese la reseña");
-    	actividad.agregarResena(resena);
-    	System.out.println("Reseña agregada exitosamente.");
+    public static void menuAgregarResenaORating() {
+    	int opcion = mostrarMenu("Agregar reseña o rating a una actividad", opcionResenaRating);
+    	if (opcion == 1) {
+    		System.out.println( "------------------------------------------------------" );
+	    	System.out.println("Agregar reseña a una actividad");
+	    	System.out.println( "------------------------------------------------------" );
+	    	System.out.println( "Lista actividades:" );
+	    	imprimirActividadesTotales();
+	    	System.out.println( "------------------------------------------------------" );
+	    	String idActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a dejar la reseña");
+	    	Actividad actividad = actividades.get(idActividad);
+	    	String resena = pedirCadenaAlUsuario("Ingrese la reseña");
+	    	actividad.agregarResena(resena);
+	    	System.out.println("Reseña agregada exitosamente.");
+    	} else {
+    		System.out.println( "------------------------------------------------------" );
+	    	System.out.println("Agregar rating a una actividad");
+	    	System.out.println( "------------------------------------------------------" );
+	    	System.out.println( "Lista actividades:" );
+	    	imprimirActividadesTotales();
+	    	System.out.println( "------------------------------------------------------" );
+	    	String idActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a dejar la reseña");
+	    	Actividad actividad = actividades.get(idActividad);
+	    	float rating = pedirNumeroAlUsuario("Ingrese el rating (0 a 5 exclusivamente)");
+	    	try {
+				actividad.agregarRating(rating);
+				System.out.println("Reseña agregada exitosamente.");
+			} catch (Exception e) {
+				System.out.println("El número que ingreso no está dentro del rango permitido.");
+				e.printStackTrace();
+			}
+    	}
     }
     	
 
@@ -850,7 +883,7 @@ public class Consola {
 				break;
 			case 2:
 				crearUsuario(opcionesRegistro);
+			}
 		}
-	}
 	}
 }
