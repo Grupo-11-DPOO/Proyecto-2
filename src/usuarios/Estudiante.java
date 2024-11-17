@@ -24,7 +24,7 @@ public class Estudiante extends Usuario {
 	
 	public Estudiante(HashMap<String, Estado> registroActividades, HashMap<String, Double> registroLearningPaths, String nLogin, String nPassword, List<String> intereses) {
 		super(nLogin, nPassword);
-		this.usuarios = usuarios;
+		this.usuarios = new PersistenciaUsuarios();
 		this.registroActividades= registroActividades;
 		this.registroLearningPaths= registroLearningPaths;
 		this.actividadEnCurso = null;
@@ -122,40 +122,51 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registro);
 	}
 	
-	public void realizarActividad() {
-		TipoActividades tipoActividad = actividadEnCurso.getTipoActividad();
-		if(tipoActividad==TipoActividades.Encuesta) {
-			Encuesta encuesta = (Encuesta) actividadEnCurso;
-			encuesta.realizarActividad();
-			this.actividadEnCurso = encuesta;
-		}
-		else if (tipoActividad==TipoActividades.Examen) {
-			Examen examen = (Examen) actividadEnCurso;
-			examen.realizarActividad();
-			this.actividadEnCurso = examen;
-		}
-		else if (tipoActividad==TipoActividades.Quiz) {
-			Quiz quiz = (Quiz) actividadEnCurso;
-			quiz.realizarActividad();
-			this.actividadEnCurso = quiz;
-		}
-		else if (tipoActividad==TipoActividades.Tarea) {
-			Tarea tarea = (Tarea) actividadEnCurso;
-			tarea.realizarActividad();
-			this.actividadEnCurso = tarea;
-			registroActividades.put(actividadEnCurso.getTitulo(), tarea.getEstadoTarea());
-			usuarios.cargarEstudiante(login, password, intereses, registroActividades);
-			this.actividadEnCurso = tarea;
-		}
-		else if (tipoActividad==TipoActividades.Recurso) {
-			Recurso recurso = (Recurso) actividadEnCurso;
-			Estado estado = recurso.realizarRecurso();
-			String idActividad = recurso.getId();
-			registroActividades.put(login, estado);
+	public void realizarEncuesta(Encuesta encuesta) {
+		// TODO 
+		// Llamar a clase encuesta
+		String idActividad = encuesta.getId();
+		registroActividades.put(idActividad, estado);
 
-			// Cargar estudiante no deberia ser. debe ser actualizar estudiante
-			//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
-		}
+		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
+		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
+	}
+	
+	public void realizarExamen(Examen examen) {
+		// TODO 
+		// Llamar a clase examen
+		String idActividad = examen.getId();
+		registroActividades.put(idActividad, estado);
+
+		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
+		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
+	}
+	
+	public void realizarQuiz(Quiz quiz) {
+		// TODO 
+		// Llamar a clase examen
+		String idActividad = quiz.getId();
+		registroActividades.put(idActividad, estado);
+
+		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
+		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
+	}
+	
+	public void realizarRecurso(Recurso recurso) {
+		Estado estado = recurso.realizarRecurso();
+		String idActividad = recurso.getId();
+		registroActividades.put(idActividad, estado);
+
+		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
+		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
+	}
+	
+	public void realizarTarea(Tarea tarea) {
+		String idActividad = tarea.getId();
+		registroActividades.put(idActividad, estado);
+		
+		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
+		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
 	protected String getLogin() {

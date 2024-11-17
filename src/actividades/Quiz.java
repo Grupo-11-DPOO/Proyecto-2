@@ -59,43 +59,19 @@ public class Quiz extends Actividad{
 		this.respuestasCorrectas = respuestasCorrectas;
 	}
 	
-	public void agregarPregunta(String enunciado) {
+	public void agregarPregunta(String enunciado, Opcion opcionCorrecta) {
 		HashMap<Opcion,HashMap<String,String>> entryOpcion = new HashMap<>();
 		preguntas.put(enunciado, entryOpcion);
+		respuestasCorrectas.put(enunciado, opcionCorrecta);
 	}
 	
-	public void agregarOpcion(String pregunta, String enunciado,Opcion opcion, String explicacion) {
-		
-		boolean x = preguntas.containsKey(pregunta);
-		
-		if (x) {
-			
-			HashMap<Opcion, HashMap<String,String>> entry = preguntas.get(pregunta); 
+	public void agregarOpcion(String enunciadoPregunta, String enunciadoRespuesta ,Opcion opcion, String explicacionRespuesta) {
+			HashMap<Opcion, HashMap<String,String>> entry = preguntas.get(enunciadoPregunta); 
 			HashMap<String,String> enunciadoExplicacion = new HashMap<>();
-			enunciadoExplicacion.put(enunciado, explicacion);
+			enunciadoExplicacion.put(enunciadoRespuesta, explicacionRespuesta);
 			entry.put(opcion, enunciadoExplicacion);
-			
-		}
-		else {
-			agregarPregunta(pregunta);
-			HashMap<Opcion, HashMap<String,String>> entry = preguntas.get(pregunta); 
-			HashMap<String,String> enunciadoExplicacion = new HashMap<>();
-			enunciadoExplicacion.put(enunciado, explicacion);
-			entry.put(opcion, enunciadoExplicacion);
-			
-		}
 	}
-	
-	public void agregarOpcionCorrecta(String pregunta, String enunciado,Opcion opcion, String explicacion) {
-		
-		agregarOpcion(pregunta, enunciado, opcion, explicacion);
-		respuestasCorrectas.put(pregunta, opcion);
-		
-	}
-	
-	
-	
-	
+
 	public String verPreguntas() {
 	    StringBuilder resultado = new StringBuilder();
 	    
@@ -123,6 +99,7 @@ public class Quiz extends Actividad{
 	    }
 	    return resultado.toString(); 
 	}
+	
 		public String verPreguntasConExplicaciones() {
 		    StringBuilder resultado = new StringBuilder();
 		    
@@ -153,8 +130,7 @@ public class Quiz extends Actividad{
 
 	    return resultado.toString();
 	}
-
-	
+		
 	public Estado calificar(String idEstudiante, ArrayList<Opcion> respuestas) throws Exception{
 		if (preguntas.size()==respuestas.size()) {
 			respuestasEstudiantes.put(idEstudiante, respuestas);

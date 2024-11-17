@@ -11,6 +11,7 @@ public class Recurso extends Actividad{
 			super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			// Agregamos material puesto que es una actividad.
 			this.material = material;
+			this.tipoActividad = TipoActividades.Recurso;
 	}
 	
 	public String getMaterial() {
