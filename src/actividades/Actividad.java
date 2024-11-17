@@ -18,24 +18,23 @@ public abstract class Actividad implements Identificable {
 	public int tiempoLimite;
 	private float rating;
 	protected List<Actividad> prerequisitos;
-	public int cantidadRating = 0;
-	public int sumaRating = 0;
+	public int cantidadRating;
 	public List<String> resenas; // las resenas que un estudiante ingresa a la actividad y pueda visualizar un profesor
 	protected TipoActividades tipoActividad;
-	protected Estado estado;
 	// Metodos
 	
-	public Actividad(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) {
+	public Actividad(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio, int tiempoLimite) {
 		this.titulo = titulo;
 		this.objetivo = objetivo;
 		this.descripcion = descripcion;
 		this.nivel = nivel;
 		this.duracionMinutos = duracionMinutos;
 		this.obligatorio = obligatorio;
+		this.tiempoLimite = tiempoLimite;
 		this.prerequisitos = new ArrayList<Actividad>();
 		this.resenas = new ArrayList<String>();
 		this.rating = 0;
-		this.setEstado(Estado.PENDIENTE);
+		this.cantidadRating = 0;
 		crearId();
 		
 		
@@ -55,14 +54,6 @@ public abstract class Actividad implements Identificable {
 
 	public void setCantidadRating(int cantidadRating) {
 		this.cantidadRating = cantidadRating;
-	}
-
-	public int getSumaRating() {
-		return sumaRating;
-	}
-
-	public void setSumaRating(int sumaRating) {
-		this.sumaRating = sumaRating;
 	}
 
 	public void setRating(float rating) {
@@ -140,9 +131,8 @@ public abstract class Actividad implements Identificable {
 		if (ratingPersonal <= 0 || ratingPersonal > 5) {
 			throw new Exception("Rating debe estar entre 0 y 5.");
 		} else {
-			cantidadRating += 1;
-			sumaRating += ratingPersonal;
-			this.rating = sumaRating/cantidadRating;
+			float nuevoRating = ((this.rating*this.cantidadRating)+ratingPersonal)/(this.cantidadRating+1);
+			this.rating = nuevoRating;
 		}
 	}
 	
@@ -233,12 +223,4 @@ public abstract class Actividad implements Identificable {
 		return tipoActividad;
 	}
 	
-
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}	
 }
