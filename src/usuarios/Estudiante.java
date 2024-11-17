@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import actividades.Actividad;
@@ -17,7 +16,6 @@ import actividades.Recurso;
 import actividades.Tarea;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
-import persistencia.PersistenciaUsuarios;
 
 
 public class Estudiante extends Usuario {
@@ -59,6 +57,31 @@ public class Estudiante extends Usuario {
 		if (x) {
 			
 			return dataLearningPaths.get(id);
+		}
+		else return null;
+		
+		}
+	public Actividad buscarActividadPorNombre(String nombreActividad) {
+		
+		if(!dataActividades.isEmpty()) {
+			Iterator<Actividad> iteradorClaves = dataActividades.values().iterator();
+			 while (iteradorClaves.hasNext()) {
+				 	Actividad actividad = iteradorClaves.next();
+			        if (actividad.getTitulo().equalsIgnoreCase(nombreActividad)) {
+			            return actividad;
+			        }
+			    }
+			}
+		return null;
+	}
+	
+	public Actividad getActividadById(String id) {
+		
+		boolean x= dataActividades.containsKey(id);
+		
+		if (x) {
+			
+			return dataActividades.get(id);
 		}
 		else return null;
 		

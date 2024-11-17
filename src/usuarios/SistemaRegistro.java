@@ -270,7 +270,7 @@ public class SistemaRegistro {
 	
 	public Profesor registrarProfesor(String login, String passWord) throws UsuarioExistenteException {
 		
-		Profesor profesor = new Profesor(usuarios,persistenciaLearningPath,persistenciaActividades,login, passWord, null, null);
+		Profesor profesor = new Profesor(this.actividades,this.learningPaths,login, passWord);
 		
 		
 		usuarios.cargarProfesor(login, passWord, null, null);

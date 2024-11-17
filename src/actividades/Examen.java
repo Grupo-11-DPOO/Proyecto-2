@@ -16,7 +16,6 @@ public class Examen extends Actividad{
 		this.respuestas = new HashMap<>();
 		this.tipoActividad= TipoActividades.Examen;
 	}
-
 	public void agregarPregunta(String pregunta) {
 		if(this.preguntas==null) {
 			this.preguntas = new ArrayList<String>();
