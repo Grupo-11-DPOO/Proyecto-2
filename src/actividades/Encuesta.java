@@ -11,7 +11,7 @@ public class Encuesta extends Actividad{
 
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, int tiempoLimite) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio,tiempoLimite);
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.preguntas = new ArrayList<String>();
 		this.respuestas = new HashMap<>();
 		this.tipoActividad = TipoActividades.Encuesta;

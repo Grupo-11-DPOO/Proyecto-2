@@ -1081,7 +1081,6 @@ public class Consola {
     	// a partir de eso se responde y se guarda al registro
     }
     	
-
 	public static void main(String[] args)  {		
 		// Tengo que cargar todos los datos. Se hace desde los parametros statics.
 		String tituloConsola = "Bienvenido al Sistema Operativo de LearningPaths G11!";
