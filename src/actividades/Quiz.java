@@ -118,7 +118,7 @@ public class Quiz extends Actividad{
 		                    		String enunciado = entry.getKey();
 		                    		String explicacion = entry.getValue();
 		    	                    resultado.append(opcion).append("): ").append(enunciado).append("\n");
-		    	                    resultado.append("\nExplicación: \n").append(explicacion).append("\n");
+		    	                    resultado.append("\nExplicación: \n"+explicacion+"\n");
 		                    	}
 		                    }
 		                }
@@ -139,8 +139,8 @@ public class Quiz extends Actividad{
 			for (Map.Entry<String, Opcion> respuestaCorrecta: respuestasCorrectas.entrySet()) {
 				Opcion respuestaSeleccionada = respuestas.get(contador);
 				Opcion correcta = respuestaCorrecta.getValue();
-				if (respuestaSeleccionada== correcta) {
-					contadorCorrectas += 1;
+				if (respuestaSeleccionada.equals(correcta)) {
+					contadorCorrectas ++;
 				}
 				contador++;
 			}

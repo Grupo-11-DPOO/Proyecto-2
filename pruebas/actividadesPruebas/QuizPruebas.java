@@ -67,7 +67,13 @@ class QuizPruebas {
 
         String preguntasConExplicaciones = quiz.verPreguntasConExplicaciones();
         assertTrue(preguntasConExplicaciones.contains("Pregunta: ¿Cuál es el río más largo del mundo?"), "La pregunta no aparece en la lista.");
-        assertTrue(preguntasConExplicaciones.contains("Explicación: El río Nilo es considerado el más largo del mundo."), "La explicación no aparece en la lista.");
+        assertTrue(preguntasConExplicaciones.contains("Explicación: \nEl río Nilo es considerado el más largo del mundo.\n"), "La explicación no aparece en la lista.");
+    }
+    
+    @Test
+    void testVerPreguntasConYSinExplicacionSinPreguntas(){
+    	assertEquals("No hay preguntas que mostrar", quiz.verPreguntas(), "El mensaje es incorrecto cuando se ve la pregunta sin explicacion.");
+    	assertEquals("No hay preguntas que mostrar", quiz.verPreguntasConExplicaciones(), "El mensaje es incorrecto cuando se muestran preguntas con explicaciones");
     }
 
     @Test
@@ -113,6 +119,7 @@ class QuizPruebas {
 
         ArrayList<Opcion> respuestasEstudiante = new ArrayList<>();
         respuestasEstudiante.add(Opcion.A);
+        respuestasEstudiante.add(Opcion.D);
 
         Exception exception = assertThrows(Exception.class, () -> {
             quiz.calificar("56789", respuestasEstudiante);
