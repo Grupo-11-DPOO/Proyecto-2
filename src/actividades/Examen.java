@@ -10,7 +10,7 @@ public class Examen extends Actividad{
 	private HashMap<String, ArrayList<String>> respuestas;
 
 	public Examen(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, int tiempoLimite) {
+			boolean obligatorio) {
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.preguntas = new ArrayList<>();
 		this.respuestas = new HashMap<>();
