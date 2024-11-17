@@ -49,18 +49,18 @@ public class Profesor extends Usuario {
 		return actividades;
 	}
 	
-	public void setActividades(List<Actividad> actividades) throws UsuarioExistenteException {
-		this.actividades= (HashMap<String, Actividad>) actividades;
-		this.idActividades = new ArrayList<String>();
-		for(Actividad actividad: actividades) {
-			String idActividad = actividad.getId();
-			this.idActividades.add(idActividad);
-			
-		}
+	// Set actividades id propias
+	public void setActividades(List<String> actividadesID) throws UsuarioExistenteException {
+		this.idActividades= actividadesID;
+		
 		usuarios.cargarProfesor(login, password, idLearningPaths, idActividades);
 	}
+	
+	public List<String> getActividadesPropias(){
+		return idActividades;
+	}
 
-	public List<String> getLearningPaths() {
+	public List<String> getLearningPathsPropios() {
 		return idLearningPaths;
 	}
 
@@ -182,9 +182,21 @@ public class Profesor extends Usuario {
 		
 
 	public void guardarActividad(Actividad actividad) throws UsuarioExistenteException {
-		actividades.put(actividad.getId(),actividad);
-		actividadesExistentes.cargarActividad(actividad);
-		idActividades.add(actividad.getId());
+		actividades.put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
+		actividadesExistentes.cargarActividad(actividad); // Algo de persistencia no se sabe
+		idActividades.add(actividad.getId()); // Lista con id de actividades
+		usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);
+	}
+	
+	public LearningPath crearLearningPath(String titulo, String objetivo, String nivel) {
+		LearningPath learningPath = new LearningPath(titulo, objetivo, nivel);
+		return learningPath;
+	}
+	
+	public void guardarLearningPath(LearningPath learningPath) throws UsuarioExistenteException{
+		learningPaths.put(learningPath.getId(),learningPath);
+		learningPathExistentes.cargarLearningPath(learningPath);
+		idLearningPaths.add(learningPath.getId());
 		usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);
 	}
 	

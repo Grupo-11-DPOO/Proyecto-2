@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import actividades.Actividad;
 import actividades.Encuesta;
 import actividades.Examen;
@@ -17,23 +16,29 @@ import actividades.Quiz;
 import actividades.Recurso;
 import actividades.Tarea;
 import exceptions.UsuarioExistenteException;
-import persistencia.PersistenciaUsuarios;
-import usuarios.Estudiante;
+import learningPaths.LearningPath;
 import usuarios.Profesor;
 import usuarios.SistemaRegistro;
 
 public class Consola {
 	
 	public static SistemaRegistro sistemaRegistro = new SistemaRegistro();
-	private String loginGlobal;
 	private static HashMap<String, Profesor> datosProfesor = sistemaRegistro.getDatosProfesores();
 	public static HashMap<String, Actividad> actividades = sistemaRegistro.actividades;
+	public static HashMap<String, LearningPath> learningPaths = sistemaRegistro.learningPaths;
 	private static Profesor profesorActual;
 	private static String[] opciones = {"Iniciar sesion", "Registrarse", "Salir"};
 	private static String[] opcionesRegistro = {"Crear usuario: Profesor", "Crear usuario: Estudiante", "Salir"};
-	private static String[] opcionesMenuProfesor = {"Crear LearningPath", "Editar LearningPath", "Crear actividad", "Clonar actividad", "Salir"};
+	private static String[] opcionesMenuProfesor = {"Crear LearningPath", "Ver y Editar LearningPath", "Crear Actividad", "Clonar Actividad",
+			"Ver y Editar Actividades", "Agregar reseñas a actividad", "Salir"};
 	private static String[] opcionesTipoActividad = {"Encuesta", "Examen", "Quiz", "Recurso", "Tarea"};
 	private static String[] opcionesClonar = {"Clonar con ID de actividad", "Volver"};
+	private static String[] opcionesCrearLearningPath = {"Agregar actividad propia existente", "Crear nueva actividad"};
+	private static String[] opcionesSiNo = {"Si", "No"};
+	private static String[] opcionesLogin = {"Profesor", "Estudiante"};
+	private static String[] opcionesEditarLearningPath = {"Titulo", "Descripción", "Nivel", "Agregar actividades existentes"};
+	private static String[] opcionesVerYEditarActividades = {"Ver prerequisitos", "Ver reseñas", "Editar titulo", "Editar objetivo",
+			"Editar descripción", "Editar nivel", "Editar si es obligatorio", "Volver"};
 	
 	// PRUEBA
     /**
@@ -251,24 +256,19 @@ public class Consola {
         System.out.println( "------------------------------------------------------" );
         System.out.println( "Iniciar sesión" );
         System.out.println( "------------------------------------------------------" );
-        int tipoUsuario = pedirEnteroAlUsuario("Tipo de usuario (1 para profesor, 0 para estudiante)");
+        int tipoUsuario = mostrarMenu("Tipo de usuario", opcionesLogin);
         String login = pedirCadenaAlUsuario("Nombre de usuario");
         String password = pedirCadenaAlUsuario("Contraseña");
         boolean resultado;
         if (tipoUsuario == 1) {
         	resultado = sistemaRegistro.iniciarSesionProfesor(login, password);
-        } else if (tipoUsuario == 0) {
-        	resultado = sistemaRegistro.iniciarSesionEstudiante(login,password);
         } else {
-        	System.out.println("Ingrese de nuevo su tipo de usuario...");
-        	resultado = false;
-        	iniciarSesion();
-        }
+        	resultado = sistemaRegistro.iniciarSesionEstudiante(login,password);
+        } 
         if (resultado) {
         	System.out.println( "------------------------------------------------------" );
         	System.out.println("Bienvenido "+login+"!");
         	if (tipoUsuario == 1) {
-        		//manda al menu de profesor
         		profesorActual = datosProfesor.get(login);
         		menuProfesor();
         	} else {
@@ -323,33 +323,221 @@ public class Consola {
 			int opcionSeleccionada = mostrarMenu("Menu Principal Profesores", opcionesMenuProfesor);
 			
 			switch (opcionSeleccionada) {
-			case 5:
+			case 7:
 				System.out.println( "------------------------------------------------------" );
 				System.out.println("Saliendo del programa.");
 				System.out.println( "------------------------------------------------------" );
                 System.exit(0);
 			case 1:
-				//menu crear learning path
+				menuCrearLearningPath();
                 break;
 			case 2:
-				// menu editar learning path
+				menuVerYEditarLearningPath();
 				break;
 			case 3:
-				// menu crear actividad
 				menuCrearActividad();
 				break;
 			case 4:
-				// menu clonar actividad
 				menuClonarActividad();
 				break;
-				
+			case 5:
+				menuVerYEditarActividad();
+				break;
+			case 6:
+				menuAgregarResena();
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}	
+    }
+    
+    public static void menuCrearLearningPath() {
+		System.out.println( "------------------------------------------------------" );
+		System.out.println("Crear Learning Path");
+		System.out.println( "------------------------------------------------------" );
+		String titulo = pedirCadenaAlUsuario("Ingrese el titulo");
+		String objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
+		String nivel = pedirCadenaAlUsuario("Ingrese el nivel");
+		LearningPath learningPath = profesorActual.crearLearningPath(titulo, objetivo, nivel);
+		System.out.println("El Learning Path se ha creado exitosamente, sin embargo, está vacio.");
+		int cantidadActividades = pedirEnteroAlUsuario("Ingrese la cantidad de actividades que tendrá");
+		int opcion = mostrarMenu("Agregar actividades. Recuerde que van en orden.", opcionesCrearLearningPath);
+		switch(opcion) {
+		case 1:
+			List<String> idActividadesPropias = profesorActual.getActividadesPropias();
+			int cantidadActividadesProfesor = idActividadesPropias.size();
+			if (cantidadActividadesProfesor > 0) {
+				imprimirActividadesPropiasProfesor(idActividadesPropias);
+				int i = 0;
+				while (i < cantidadActividades) {
+					System.out.println( "------------------------------------------------------" );
+					String idActividadAgregar = pedirCadenaAlUsuario("Ingrese el id de la actividad candidata (se muestran las reseñas)");
+					Actividad actividad = actividades.get(idActividadAgregar);
+					verResenasActividad(actividad);
+					int agregar = mostrarMenu("¿Desea agregar la actividad?", opcionesSiNo);
+					if (agregar == 1) {
+						learningPath.agregarActividad(actividad);
+						System.out.println("Actividad agregada exitosamente.");						
+					}
+					i++;
+				}
+			} else {
+				System.out.println("Usted no cuenta con actividades propias. El Learning Path se dejará vacio, cuando cree actividades podrá editarlo y agregarselas.");
+				System.out.println("Redirigiendo al menu de crear actividades...");
+				menuCrearActividad();
+			}
+			break;
+			
+		case 2:
+			System.out.println("El Learning Path se dejará vacio, cuando cree actividades podrá editarlo y agregarselas.");
+			System.out.println("Redirigiendo al menu de crear actividades...");
+			menuCrearActividad();
+			break;
 		}
-    	
-    	
+    }
+    
+    public static void verResenasActividad(Actividad actividad) {
+    	String titulo = actividad.getTitulo();
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Reseñas de la actividad "+titulo);
+    	System.out.println( "------------------------------------------------------" );
+    	for (String resena: actividad.getResenas()) {
+    		System.out.println(resena);
+    		System.out.println( "------------------------------------------------------" );
+    	}
+    }
+    
+    public static void verPrerequisitosActividad(Actividad actividad) {
+    	String titulo = actividad.getTitulo();
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Prerequisitos de la actividad "+titulo);
+    	System.out.println( "------------------------------------------------------" );
+    	for (Actividad preReq: actividad.getPrerequisitos()) {
+    		String id = preReq.getId();
+    		String titulo1 = preReq.getTitulo();
+    		System.out.println("ID: "+id);
+    		System.out.println(titulo1);
+    		System.out.println( "------------------------------------------------------" );
+    	}
+    }
+    
+    public static void menuVerYEditarLearningPath() {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Ver y Editar Learning Paths");
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Lista de Learning Paths");
+    	List<String> idLearningPathsPropios = profesorActual.getLearningPathsPropios();
+    	for (Map.Entry<String, LearningPath> entry : learningPaths.entrySet()) {
+            String id = entry.getKey();
+            if (idLearningPathsPropios.contains(id)) {
+	            Object learning = entry.getValue();
+	
+	            if (learning instanceof Map) {
+	                Map<?, ?> valueMap = (Map<?, ?>) learning;
+	                Object titulo = valueMap.get("titulo");
+	                Object descripcion = valueMap.get("descripcion");
+	                Object nivel = valueMap.get("nivel");
+	                Object fechaCreacion = valueMap.get("fechaCreacion");
+	                Object fechaModificacion = valueMap.get("fechaModificacion");
+	                Object rating = valueMap.get("rating");
+	                Object version = valueMap.get("version");
+	                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s", id, titulo, descripcion, nivel, fechaCreacion, fechaModificacion, rating, version));
+	            } else {
+	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
+	            }
+            }
+        }
+    	int opcion = mostrarMenu("¿Desea editar algún Learning Path?", opcionesSiNo);
+    	if (opcion == 1) {
+    		String id = pedirCadenaAlUsuario("ID del Learning Path");
+    		LearningPath learningPathEditar = learningPaths.get(id);
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println("Editar Learning Path "+learningPathEditar.getTitulo());
+    		System.out.println( "------------------------------------------------------" );
+    		int opcionSeleccionada = mostrarMenu("Seleccione que desea editar", opcionesEditarLearningPath);
+    		switch (opcionSeleccionada) {
+    		case 1:
+    			System.out.println( "------------------------------------------------------" );
+    			System.out.println("Editar titulo");
+    			System.out.println( "------------------------------------------------------" );
+    			String nuevoTitulo = pedirCadenaAlUsuario("Ingrese el nuevo titulo");
+    			learningPathEditar.setTitulo(nuevoTitulo);
+    			break;
+    		case 2:
+    			System.out.println( "------------------------------------------------------" );
+    			System.out.println("Editar descripción");
+    			System.out.println( "------------------------------------------------------" );
+    			String nuevaDescripcion = pedirCadenaAlUsuario("Ingrese la nueva descripción");
+    			learningPathEditar.setDescripcion(nuevaDescripcion);
+    			break;
+    		case 3:
+    			System.out.println( "------------------------------------------------------" );
+    			System.out.println("Editar nivel");
+    			System.out.println( "------------------------------------------------------" );
+    			String nuevoNivel = pedirCadenaAlUsuario("Ingrese el nuevo nivel");
+    			learningPathEditar.setNivel(nuevoNivel);
+    			break;
+    		case 4:
+    			// Agregar actividades existentes
+    			List<String> idActividadesPropias = profesorActual.getActividadesPropias();
+    			int cantidadActividadesProfesor = idActividadesPropias.size();
+    			if (cantidadActividadesProfesor > 0) {
+    				int cantidadActividades = pedirEnteroAlUsuario("Ingrese la cantidad de actividades existentes a agregar");
+    				// Imprimir actividades propias
+    				imprimirActividadesPropiasProfesor(idActividadesPropias);
+    				int i = 0;
+    				while (i < cantidadActividades) {
+    					System.out.println( "------------------------------------------------------" );
+    					String idActividadAgregar = pedirCadenaAlUsuario("Ingrese el id de la actividad candidata (se muestran las reseñas)");
+    					Actividad actividad = actividades.get(idActividadAgregar);
+    					verResenasActividad(actividad);
+    					int agregar = mostrarMenu("¿Desea agregar la actividad?", opcionesSiNo);
+    					if (agregar == 1) {
+    						learningPathEditar.agregarActividad(actividad);
+    						System.out.println("Actividad agregada exitosamente.");						
+    					}
+    					i++;
+    				}
+    			} else {
+    				System.out.println("Usted no cuenta con actividades propias.");
+    			}
+    			break;
+    		}
+    		// TODO Guardar - actualizar
+    		menuProfesor();
+    		
+    	}
+    	else {
+    		menuProfesor();
+    	}
+    }
+    
+    public static void imprimirActividadesPropiasProfesor(List<String> idActividadesPropias) {
+    	System.out.println( "------------------------------------------------------" );
+		System.out.println( "Lista de sus actividades" );
+		System.out.println( "------------------------------------------------------" );
+		for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
+            String id = entry.getKey();
+            if (idActividadesPropias.contains(id)) {
+	            Object learning = entry.getValue();
+	
+	            if (learning instanceof Map) {
+	                Map<?, ?> valueMap = (Map<?, ?>) learning;
+	                Object titulo = valueMap.get("titulo");
+	                Object objetivo = valueMap.get("objetivo");
+	                Object descripcion = valueMap.get("descripcion");
+	                Object nivel = valueMap.get("nivel");
+	                Object duracionMinutos = valueMap.get("duracionMinutos");
+	                Object obligatorio = valueMap.get("obligatorio");
+	                Object rating = valueMap.get("rating");
+	                Object tipo = valueMap.get("tipoActividad");
+	                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, rating, tipo));
+	            } else {
+	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
+	            }
+            }
+        }
     }
     
     public static void menuCrearActividad() {
@@ -556,7 +744,84 @@ public class Consola {
 			catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+    }
+    
+    public static void menuVerYEditarActividad() {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Ver y Editar Actividades");
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Lista de actividades");
+    	List<String> idActividadesPropias = profesorActual.getActividadesPropias();
+    	imprimirActividadesPropiasProfesor(idActividadesPropias);
+    	
+    	int opcion = mostrarMenu("Opciones para las actividades mostradas", opcionesVerYEditarActividades);
+    	if (opcion != 8) {
+    		String id = pedirCadenaAlUsuario("ID de la actividad");
+	    	Actividad actividadEditar = actividades.get(id);
+	    	switch (opcion) {
+	    	case 1: 
+	    		// Ver prerequisitos
+	    		verPrerequisitosActividad(actividadEditar);
+	    		break;
+	    	case 2:
+	    		// Ver reseñas
+	    		verResenasActividad(actividadEditar);
+	    	case 3:
+	    		System.out.println( "------------------------------------------------------" );
+    			System.out.println("Editar titulo");
+    			System.out.println( "------------------------------------------------------" );
+    			String nuevoTitulo = pedirCadenaAlUsuario("Ingrese el nuevo titulo");
+    			actividadEditar.setTitulo(nuevoTitulo);
+    			break;
+	    	case 4:
+	    		System.out.println( "------------------------------------------------------" );
+    			System.out.println("Editar objetivo");
+    			System.out.println( "------------------------------------------------------" );
+    			String nuevoObjetivo = pedirCadenaAlUsuario("Ingrese el nuevo objetivo");
+    			actividadEditar.setObjetivo(nuevoObjetivo);
+    			break;
+	    	case 5:
+	    		System.out.println( "------------------------------------------------------" );
+    			System.out.println("Editar descripción");
+    			System.out.println( "------------------------------------------------------" );
+    			String nuevaDescripcion = pedirCadenaAlUsuario("Ingrese la nueva descripción");
+    			actividadEditar.setDescripcion(nuevaDescripcion);
+    			break;
+	    	case 6:
+	    		System.out.println( "------------------------------------------------------" );
+    			System.out.println("Editar nivel");
+    			System.out.println( "------------------------------------------------------" );
+    			String nuevoNivel = pedirCadenaAlUsuario("Ingrese el nuevo nivel");
+    			actividadEditar.setNivel(nuevoNivel);
+    			break;
+	    	case 7:
+	    		int obligatorio = mostrarMenu("¿Es obligatorio?", opcionesSiNo);
+	    		if (obligatorio == 1) {
+	    			actividadEditar.setObligatorio(true);
+	    		} else {
+	    			actividadEditar.setObligatorio(false);
+	    		}
+    			break;
+	    	}
+    		// TODO Guardar - actualizar
+	    	menuProfesor();
+    	} else {
+    		menuProfesor();
+    	}
+    }
+    
+    public static void menuAgregarResena() {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Agregar reseña a una actividad");
+    	System.out.println( "------------------------------------------------------" );
+    	List<String> idActividadesPropias = profesorActual.getActividadesPropias();
+    	imprimirActividadesPropiasProfesor(idActividadesPropias);
+    	System.out.println( "------------------------------------------------------" );
+    	String idActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a dejar la reseña");
+    	Actividad actividad = actividades.get(idActividad);
+    	String resena = pedirCadenaAlUsuario("Ingrese la reseña");
+    	actividad.agregarResena(resena);
+    	System.out.println("Reseña agregada exitosamente.");
     }
     	
 

@@ -150,7 +150,7 @@ public abstract class Actividad implements Identificable {
 		return rating;
 	}
 	
-	protected void agregarResena(String resenaInput) {
+	public void agregarResena(String resenaInput) {
 		resenas.add(resenaInput);
 	}
 	

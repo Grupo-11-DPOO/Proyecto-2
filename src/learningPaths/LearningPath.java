@@ -23,16 +23,16 @@ public class LearningPath implements Identificable{
 	
 	// Metodos
 	
-	public LearningPath(String titulo, String descripcion, String nivel, int duracion) {
+	public LearningPath(String titulo, String descripcion, String nivel) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.nivel = nivel;
-		this.duracion = duracion;
 		this.fechaCreacion = LocalDateTime.now();
 		this.fechaModificacion = LocalDateTime.now();
 		this.actividades = new ArrayList<Actividad>();
 		this.rating = 0;
-		this.id = this.crearId();
+		this.version = 1;
+		crearId();
 	}
 
 	public String getTitulo() {
@@ -78,28 +78,47 @@ public class LearningPath implements Identificable{
 		return version;
 	}
 
-	protected void setTitulo(String titulo) {
+	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+		this.fechaModificacion = LocalDateTime.now();
+		this.version += 1;
 	}
 
-	protected void setDescripcion(String descripcion) {
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+		this.fechaModificacion = LocalDateTime.now();
+		this.version += 1;
 	}
 
-	protected void setNivel(String nivel) {
+	public void setNivel(String nivel) {
 		this.nivel = nivel;
+		this.fechaModificacion = LocalDateTime.now();
+		this.version += 1;
 	}
 
-	protected void setDuracion(int duracion) {
-		this.duracion = duracion;
+	protected void setDuracion() {
+		int duracionMinutosAcumulada = 0;
+		for (Actividad actividad: actividades) {
+			duracionMinutosAcumulada += actividad.getDuracionMinutos();
+		}
+		this.duracion = duracionMinutosAcumulada;
+		this.fechaModificacion = LocalDateTime.now();
+		this.version += 1;
 	}
 
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = LocalDateTime.now();
+		this.version += 1;
 	}
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	public void agregarActividad(Actividad actividad) {
+		actividades.add(actividad);
+		this.fechaModificacion = LocalDateTime.now();
+		this.version += 1;
 	}
 	
 	public Actividad getActividad(List<Actividad> actividades, String id) {
@@ -129,9 +148,9 @@ public class LearningPath implements Identificable{
 	}
 
 	@Override
-	public String crearId() {
+	public void crearId() {
 		String id = UUID.randomUUID().toString(); // Genera un ID único
-	    return id;
+	    this.id = id;
 	}
 
 	@Override

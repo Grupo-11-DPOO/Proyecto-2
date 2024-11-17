@@ -31,9 +31,8 @@ public class SistemaRegistro {
 	private HashMap<String,String> notaActividad;
 	private HashMap<String,Profesor>datosProfesores;
 	private HashMap<String,Estudiante>datosEstudiantes;
-	private HashMap<String,LearningPath> learningPaths;
+	public HashMap<String,LearningPath> learningPaths;
 	public HashMap<String, Actividad> actividades;
-	//private HashMap<String, >
 	
 	public SistemaRegistro() {
 		this.usuarios = new PersistenciaUsuarios();
