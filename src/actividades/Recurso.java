@@ -4,7 +4,6 @@ package actividades;
 public class Recurso extends Actividad{
 
 	private String material;
-	private Estado estado;
 	
 	public Recurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, String material) {
@@ -12,15 +11,6 @@ public class Recurso extends Actividad{
 			super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			// Agregamos material puesto que es una actividad.
 			this.material = material;
-			this.estado = Estado.PENDIENTE;
-	}
-	
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
 	}
 	
 	public String getMaterial() {
@@ -32,7 +22,7 @@ public class Recurso extends Actividad{
 	}
 	
 	public Estado realizarRecurso() {
-		estado = Estado.EXITOSA;
+		Estado estado = Estado.EXITOSA;
 		return estado;
 	}
 }

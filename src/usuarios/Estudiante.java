@@ -22,10 +22,9 @@ public class Estudiante extends Usuario {
 	private List<LearningPath> learningPaths;
 	private List<String> intereses;
 	
-	public Estudiante(HashMap<String, Estado> registroActividades, HashMap<String, Double> registroLearningPaths, PersistenciaUsuarios usuarios, String nLogin, String nPassword, List<String> intereses) {
+	public Estudiante(HashMap<String, Estado> registroActividades, HashMap<String, Double> registroLearningPaths, String nLogin, String nPassword, List<String> intereses) {
 		super(nLogin, nPassword);
 		this.usuarios = usuarios;
-		this.usuarios=usuarios;
 		this.registroActividades= registroActividades;
 		this.registroLearningPaths= registroLearningPaths;
 		this.actividadEnCurso = null;
@@ -150,13 +149,12 @@ public class Estudiante extends Usuario {
 		}
 		else if (tipoActividad==TipoActividades.Recurso) {
 			Recurso recurso = (Recurso) actividadEnCurso;
-			recurso.realizarRecurso();
-			
-			// DE ACA PARA ABAJO NO HE REVISADO
-			recurso.realizarActividad();
-			registroActividades.put(actividadEnCurso.getTitulo(), recurso.getEstado());
-			usuarios.cargarEstudiante(login, password, intereses, registroActividades);
-			this.actividadEnCurso = recurso;
+			Estado estado = recurso.realizarRecurso();
+			String idActividad = recurso.getId();
+			registroActividades.put(login, estado);
+
+			// Cargar estudiante no deberia ser. debe ser actualizar estudiante
+			//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 		}
 	}
 	
