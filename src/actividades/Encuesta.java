@@ -10,8 +10,8 @@ public class Encuesta extends Actividad{
 	private HashMap<String, ArrayList<String>> respuestas;
 
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
+			boolean obligatorio, int tiempoLimite) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio,tiempoLimite);
 		this.preguntas = new ArrayList<String>();
 		this.respuestas = new HashMap<>();
 		this.tipoActividad = TipoActividades.Encuesta;
@@ -36,9 +36,15 @@ public class Encuesta extends Actividad{
 	
 	public void verPreguntas() {
 		int i =0;
-		for (String pregunta:preguntas) {
-			i++;
-			System.out.println(i+". "+pregunta);
+		if(!preguntas.isEmpty()) {
+		
+			for (String pregunta:preguntas) {
+				i++;
+				System.out.println(i+". "+pregunta);
+			}
+		}
+		else {
+			System.out.println("No hay preguntas que mostrar");
 		}
 	}	
 	
@@ -61,12 +67,11 @@ public class Encuesta extends Actividad{
 	}
 
 	
-	public void contestarExamen(String idEstudiante, String nose) {
+	public Estado contestarEncuesta(String idEstudiante, ArrayList<String> respuestas) {
 	
+		this.respuestas.put(idEstudiante, respuestas);
+		return Estado.EXITOSA;
 	}
 
-	@Override
-	public void realizarActividad() throws Exception {
-		// TODO Auto-generated method stub
-	}
+
 }

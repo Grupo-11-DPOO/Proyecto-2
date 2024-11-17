@@ -1,16 +1,19 @@
 package actividades;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Examen extends Actividad{
 	
 	private List<String> preguntas;	
+	private HashMap<String, ArrayList<String>> respuestas;
 
 	public Examen(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio) {
-		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
+			boolean obligatorio, int tiempoLimite) {
+		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, tiempoLimite);
 		this.preguntas = new ArrayList<>();
+		this.respuestas = new HashMap<>();
 		this.tipoActividad= TipoActividades.Examen;
 	}
 
@@ -20,22 +23,45 @@ public class Examen extends Actividad{
 		}
 		preguntas.add(pregunta);
 	}
-	
-	public void verPreguntas() {
-		for (String pregunta:preguntas) {
-			System.out.println(pregunta);
+	public void eliminarPregunta(String pregunta) {
+		
+		boolean x = this.preguntas.contains(pregunta);
+		
+		if (x) {
+			
+			this.preguntas.remove(pregunta);
 		}
 	}
+	public void verPreguntas() {
+		int i =0;
+		if(!preguntas.isEmpty()) {
+		
+			for (String pregunta:preguntas) {
+				i++;
+				System.out.println(i+". "+pregunta);
+			}
+		}
+		else {
+			System.out.println("No hay preguntas que mostrar");
+		}
+	}	
 	
-    public void marcarComoExitosa(boolean exitosa) {
-        if (getEstado() == Estado.ENVIADA) {
-            this.setEstado(exitosa ? Estado.EXITOSA : Estado.NO_EXITOSA);
-            System.out.println("La tarea ha sido marcada como " + (exitosa ? "exitosa." : "no exitosa."));
-        } else {
-            System.out.println("La tarea no ha sido enviada todavía.");
-        }
-    }
-    
+	public List<String> getPreguntas() {
+		return preguntas;
+	}
+
+	public void setPreguntas(List<String> preguntas) {
+		this.preguntas = preguntas;
+	}
+
+	public HashMap<String, ArrayList<String>> getRespuestas() {
+		return respuestas;
+	}
+
+	public void setRespuestas(HashMap<String, ArrayList<String>> respuestas) {
+		this.respuestas = respuestas;
+	}
+
 	public List<String> getListaPreguntas() {
 		if(this.preguntas==null) {
 			this.preguntas = new ArrayList<String>();
@@ -47,17 +73,12 @@ public class Examen extends Actividad{
 		this.preguntas = preguntas;
 	}
 
-
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
-
-	public void realizarActividad( ) throws Exception {
-		verPreguntas();
+	public Estado contestarExamen(String id, ArrayList<String> respuesta) {
+		
+		this.respuestas.put(id, respuesta);
+		
+		return Estado.PENDIENTE;
+		
 	}
 }
 	

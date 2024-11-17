@@ -16,7 +16,7 @@ public class Quiz extends Actividad{
 	
 	
 	public Quiz(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
-			boolean obligatorio, float calificacionMinima) {
+			boolean obligatorio,int tiempoLimite ,float calificacionMinima) {
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.calificacionMinima = calificacionMinima;
 		this.preguntas = new HashMap<String,HashMap<String,String>>();
