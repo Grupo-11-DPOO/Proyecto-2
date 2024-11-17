@@ -263,7 +263,6 @@ public class Consola {
     protected static void iniciarSesion() {
         System.out.println( "------------------------------------------------------" );
         System.out.println( "Iniciar sesión" );
-        System.out.println( "------------------------------------------------------" );
         int tipoUsuario = mostrarMenu("Tipo de usuario", opcionesLogin);
         String login = pedirCadenaAlUsuario("Nombre de usuario");
         String password = pedirCadenaAlUsuario("Contraseña");
@@ -704,7 +703,6 @@ public class Consola {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
     }
     
     public static List<Actividad> crearPrerequisitos(){
