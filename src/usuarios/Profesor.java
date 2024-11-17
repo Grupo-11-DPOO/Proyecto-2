@@ -192,37 +192,69 @@ public class Profesor extends Usuario {
 	}
 	
 	
-	public void mostrarRespuestasExamen(Examen examen) {
+	public String mostrarRespuestasExamen(Examen examen) {
 		
+		 StringBuilder sb = new StringBuilder();
+		    for (Map.Entry<String, ArrayList<String>> entry : examen.getRespuestas().entrySet()) {
+		        String login = entry.getKey();
+		        ArrayList<String> respuestas = entry.getValue();
+		        
+		        sb.append("Estudiante: ").append(login).append("\n");
+		        sb.append("Respuestas al examen: ");
+		        for (String valor : respuestas) {
+		            sb.append(valor).append(", ");
+		        }
+		        if (!respuestas.isEmpty()) {
+		            sb.setLength(sb.length() - 2);
+		        }
+		        sb.append("\n");
+		    }
+		    return sb.toString();
 		
 	}
 	
-	private void calificarExamen(String idEstudiante, Actividad actividad) {
+//	private void calificarExamen(String idEstudiante, Examen examen, Estado estado) {
+//		
+//		
+//		
+//	}
+
+	
+	public String mostrarRespuestasEncuesta(Encuesta encuesta) {
 		
-		
+		 StringBuilder sb = new StringBuilder();
+		    for (Map.Entry<String, ArrayList<String>> entry : encuesta.getRespuestas().entrySet()) {
+		        String login = entry.getKey();
+		        ArrayList<String> respuestas = entry.getValue();
+		        
+		        sb.append("Estudiante: ").append(login).append("\n");
+		        sb.append("Respuestas al examen: ");
+		        for (String valor : respuestas) {
+		            sb.append(valor).append(", ");
+		        }
+		        if (!respuestas.isEmpty()) {
+		            sb.setLength(sb.length() - 2);
+		        }
+		        sb.append("\n");
+		    }
+		    return sb.toString();
 		
 	}
-	
-	
-	private void marcarTareaComoExitosa(Actividad actividad, boolean exitoso) throws Exception{
-		// Se revisa que la actividad sea de pertenencia del profesor.
-		List<Actividad> actividadesProfesor = (List<Actividad>) getActividades();
-		if (actividadesProfesor.contains(actividad)) {
-			// Se revisa tipo de actividad
-			if (actividad.getTipoActividad().equals(TipoActividades.Tarea)) {
-				Tarea tarea = (Tarea) actividad;
-				// Decide como se debe marcar la actividad (exitosa = true, no exitosa = false)
-				tarea.marcarComoExitosa(exitoso);
-			} else if (actividad.getTipoActividad().equals(TipoActividades.Examen)) {
-				Examen tarea = (Examen) actividad;
-				// Decide como se debe marcar la actividad (exitosa = true, no exitosa = false)
-				tarea.marcarComoExitosa(exitoso);
-			}	
-		} else {
-			throw new Exception("La actividad no le pertenece.");
-		}
-	}
+	public String mostrarRespuestasTarea(Tarea tarea) {
 		
+		 StringBuilder sb = new StringBuilder();
+		    for (Map.Entry<String, String> entry : tarea.getRespuestas().entrySet()) {
+		        String login = entry.getKey();
+		        String medio = entry.getValue();
+		        
+		        sb.append("Estudiante: ").append(login).append("\n");
+		        sb.append("Medio de entrega de la tarea: ").append(medio);
+		        sb.append("\n");
+		    }
+		    return sb.toString();
+		
+	}
+
 
 //	public void guardarActividad(Actividad actividad) throws UsuarioExistenteException {
 //		actividades.put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
