@@ -1,4 +1,4 @@
-package learningPathPruebas;
+package actividadesPruebas;
 
 import static org.junit.jupiter.api.Assertions.*;
 
