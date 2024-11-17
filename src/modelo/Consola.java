@@ -1079,12 +1079,18 @@ public class Consola {
     	TipoActividades tipoActividad = actividad.getTipoActividad();
     	if (tipoActividad == TipoActividades.Encuesta) {
     		// Inciar actividad encuesta
+    		Encuesta encuesta = (Encuesta) actividad;
+    		realizarEncuesta(encuesta);
   
     	} else if (tipoActividad == TipoActividades.Examen) {
     		// Iniciar actividad examen
+    		Examen examen = (Examen) actividad;
+    		realizarExamen(examen);
     		
     	} else if (tipoActividad == TipoActividades.Quiz) {
     		// Iniciar actividad quiz
+    		Quiz quiz = (Quiz) actividad;
+    		realizarQuiz(quiz);
     		
     	} else if (tipoActividad == TipoActividades.Recurso) {
     		// Iniciar actividad recurso
@@ -1093,12 +1099,49 @@ public class Consola {
     		
     	} else {
     		// Iniciar actividad tarea
+    		Tarea tarea = (Tarea) actividad;
+    		realizarTarea(tarea);
     		
     	}
-    	
-    	// TODO
-    	// Deberia hacer el if por cada tipo de actividad
-    	// a partir de eso se responde y se guarda al registro
+    }
+    
+    public static void realizarEncuesta(Encuesta encuesta) {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Material del recurso");
+    	System.out.println( "------------------------------------------------------" );
+    	// Imprimir el material
+    	System.out.println(recurso.getMaterial());
+    	// Realizar
+    	estudianteActual.realizarRecurso(recurso);
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println( "------------------------------------------------------" );
+    }
+    
+    public static void realizarExamen(Examen examen) {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Material del recurso");
+    	System.out.println( "------------------------------------------------------" );
+    	// Imprimir el material
+    	System.out.println(recurso.getMaterial());
+    	// Realizar
+    	estudianteActual.realizarRecurso(recurso);
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println( "------------------------------------------------------" );
+    }
+    
+    public static void realizarQuiz(Quiz quiz) {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Material del recurso");
+    	System.out.println( "------------------------------------------------------" );
+    	// Imprimir el material
+    	System.out.println(recurso.getMaterial());
+    	// Realizar
+    	estudianteActual.realizarRecurso(recurso);
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println( "------------------------------------------------------" );
     }
     
     public static void realizarRecurso(Recurso recurso) {
@@ -1108,13 +1151,23 @@ public class Consola {
     	// Imprimir el material
     	System.out.println(recurso.getMaterial());
     	// Realizar
-    	estudianteActual.realizarActividad();
+    	estudianteActual.realizarRecurso(recurso);
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
     	System.out.println( "------------------------------------------------------" );
-    	
-    	
-    	
+    }
+    
+    public static void realizarTarea(Tarea tarea) {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Material del recurso");
+    	System.out.println( "------------------------------------------------------" );
+    	// Imprimir el material
+    	System.out.println(recurso.getMaterial());
+    	// Realizar
+    	estudianteActual.realizarRecurso(recurso);
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println( "------------------------------------------------------" );
     }
     	
 	public static void main(String[] args)  {		
