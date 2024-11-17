@@ -34,19 +34,23 @@ public class Encuesta extends Actividad{
 		}
 	}
 	
-	public void verPreguntas() {
-		int i =0;
-		if(!preguntas.isEmpty()) {
+	public String verPreguntas() {
+		int i = 0;
+		StringBuilder preguntasString = new StringBuilder();
+		
+		if(!this.preguntas.isEmpty()) {
 		
 			for (String pregunta:preguntas) {
 				i++;
-				System.out.println(i+". "+pregunta);
+				preguntasString.append(i+". "+pregunta+"\n");
 			}
 		}
 		else {
-			System.out.println("No hay preguntas que mostrar");
+			return "No hay preguntas que mostrar";
 		}
+		return preguntasString.toString();
 	}	
+		
 	
 	
 
