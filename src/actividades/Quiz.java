@@ -155,36 +155,29 @@ public class Quiz extends Actividad{
 	}
 
 	
-	public Estado calificar(String pregunta, ArrayList<Opcion> respuestas) throws Exception{
+	public Estado calificar(String idEstudiante, ArrayList<Opcion> respuestas) throws Exception{
 		if (preguntas.size()==respuestas.size()) {
-			int cantidadPreguntas = preguntas.size();
+			respuestasEstudiantes.put(idEstudiante, respuestas);
 			int contadorCorrectas = 0;
-			HashMap<String> respuestasCorrectasMetodo = respuestasCorrectas.values();
-			for (int i=0;i<respuestasCorrectasMetodo.size();i++) {
-				 String respuesta = respuestas.get(i);
-				if (respuestasCorrectasMetodo.contains(respuesta)) {
+			int contador= 0;
+			for (Map.Entry<String, Opcion> respuestaCorrecta: respuestasCorrectas.entrySet()) {
+				Opcion respuestaSeleccionada = respuestas.get(contador);
+				Opcion correcta = respuestaCorrecta.getValue();
+				if (respuestaSeleccionada== correcta) {
 					contadorCorrectas += 1;
 				}
+				contador++;
 			}
-			float calificacion = (contadorCorrectas/cantidadPreguntas)*100;
+			float calificacion = (contadorCorrectas/respuestasCorrectas.size())*100;
+			verPreguntasConExplicaciones();
 			if (calificacion >= calificacionMinima) {
-				this.setEstado(Estado.EXITOSA);
+				return Estado.EXITOSA;
 			} else {
-				this.setEstado(Estado.NO_EXITOSA);
+				return Estado.NO_EXITOSA;
 			}
 		} else {
 			throw new Exception("La cantidad de respuestas no coincide con el número de preguntas.");
-			
 		}
-		 this.setEstado(Estado.NO_EXITOSA);
-		 String explicaciones =generarMostrarExplicaciones();
-		 return explicaciones;
-		 
 	}
-	
-	public Estado getEstado(){
-		 return this.estado;
-	 }
-	
 
 }

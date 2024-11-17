@@ -62,16 +62,6 @@ public class Examen extends Actividad{
 		this.respuestas = respuestas;
 	}
 
-	public List<String> getListaPreguntas() {
-		if(this.preguntas==null) {
-			this.preguntas = new ArrayList<String>();
-		}
-		return preguntas;
-	}
-
-	public void setListaPreguntas(List<String> preguntas) {
-		this.preguntas = preguntas;
-	}
 
 	public Estado contestarExamen(String id, ArrayList<String> respuesta) {
 		
