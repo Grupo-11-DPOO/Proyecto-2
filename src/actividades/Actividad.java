@@ -233,8 +233,6 @@ public abstract class Actividad implements Identificable {
 		return tipoActividad;
 	}
 	
-	// Este metodo se implementara por los distintos tipos de actividad.
-	public abstract void realizarActividad( ) throws Exception;
 
 	public Estado getEstado() {
 		return estado;
