@@ -1,8 +1,4 @@
 package usuarios;
-import persistencia.PersistenciaActividades;
-import persistencia.PersistenciaLearningPath;
-import persistencia.PersistenciaUsuarios;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,16 +12,16 @@ import org.json.JSONObject;
 
 import actividades.Actividad;
 import actividades.Estado;
-import actividades.*;
 import actividades.TipoActividades;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
+import persistencia.PersistenciaActividades;
+import persistencia.PersistenciaLearningPath;
+import persistencia.PersistenciaUsuarios;
 
 
 public class SistemaRegistro {
 	private PersistenciaUsuarios usuarios;
-	private List<String> idLearningPaths;
-	private List<String> idActividades;
 	private PersistenciaActividades persistenciaActividades;
 	private PersistenciaLearningPath persistenciaLearningPath;
 	private HashMap<String,String> notaActividad;

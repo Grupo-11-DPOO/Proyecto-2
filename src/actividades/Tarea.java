@@ -1,56 +1,39 @@
 package actividades;
 
+import java.util.HashMap;
+
 public class Tarea extends Actividad{
 	
-	private Estado estado;
-    private String medioEntrega;
-    private String contenido;
+    private HashMap<String, String> respuestas; //Id del estudiante y como clave el string que dice por cual medio de entrega mando la tarea
     
-	public Tarea(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
-			String contenido, String medioEntrega) {
+	public Tarea(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) {
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
-		this.medioEntrega = medioEntrega;
-		this.contenido = contenido;
-    	this.estado = Estado.PENDIENTE;
-	}
-	
-	public void enviarTarea() throws Exception {
-		if (estado == Estado.PENDIENTE) {
-			this.estado = Estado.ENVIADA;
-			throw new Exception("El medio de entrega es incorrecto.");
-		} else {
-			throw new Exception("La tarea ya se encuentra enviada.");
-		}
-	}
-	
-	public String getMedioEntrega() {
-		return medioEntrega;
-	}
-	
-    public void marcarComoExitosa(boolean exitosa) {
-        if (estado == Estado.ENVIADA) {
-            this.estado = exitosa ? Estado.EXITOSA : Estado.NO_EXITOSA;
-            System.out.println("La tarea ha sido marcada como " + (exitosa ? "exitosa." : "no exitosa."));
-        } else {
-            System.out.println("La tarea no ha sido enviada todavía.");
-        }
-    }
-	
-	public Estado getEstadoTarea() {
-		return estado;
-	}
-	
-	public String getContenido() {
-		return contenido;
+    	this.tipoActividad = TipoActividades.Tarea;
+    	respuestas = new HashMap<>();
 	}
 
-	public void setContenido(String contenido) {
-		this.contenido = contenido;
+	
+	
+	
+	public HashMap<String, String> getRespuestas() {
+		return respuestas;
 	}
 
-	@Override
-	public void realizarActividad( ) throws Exception {
-		//super.advertenciaPrerequisitos(estudiante);
-		enviarTarea();
+
+
+
+	public void setRespuestas(HashMap<String, String> respuestas) {
+		this.respuestas = respuestas;
+	}
+
+
+
+
+	public Estado realizarTarea(String idEstudiante, String medioEntrega ) throws Exception {
+		
+		respuestas.put(idEstudiante, medioEntrega);
+		
+		return Estado.ENVIADA;
+		
 	}
 }

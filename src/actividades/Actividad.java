@@ -212,6 +212,42 @@ public abstract class Actividad implements Identificable {
             return null;
         }
     }
+
+    public String verActividad() {
+        StringBuilder informacion = new StringBuilder();
+
+        informacion.append("ID: ").append(id != null ? id : "N/A").append("\n");
+        informacion.append("Título: ").append(titulo != null ? titulo : "N/A").append("\n");
+        informacion.append("Objetivo: ").append(objetivo != null ? objetivo : "N/A").append("\n");
+        informacion.append("Descripción: ").append(descripcion != null ? descripcion : "N/A").append("\n");
+        informacion.append("Nivel: ").append(nivel != null ? nivel : "N/A").append("\n");
+        informacion.append("Duración (minutos): ").append(duracionMinutos).append("\n");
+        informacion.append("Obligatorio: ").append(obligatorio ? "Sí" : "No").append("\n");
+        informacion.append("Tiempo Límite: ").append(tiempoLimite != null ? tiempoLimite.toString() : "Sin límite").append("\n");
+        informacion.append("Rating: ").append(rating).append(" (").append(cantidadRating).append(" calificaciones)\n");
+        informacion.append("Tipo de Actividad: ").append(tipoActividad != null ? tipoActividad : "No especificado").append("\n");
+
+        if (prerequisitos != null && !prerequisitos.isEmpty()) {
+            informacion.append("Prerrequisitos:\n");
+            for (Actividad actividad : prerequisitos) {
+                informacion.append("  - ").append(actividad.titulo != null ? actividad.titulo : "Actividad sin título").append("\n");
+            }
+        } else {
+            informacion.append("Prerrequisitos: Ninguno\n");
+        }
+
+        if (resenas != null && !resenas.isEmpty()) {
+            informacion.append("Reseñas:\n");
+            for (String resena : resenas) {
+                informacion.append("  - ").append(resena).append("\n");
+            }
+        } else {
+            informacion.append("Reseñas: No hay reseñas\n");
+        }
+
+        return informacion.toString();
+    }
+
 			
 	@Override
 	public void crearId() {
@@ -224,6 +260,7 @@ public abstract class Actividad implements Identificable {
 	public String getId() {
 		return id;
 	}
+	
 	
 	public TipoActividades getTipoActividad() {
 		return tipoActividad;
