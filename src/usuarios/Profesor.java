@@ -185,6 +185,7 @@ public class Profesor extends Usuario {
 		actividades.put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
 		actividadesExistentes.cargarActividad(actividad); // Algo de persistencia no se sabe
 		idActividades.add(actividad.getId()); // Lista con id de actividades
+		// NO SE CARGA, SE ACTUALIZA
 		usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);
 	}
 	

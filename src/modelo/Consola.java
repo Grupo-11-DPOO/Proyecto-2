@@ -14,6 +14,7 @@ import java.util.Map;
 import actividades.Actividad;
 import actividades.Encuesta;
 import actividades.Examen;
+import actividades.Opcion;
 import actividades.Quiz;
 import actividades.Recurso;
 import actividades.Tarea;
@@ -654,20 +655,36 @@ public class Consola {
 				int i2 = 0;
 				while (i2 < cantidadPreguntas2) {
 					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
-					String opcionCorrecta = pedirCadenaAlUsuario("Opción correcta");
-					quiz.agregarPregunta(enunciado, opcionCorrecta);
+					String opcionCorrecta = pedirCadenaAlUsuario("Opción correcta (A-B-C-D)");
+					opcionCorrecta.toLowerCase();
+					Opcion opcionCorrectaEnum;
+					if (opcionCorrecta.equals("a")) {
+						opcionCorrectaEnum = Opcion.A;
+					} else if (opcionCorrecta.equals("b")) {
+						opcionCorrectaEnum = Opcion.B;
+					} else if (opcionCorrecta.equals("c")) {
+						opcionCorrectaEnum = Opcion.C;
+					} else {
+						// Si el usuario digito mal, siempre será la D de Dios la respuesta correcta.
+						opcionCorrectaEnum = Opcion.D;
+					}
+					quiz.agregarPregunta(enunciado, opcionCorrectaEnum);
 					// Opcion A
-					String explicacionA = pedirCadenaAlUsuario("Opción A");
-					quiz.agregarOpcion(enunciado, "A", explicacionA);
-					// Opcion B
-					String explicacionB = pedirCadenaAlUsuario("Opción B");
-					quiz.agregarOpcion(enunciado, "B", explicacionB);
-					// Opcion C
-					String explicacionC = pedirCadenaAlUsuario("Opción C");
-					quiz.agregarOpcion(enunciado, "C", explicacionC);
-					// Opcion D
-					String explicacionD = pedirCadenaAlUsuario("Opción D");
-					quiz.agregarOpcion(enunciado, "D", explicacionD);
+					String opcionA = pedirCadenaAlUsuario("Opción A");
+					String explicacionA = pedirCadenaAlUsuario("Explicación de la opción A");
+					quiz.agregarOpcion(enunciado, opcionA, Opcion.A, explicacionA);
+					// Opcion A
+					String opcionB = pedirCadenaAlUsuario("Opción B");
+					String explicacionB = pedirCadenaAlUsuario("Explicación de la opción B");
+					quiz.agregarOpcion(enunciado, opcionB, Opcion.B, explicacionB);
+					// Opcion A
+					String opcionC = pedirCadenaAlUsuario("Opción C");
+					String explicacionC = pedirCadenaAlUsuario("Explicación de la opción C");
+					quiz.agregarOpcion(enunciado, opcionC, Opcion.C, explicacionC);
+					// Opcion A
+					String opcionD = pedirCadenaAlUsuario("Opción D");
+					String explicacionD = pedirCadenaAlUsuario("Explicación de la opción D");
+					quiz.agregarOpcion(enunciado, opcionD, Opcion.D, explicacionD);
 					i2++;
 				}
 				profesorActual.guardarActividad(quiz);
