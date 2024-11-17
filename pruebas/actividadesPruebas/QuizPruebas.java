@@ -20,7 +20,7 @@ class QuizPruebas {
 
     @BeforeEach
     void setUp() {
-        quiz = new Quiz("Historia", "Aprender sobre historia mundial", "Contiene preguntas de múltiples opciones", "Avanzado", 30, true, 60);
+        quiz = new Quiz("Historia", "Aprender sobre historia mundial", "Contiene preguntas de múltiples opciones", "Avanzado", 30, true, 45);
     }
     
     @AfterEach

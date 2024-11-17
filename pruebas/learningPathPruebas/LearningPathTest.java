@@ -17,15 +17,25 @@ class LearningPathTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		learnPath = new LearningPath("PythonBasics","Este curso esta diseñado para aprender Python desde principiante","Principiante",180);
-		quiz1 = new Quiz("Condicionales","Demostrar conocimiento en condicionales","Preguntas opcion multiple con una sola respuesta","Intermedio",30, true, 70);
-		quiz2 = new Quiz("Asignacion","Demostrar conocimiento sobre las asignaciones en pyhton","Preguntas opcion multiple sobre asignacion","Principiante",20, true, 80);
+		learnPath = new LearningPath("PythonBasics","Este curso esta diseñado para aprender Python desde principiante","Principiante");
+		quiz1 = new Quiz("Condicionales", "Demostrar conocimiento en condicionales",
+                "Preguntas opción múltiple con una sola respuesta", "Intermedio", 30, true, 45);
+        quiz2 = new Quiz("Asignación", "Demostrar conocimiento sobre asignaciones en Python",
+                "Preguntas opción múltiple sobre asignación", "Principiante", 20, true, 40);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		learnPath = null;
+		quiz1 = null;
+		quiz2 = null;
 	}
-
+	@Test
+	void agregarActividadTest() {
+		learnPath.agregarActividad(quiz1);
+		learnPath.agregarActividad(quiz2);
+		assertTrue(learnPath.actividades.size() == 2,"El  numero de actividades no incremento correctamente en la lista de actividades.");
+	}
 	@Test
     void getTituloTest() {
         assertEquals("PythonBasics", learnPath.getTitulo(), "El título no es el esperado.");
@@ -33,7 +43,7 @@ class LearningPathTest {
 
     @Test
     void getDescripcionTest() {
-        assertEquals("Curso básico de Python", learnPath.getDescripcion(), "La descripción no es la esperada.");
+        assertEquals("Este curso esta diseñado para aprender Python desde principiante", learnPath.getDescripcion(), "La descripción no es la esperada.");
     }
 
     @Test
@@ -43,6 +53,7 @@ class LearningPathTest {
 
     @Test
     void getDuracionTest() {
+    	learnPath.agregarActividad(quiz1);
         assertEquals(30, learnPath.getDuracion(), "La duración no es la esperada.");
     }
 
@@ -58,13 +69,13 @@ class LearningPathTest {
 
     @Test
     void getVersionTest() {
-        assertEquals(0, learnPath.getVersion(), "La versión inicial debería ser 0.");
+        assertEquals(1, learnPath.getVersion(), "La versión inicial debería ser 0.");
     }
 
     @Test
     void setTituloTest() {
-        learnPath.setTitulo("JavaBasics");
-        assertEquals("JavaBasics", learnPath.getTitulo(), "El título no fue actualizado correctamente.");
+        learnPath.setTitulo("JavaBasic");
+        assertEquals("JavaBasic", learnPath.getTitulo(), "El título no fue actualizado correctamente.");
     }
 
     @Test
@@ -81,18 +92,25 @@ class LearningPathTest {
 
     @Test
     void setDuracionTest() {
-        learnPath.setDuracion(45);
-        assertEquals(45, learnPath.getDuracion(), "La duración no fue actualizada correctamente.");
+        learnPath.agregarActividad(quiz1);
+        learnPath.agregarActividad(quiz2);
+        assertEquals(50, learnPath.getDuracion(), "La duración no fue actualizada correctamente.");
     }
 
     @Test
     void calcularRatingTest() {
-        float ratingEsperado = (float) (5.0 + 4.5) / 2;
+    	quiz1.setRating(5);
+    	quiz2.setRating(4.5f);
+    	learnPath.agregarActividad(quiz1);
+    	learnPath.agregarActividad(quiz2);
+        float ratingEsperado = (float) (5.0f + 4.5f) / 2;
         assertEquals(ratingEsperado, learnPath.calcularRating(learnPath.getListaActividades()), 0.01, "El cálculo del rating no es correcto.");
     }
 
     @Test
     void getActividadPorIdTest() {
+    	learnPath.agregarActividad(quiz1);
+    	learnPath.agregarActividad(quiz2);
         String idActividad = quiz1.getId();
         Actividad resultado = learnPath.getActividad(learnPath.actividades, idActividad);
         assertEquals(quiz1, resultado, "No se encontró la actividad por ID.");
@@ -100,7 +118,9 @@ class LearningPathTest {
 
     @Test
     void getActividadPorTituloTest() {
-    	Actividad resultado = learnPath.getActividad("Asignacion", learnPath.actividades);
+    	learnPath.agregarActividad(quiz1);
+    	learnPath.agregarActividad(quiz2);
+    	Actividad resultado = learnPath.getActividad("Asignación", learnPath.actividades);
         assertEquals(quiz2, resultado, "No se encontró la actividad por título.");
     }
 

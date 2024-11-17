@@ -31,9 +31,9 @@ public class LearningPath implements Identificable{
 		this.fechaModificacion = LocalDateTime.now();
 		this.actividades = new ArrayList<Actividad>();
 		this.rating = 0;
-		this.version = 1;
-		crearId();
 		setDuracion();
+		crearId();
+		
 	}
 
 	public String getTitulo() {
@@ -120,6 +120,7 @@ public class LearningPath implements Identificable{
 		actividades.add(actividad);
 		this.fechaModificacion = LocalDateTime.now();
 		this.version += 1;
+		setDuracion();
 	}
 	
 	public Actividad getActividad(List<Actividad> actividades, String id) {

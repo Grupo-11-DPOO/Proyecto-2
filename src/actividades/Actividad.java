@@ -59,8 +59,8 @@ public abstract class Actividad implements Identificable {
 		this.cantidadRating = cantidadRating;
 	}
 
-	public void setRating(float rating) {
-		this.rating = rating;
+	public void setRating(float d) {
+		this.rating = d;
 	}
 
 	public void setResenas(List<String> resenas) {

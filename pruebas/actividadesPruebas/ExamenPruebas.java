@@ -1,0 +1,95 @@
+package actividadesPruebas;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import actividades.Estado;
+import actividades.Examen;
+
+class ExamenPruebas {
+    Examen examen;
+
+    @BeforeEach
+    void setUp() {
+        examen = new Examen(
+                "Examen de Programación",
+                "Evaluar conocimientos en programación",
+                "Examen sobre fundamentos de programación en Java",
+                "Avanzado",
+                60,
+                true
+        );
+    }
+
+    @AfterEach
+    void tearDown() {
+        examen = null;
+    }
+
+    @Test
+    void agregarPreguntaTest() {
+        examen.agregarPregunta("¿Qué es una clase en Java?");
+        assertEquals(1, examen.getPreguntas().size(), "La pregunta no fue agregada correctamente.");
+        assertTrue(examen.getPreguntas().contains("¿Qué es una clase en Java?"));
+    }
+
+    @Test
+    void eliminarPreguntaTest() {
+        examen.agregarPregunta("Explica el concepto de herencia en Java.");
+        examen.eliminarPregunta("Explica el concepto de herencia en Java.");
+        assertFalse(examen.getPreguntas().contains("Explica el concepto de herencia en Java."));
+        assertEquals(0, examen.getPreguntas().size(), "La pregunta no fue eliminada correctamente.");
+    }
+
+    @Test
+    void verPreguntasTest() {
+        examen.agregarPregunta("¿Qué es un método estático?");
+        examen.agregarPregunta("¿Cuál es la diferencia entre una interfaz y una clase abstracta?");
+        List<String> preguntas = examen.getPreguntas();
+        assertEquals(2, preguntas.size(), "No se agregaron las preguntas correctamente.");
+        assertEquals("¿Qué es un método estático?", preguntas.get(0));
+        assertEquals("¿Cuál es la diferencia entre una interfaz y una clase abstracta?", preguntas.get(1));
+    }
+
+    @Test
+    void contestarExamenTest() {
+        ArrayList<String> respuestasEstudiante = new ArrayList<>();
+        respuestasEstudiante.add("Una clase es una plantilla para crear objetos.");
+        respuestasEstudiante.add("La herencia permite reutilizar código.");
+
+        Estado estado = examen.contestarExamen("12345", respuestasEstudiante);
+        HashMap<String, ArrayList<String>> respuestas = examen.getRespuestas();
+
+        assertEquals(Estado.PENDIENTE, estado, "El estado debería ser PENDIENTE.");
+        assertTrue(respuestas.containsKey("12345"), "No se guardaron las respuestas correctamente.");
+        assertEquals(2, respuestas.get("12345").size(), "La cantidad de respuestas no es la esperada.");
+    }
+
+    @Test
+    void setPreguntasTest() {
+        List<String> nuevasPreguntas = new ArrayList<>();
+        nuevasPreguntas.add("¿Qué es el polimorfismo?");
+        examen.setPreguntas(nuevasPreguntas);
+        assertEquals(1, examen.getPreguntas().size());
+        assertEquals("¿Qué es el polimorfismo?", examen.getPreguntas().get(0));
+    }
+
+    @Test
+    void setRespuestasTest() {
+        HashMap<String, ArrayList<String>> nuevasRespuestas = new HashMap<>();
+        ArrayList<String> respuestasEstudiante = new ArrayList<>();
+        respuestasEstudiante.add("Encapsulación es el principio de ocultar los detalles internos.");
+        nuevasRespuestas.put("98765", respuestasEstudiante);
+
+        examen.setRespuestas(nuevasRespuestas);
+        assertEquals(1, examen.getRespuestas().size());
+        assertTrue(examen.getRespuestas().containsKey("98765"));
+    }
+}
