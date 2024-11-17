@@ -13,6 +13,7 @@ import java.util.Map;
 
 import actividades.Actividad;
 import actividades.Encuesta;
+import actividades.Estado;
 import actividades.Examen;
 import actividades.Opcion;
 import actividades.Quiz;
@@ -707,14 +708,13 @@ public class Consola {
 			case 5:
 				// Crear tarea
 				// Atributos propios de tarea
-				String contenidoIndicaciones = pedirCadenaAlUsuario("Ingrese las instrucciones de la tarea");
-				String medioEntrega = pedirCadenaAlUsuario("Ingrese el medio de entrega");
-				Tarea tarea = profesorActual.crearActividadTarea(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, contenidoIndicaciones, medioEntrega);
+				String idActividadTarea = pedirCadenaAlUsuario("Ingrese el id de la actividad de la tarea");
+				Tarea tarea = profesorActual.crearActividadTarea(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, idActividadTarea);
 				tarea.setPrerequisitos(listaPrerequisitos);
 				// Guardamos
 				profesorActual.guardarActividad(tarea);
-				idActividad = tarea.getId();
-				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
+				idActividadTarea = tarea.getId();
+				System.out.println("La actividad fue cargada exitosamente con el id "+idActividadTarea);
 				break;
 			}
 			
@@ -1057,7 +1057,6 @@ public class Consola {
     	// Se revisa primero que no tenga una actividad en curso
     	if (estudianteActual.getActividadEnCurso()!=null) {
     		System.out.println("Ya tiene una actividad en curso. Debe terminarla primero para empezar una nueva.");
-    		return;
     	} else {
 	    	System.out.println( "------------------------------------------------------" );
 			System.out.println( "Actividades disponibles en orden del Learning Path:" );
@@ -1089,6 +1088,7 @@ public class Consola {
 			// Iniciar actividad. Se llama iniciar actividad en curso ya que oficialmente esta en curso
 			iniciarActividadEnCurso(actividad);
     	}
+    	menuEstudiante();
     }
     
     public static void iniciarActividadEnCurso(Actividad actividad) {
@@ -1113,59 +1113,120 @@ public class Consola {
     		// Iniciar actividad recurso
     		Recurso recurso = (Recurso) actividad;
     		realizarRecurso(recurso);
-    		
-    	} else {
+
+    	} else if (tipoActividad == TipoActividades.Tarea){
     		// Iniciar actividad tarea
     		Tarea tarea = (Tarea) actividad;
     		realizarTarea(tarea);
-    		
     	}
+    	System.out.println("Recuerde que puede dejar una reseña o rating de la actividad si desea!");
+    	// Marcamos actividad actual como vacia.
+    	estudianteActual.setActividadEnCurso(null);
+    	menuEstudiante();
     }
     
     public static void realizarEncuesta(Encuesta encuesta) {
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Material del recurso");
+    	System.out.println(encuesta.verActividad());
+    	int cantidadPreguntas = encuesta.getPreguntas().size();
+    	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
     	System.out.println( "------------------------------------------------------" );
+    	// Revisar fechaLimite
     	// Imprimir el material
-    	System.out.println(recurso.getMaterial());
+    	System.out.println("Preguntas: ");
+    	encuesta.verPreguntas();
     	// Realizar
-    	estudianteActual.realizarRecurso(recurso);
+    	int i = 0;
+    	List<String> respuestas = new ArrayList<>();
+    	while (i < cantidadPreguntas) {
+    		String respuesta = pedirCadenaAlUsuario("Respuesta a la pregunta #"+i);
+    		respuestas.add(respuesta);
+    		i++;
+    	}
+    	// Manda las respuestas...
+    	estudianteActual.realizarEncuesta(encuesta);
+    	
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println("Se ha marcado "+encuesta.getTitulo()+" como exitosa.");
     	System.out.println( "------------------------------------------------------" );
     }
     
     public static void realizarExamen(Examen examen) {
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Material del recurso");
+    	System.out.println(examen.verActividad());
+    	int cantidadPreguntas = examen.getPreguntas().size();
+    	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
     	System.out.println( "------------------------------------------------------" );
+    	// Revisar fechaLimite
     	// Imprimir el material
-    	System.out.println(recurso.getMaterial());
+    	System.out.println("Preguntas: ");
+    	examen.verPreguntas();
     	// Realizar
-    	estudianteActual.realizarRecurso(recurso);
+    	int i = 0;
+    	List<String> respuestas = new ArrayList<>();
+    	while (i < cantidadPreguntas) {
+    		String respuesta = pedirCadenaAlUsuario("Respuesta a la pregunta #"+i);
+    		respuestas.add(respuesta);
+    		i++;
+    	}
+    	// Manda las respuestas...
+    	estudianteActual.realizarExamen(examen);
+    	
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println("Se ha marcado la actividad "+examen.getTitulo()+" enviada.");
+    	System.out.println("Este pendiente a la calificación del profesor.");
     	System.out.println( "------------------------------------------------------" );
     }
     
     public static void realizarQuiz(Quiz quiz) {
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Material del recurso");
+    	System.out.println(quiz.verActividad());
+    	int cantidadPreguntas = quiz.getPreguntas().size();
+    	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
     	System.out.println( "------------------------------------------------------" );
-    	// Imprimir el material
-    	System.out.println(recurso.getMaterial());
+    	System.out.println("Preguntas:");
+    	System.out.println(quiz.verPreguntas());
     	// Realizar
-    	estudianteActual.realizarRecurso(recurso);
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println( "Respuestas:" );
+    	int i = 0;
+    	List<Opcion> respuestas = new ArrayList<>();
+    	while (i < cantidadPreguntas) {
+    		String respuesta = pedirCadenaAlUsuario("Respuesta (A-B-C-D) a la pregunta #"+i);
+    		respuesta.toLowerCase();
+			Opcion respuestaEnum;
+			if (respuesta.equals("a")) {
+				respuestaEnum = Opcion.A;
+			} else if (respuesta.equals("b")) {
+				respuestaEnum = Opcion.B;
+			} else if (respuesta.equals("c")) {
+				respuestaEnum = Opcion.C;
+			} else {
+				// Si el usuario digito mal, siempre será la D de Dios la respuesta correcta.
+				respuestaEnum = Opcion.D;
+			}
+    		respuestas.add(respuestaEnum);
+    		i++;
+    	}
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Ahora, se va a calificar... ");
+    	System.out.println( "------------------------------------------------------" );
+    	// Manda las respuestas
+    	Estado resultado = estudianteActual.realizarQuiz(quiz);
+    	// Vuelven calificadas
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("El quiz "+quiz.getTitulo()+" ha sido "+resultado);
     	System.out.println( "------------------------------------------------------" );
     }
     
     public static void realizarRecurso(Recurso recurso) {
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Material del recurso");
+    	System.out.println(recurso.verActividad());
     	System.out.println( "------------------------------------------------------" );
+    	// Revisar fechaLimite
     	// Imprimir el material
+    	System.out.println("Material");
+    	System.out.println( "------------------------------------------------------" );
     	System.out.println(recurso.getMaterial());
     	// Realizar
     	estudianteActual.realizarRecurso(recurso);
@@ -1176,9 +1237,10 @@ public class Consola {
     
     public static void realizarTarea(Tarea tarea) {
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Material del recurso");
+    	System.out.println(tarea.verActividad());
     	System.out.println( "------------------------------------------------------" );
     	// Imprimir el material
+    	String medioEntrega = pedirCadenaAlUsuario("Ingrese el medio de entrega");
     	System.out.println(recurso.getMaterial());
     	// Realizar
     	estudianteActual.realizarRecurso(recurso);

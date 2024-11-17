@@ -129,9 +129,9 @@ public class Profesor extends Usuario {
 	}
 	
 	public Tarea crearActividadTarea(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
-			String contenidoIndicaciones, String medioEntrega) throws Exception {
+			String idActividadTarea) throws Exception {
 		
-			Tarea tarea = new Tarea(titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio, contenidoIndicaciones , medioEntrega);
+			Tarea tarea = new Tarea(titulo, objetivo,descripcion, nivel, duracionMinutos, obligatorio, idActividadTarea);
 			System.out.println("Su actividad de tipo tarea ha sido creada.");
 			return tarea;
 		}

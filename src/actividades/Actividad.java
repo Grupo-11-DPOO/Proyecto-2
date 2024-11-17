@@ -166,7 +166,7 @@ public abstract class Actividad implements Identificable {
 		return valido;
 	}
 	
-	// Falta revisar y reconstruir la funcion ya que se cambio el nombre de la variable a tiempoLimite y el tipo a int para mayor facilidad y diseño
+	// Falta revisar y reconstruir la funcion ya que se cambio el nombre de la variable a tiempoLimite y
     public void establecerFechaLimite(Actividad actividadAnterior, int horasDespues) {
         if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
             System.out.println("La actividad anterior no es válida.");
@@ -226,24 +226,6 @@ public abstract class Actividad implements Identificable {
         informacion.append("Tiempo Límite: ").append(tiempoLimite != null ? tiempoLimite.toString() : "Sin límite").append("\n");
         informacion.append("Rating: ").append(rating).append(" (").append(cantidadRating).append(" calificaciones)\n");
         informacion.append("Tipo de Actividad: ").append(tipoActividad != null ? tipoActividad : "No especificado").append("\n");
-
-        if (prerequisitos != null && !prerequisitos.isEmpty()) {
-            informacion.append("Prerrequisitos:\n");
-            for (Actividad actividad : prerequisitos) {
-                informacion.append("  - ").append(actividad.titulo != null ? actividad.titulo : "Actividad sin título").append("\n");
-            }
-        } else {
-            informacion.append("Prerrequisitos: Ninguno\n");
-        }
-
-        if (resenas != null && !resenas.isEmpty()) {
-            informacion.append("Reseñas:\n");
-            for (String resena : resenas) {
-                informacion.append("  - ").append(resena).append("\n");
-            }
-        } else {
-            informacion.append("Reseñas: No hay reseñas\n");
-        }
 
         return informacion.toString();
     }
