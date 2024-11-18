@@ -56,4 +56,8 @@ class RecursoPruebas {
         assertEquals(60, recurso.getDuracionMinutos(), "La duración no es la esperada.");
         assertTrue(recurso.isObligatorio(), "El recurso debería ser obligatorio.");
     }
+    @Test
+    void testClone() {
+    	assertNotEquals(recurso.getId(),recurso.clone().getId(),"El id es el mismo en ambas");
+    }
 }

@@ -310,7 +310,7 @@ public class Profesor extends Usuario {
 	}
 //	
 	@SuppressWarnings("unused")
-	private void agregarActividad(Actividad actividad, LearningPath learnPath) throws UsuarioExistenteException {
+	public void agregarActividad(Actividad actividad, LearningPath learnPath) throws UsuarioExistenteException {
 		List<Actividad> actividadesLearn = learnPath.getListaActividades();
 		actividadesLearn.add(actividad);
 		guardarLearningPath(learnPath);

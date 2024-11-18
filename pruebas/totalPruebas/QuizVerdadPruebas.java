@@ -140,4 +140,8 @@ class QuizVerdadPruebas {
     void testGetCalificacionMin() {
     	assertEquals(80, quiz.getCalificacionMinima(),"La calificacion minima no es la esperada.");
     }
+    @Test
+    void testClone() {
+    	assertNotEquals(quiz.getId(),quiz.clone().getId(),"El id es el mismo en ambas");
+    }
 }

@@ -290,5 +290,88 @@ class ProfesorPruebas {
 
         assertEquals(resultadoEsperado, resultado, "El mensaje devuelto no es el esperado");
     }
+    
+    @Test
+    void testClonarActividad() throws Exception {
+        
+        Tarea tarea = profesor.crearActividadTarea("Tarea 1", "Resolver ejercicios", 
+                "Matemáticas básicas", "Intermedio", 30, true, "Entrega en PDF");
+        Recurso recurso = profesor.crearActividadRecurso("Recurso 1", "Aprender conceptos básicos", 
+                "PDF sobre matemáticas", "Intermedio", 20, true, "Material.pdf");
+        Quiz quiz = profesor.crearActividadQuiz("Quiz 1", "Evaluar conocimientos", 
+                "Preguntas de opción múltiple", "Principiante", 15, true, 60);
+        Examen examen = profesor.crearActividadExamen("Examen Final", "Evaluar conocimientos adquiridos", 
+                "Examen escrito", "Avanzado", 45, true);
+        Encuesta encuesta = profesor.crearActividadEncuesta("Encuesta de Satisfacción", 
+                "Evaluar satisfacción", "Preguntas abiertas", "Básico", 10, true);
+        QuizVerdad quizVerdad = profesor.crearQuizVerdaderoFalso("Quiz Verdad", 
+                "Preguntas de verdadero o falso", "Evaluar conocimiento rápido", 
+                "Fácil", 10, true, 80);
+
+        String idTareaClonada = profesor.clonarActividad(tarea);
+        String idRecursoClonada = profesor.clonarActividad(recurso);
+        String idQuizClonada = profesor.clonarActividad(quiz);
+        String idExamenClonada = profesor.clonarActividad(examen);
+        String idEncuestaClonada = profesor.clonarActividad(encuesta);
+        String idQuizVerdadClonada = profesor.clonarActividad(quizVerdad);
+
+        
+        assertNotNull(profesor.getActividadById(idTareaClonada), "La tarea clonada no fue encontrada.");
+        assertNotNull(profesor.getActividadById(idRecursoClonada), "El recurso clonado no fue encontrado.");
+        assertNotNull(profesor.getActividadById(idQuizClonada), "El quiz clonado no fue encontrado.");
+        assertNotNull(profesor.getActividadById(idExamenClonada), "El examen clonado no fue encontrado.");
+        assertNotNull(profesor.getActividadById(idEncuestaClonada), "La encuesta clonada no fue encontrada.");
+        assertNotNull(profesor.getActividadById(idQuizVerdadClonada), "El quiz de verdadero o falso clonado no fue encontrado.");
+
+        
+        assertNotEquals(tarea.getId(), idTareaClonada, "El ID de la tarea clonada no debería ser igual al original.");
+        assertNotEquals(recurso.getId(), idRecursoClonada, "El ID del recurso clonado no debería ser igual al original.");
+        assertNotEquals(quiz.getId(), idQuizClonada, "El ID del quiz clonado no debería ser igual al original.");
+        assertNotEquals(examen.getId(), idExamenClonada, "El ID del examen clonado no debería ser igual al original.");
+        assertNotEquals(encuesta.getId(), idEncuestaClonada, "El ID de la encuesta clonada no debería ser igual al original.");
+        assertNotEquals(quizVerdad.getId(), idQuizVerdadClonada, "El ID del quiz de verdadero o falso clonado no debería ser igual al original.");
+    }
+    
+    @Test
+    void testGuardarActividad() throws Exception {
+        Tarea tarea = profesor.crearActividadTarea("Tarea 1", "Resolver ejercicios", 
+                "Matemáticas básicas", "Intermedio", 30, true, "Entrega en PDF");
+        profesor.guardarActividad(tarea);
+
+        assertNotNull(profesor.getDataActividades().get(tarea.getId()), "La actividad no fue guardada en el mapa de actividades.");
+        assertTrue(profesor.getIdActividadesCreadas().contains(tarea.getId()), "El ID de la actividad no fue añadido a la lista de actividades creadas.");
+    }
+
+    @Test
+    void testCrearLearningPath() {
+        LearningPath learningPath = profesor.crearLearningPath("Java Basics", "Aprender Java desde cero", "Principiante");
+
+        assertNotNull(learningPath, "El Learning Path no fue creado correctamente.");
+        assertEquals("Java Basics", learningPath.getTitulo(), "El título del Learning Path no es el esperado.");
+        assertEquals("Aprender Java desde cero", learningPath.getDescripcion(), "El objetivo del Learning Path no es el esperado.");
+        assertEquals("Principiante", learningPath.getNivel(), "El nivel del Learning Path no es el esperado.");
+        assertTrue(profesor.getDataLearningPaths().containsKey(learningPath.getId()), "El Learning Path no fue añadido al mapa de Learning Paths.");
+    }
+
+    @Test
+    void testGuardarLearningPath() throws Exception {
+        LearningPath learningPath = profesor.crearLearningPath("Python Advanced", "Aprender conceptos avanzados de Python", "Avanzado");
+        profesor.guardarLearningPath(learningPath);
+
+        assertNotNull(profesor.getDataLearningPaths().get(learningPath.getId()), "El Learning Path no fue guardado en el mapa de Learning Paths.");
+        assertTrue(profesor.getIdLearningPathsCreados().contains(learningPath.getId()), "El ID del Learning Path no fue añadido a la lista de Learning Paths creados.");
+    }
+
+    @Test
+    void testAgregarActividad() throws Exception {
+        LearningPath learningPath = profesor.crearLearningPath("Java Advanced", "Dominio avanzado de Java", "Avanzado");
+        Tarea tarea = profesor.crearActividadTarea("Tarea 1", "Resolver ejercicios avanzados", 
+                "Matemáticas avanzadas", "Avanzado", 45, true, "Entrega en PDF");
+        
+        profesor.agregarActividad(tarea, learningPath);
+
+        assertTrue(learningPath.getListaActividades().contains(tarea), "La actividad no fue añadida al Learning Path.");
+        assertTrue(profesor.getDataLearningPaths().containsKey(learningPath.getId()), "El Learning Path no fue guardado en el mapa de Learning Paths.");
+    }
 
 }

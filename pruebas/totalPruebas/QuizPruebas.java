@@ -127,4 +127,8 @@ class QuizPruebas {
 
         assertEquals("La cantidad de respuestas no coincide con el número de preguntas.", exception.getMessage(), "El mensaje de excepción no es el esperado.");
     }
+    @Test
+    void testClone() {
+    	assertNotEquals(quiz.getId(),quiz.clone().getId(),"El id es el mismo en ambas");
+    }
 }

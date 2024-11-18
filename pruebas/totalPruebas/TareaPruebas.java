@@ -55,4 +55,9 @@ class TareaPruebas {
     	HashMap<String,String> respuestas = tarea.getRespuestas();
     	assertTrue(respuestas.containsKey("Javier"));
     }
+    
+    @Test
+    void testClone() {
+    	assertNotEquals(tarea.getId(),tarea.clone().getId(),"El id es el mismo en ambas");
+    }
 }

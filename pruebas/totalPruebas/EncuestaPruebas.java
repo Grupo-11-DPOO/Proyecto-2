@@ -136,5 +136,10 @@ class EncuestaPruebas {
     void verPreguntasTestSinPreguntas(){
     	assertEquals("No hay preguntas que mostrar", encuesta.verPreguntas(),"No se muestra el mensaje correcto cuando no hay preguntas.");
     }
+
+	@Test
+	    void testClone() {
+	    	assertNotEquals(encuesta.getId(),encuesta.clone().getId(),"El id es el mismo en ambas");
+	    }
     
 }

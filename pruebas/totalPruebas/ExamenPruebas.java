@@ -107,4 +107,9 @@ class ExamenPruebas {
         assertEquals(1, examen.getRespuestas().size());
         assertTrue(examen.getRespuestas().containsKey("98765"));
     }
+    
+    @Test
+    void testClone() {
+    	assertNotEquals(examen.getId(),examen.clone().getId(),"El id es el mismo en ambas");
+    }
 }
