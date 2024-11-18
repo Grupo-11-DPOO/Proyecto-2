@@ -374,7 +374,7 @@ public class Consola {
 		int opcion = mostrarMenu("Agregar actividades. Recuerde que van en orden.", opcionesCrearLearningPath);
 		switch(opcion) {
 		case 1:
-			List<String> idActividadesPropias = profesorActual.getActividadesPropias();
+			List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
 			int cantidadActividadesProfesor = idActividadesPropias.size();
 			if (cantidadActividadesProfesor > 0) {
 				imprimirActividadesPropiasProfesor(idActividadesPropias);
@@ -436,7 +436,7 @@ public class Consola {
     	System.out.println("Ver y Editar Learning Paths");
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Lista de Learning Paths");
-    	List<String> idLearningPathsPropios = profesorActual.getLearningPathsPropios();
+    	List<String> idLearningPathsPropios = profesorActual.getIdLearningPathsCreados();
     	for (Map.Entry<String, LearningPath> entry : learningPaths.entrySet()) {
             String id = entry.getKey();
             if (idLearningPathsPropios.contains(id)) {
@@ -490,7 +490,7 @@ public class Consola {
     			break;
     		case 4:
     			// Agregar actividades existentes
-    			List<String> idActividadesPropias = profesorActual.getActividadesPropias();
+    			List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
     			int cantidadActividadesProfesor = idActividadesPropias.size();
     			if (cantidadActividadesProfesor > 0) {
     				int cantidadActividades = pedirEnteroAlUsuario("Ingrese la cantidad de actividades existentes a agregar");
@@ -1137,14 +1137,14 @@ public class Consola {
     	encuesta.verPreguntas();
     	// Realizar
     	int i = 0;
-    	List<String> respuestas = new ArrayList<>();
+    	ArrayList<String> respuestas = new ArrayList<>();
     	while (i < cantidadPreguntas) {
     		String respuesta = pedirCadenaAlUsuario("Respuesta a la pregunta #"+i);
     		respuestas.add(respuesta);
     		i++;
     	}
     	// Manda las respuestas...
-    	estudianteActual.realizarEncuesta(encuesta);
+    	estudianteActual.realizarEncuesta(encuesta,respuestas);
     	
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Se ha marcado "+encuesta.getTitulo()+" como exitosa.");
@@ -1163,14 +1163,14 @@ public class Consola {
     	examen.verPreguntas();
     	// Realizar
     	int i = 0;
-    	List<String> respuestas = new ArrayList<>();
+    	ArrayList<String> respuestas = new ArrayList<>();
     	while (i < cantidadPreguntas) {
     		String respuesta = pedirCadenaAlUsuario("Respuesta a la pregunta #"+i);
     		respuestas.add(respuesta);
     		i++;
     	}
     	// Manda las respuestas...
-    	estudianteActual.realizarExamen(examen);
+    	estudianteActual.realizarExamen(examen,respuestas);
     	
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Se ha marcado la actividad "+examen.getTitulo()+" enviada.");
@@ -1178,7 +1178,7 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     }
     
-    public static void realizarQuiz(Quiz quiz) {
+    public static void realizarQuiz(Quiz quiz) throws Exception {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println(quiz.verActividad());
     	int cantidadPreguntas = quiz.getPreguntas().size();
@@ -1190,7 +1190,7 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println( "Respuestas:" );
     	int i = 0;
-    	List<Opcion> respuestas = new ArrayList<>();
+    	ArrayList<Opcion> respuestas = new ArrayList<>();
     	while (i < cantidadPreguntas) {
     		String respuesta = pedirCadenaAlUsuario("Respuesta (A-B-C-D) a la pregunta #"+i);
     		respuesta.toLowerCase();
@@ -1212,7 +1212,7 @@ public class Consola {
     	System.out.println("Ahora, se va a calificar... ");
     	System.out.println( "------------------------------------------------------" );
     	// Manda las respuestas
-    	Estado resultado = estudianteActual.realizarQuiz(quiz);
+    	Estado resultado = estudianteActual.realizarQuiz(quiz,respuestas);
     	// Vuelven calificadas
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("El quiz "+quiz.getTitulo()+" ha sido "+resultado);

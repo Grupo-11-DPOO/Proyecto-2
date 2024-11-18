@@ -197,13 +197,13 @@ public class Estudiante extends Usuario {
 		Estado estado = quiz.calificar(login, respuestas);
 		registroActividades.put(idActividad, estado);
 	}
-	public void realizarQuiz(Quiz quiz, ArrayList<Opcion> respuestas) throws Exception {
+	public Estado realizarQuiz(Quiz quiz, ArrayList<Opcion> respuestas) throws Exception {
 		// TODO 
 		// Llamar a clase examen
 		String idActividad = quiz.getId();
 		Estado estado = quiz.calificar(login, respuestas);
 		registroActividades.put(idActividad, estado);
-
+		return estado;
 		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
