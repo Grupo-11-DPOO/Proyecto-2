@@ -18,15 +18,12 @@ import learningPaths.LearningPath;
 
 public class Profesor extends Usuario {
 
-	private HashMap<String, Actividad> dataActividades;
-	private HashMap<String, LearningPath> dataLearningPaths;
+	
 	private ArrayList<String> idActividadesCreadas;
 	private ArrayList<String> idLearningPathsCreados;
 	
 	public Profesor(HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths, String Login, String Password) {
-		super(Login, Password);
-		this.dataActividades = actividades;
-		this.dataLearningPaths = learningPaths;
+		super(Login, Password, actividades, learningPaths);
 		this.idActividadesCreadas = new ArrayList<>();
 		this.idLearningPathsCreados = new ArrayList<>();
 		}
@@ -48,15 +45,15 @@ public class Profesor extends Usuario {
 	}
 
 	public void agregarLearningPath(LearningPath learnPath) throws UsuarioExistenteException {
-		dataLearningPaths.put(learnPath.getId(),learnPath);
+		getDataLearningPaths().put(learnPath.getId(),learnPath);
 		//learningPathExistentes.cargarLearningPath(learnPath);
 		this.idLearningPathsCreados.add(learnPath.getId());
 		//usuarios.cargarProfesor(login, password, idLearningPaths, idActividades);
 	}
 	
 	public LearningPath buscarLearningPathPorNombre(String nombreLearningPath) {
-		if(!dataLearningPaths.isEmpty()) {
-			Iterator<LearningPath> iteradorClaves = dataLearningPaths.values().iterator();
+		if(!getDataLearningPaths().isEmpty()) {
+			Iterator<LearningPath> iteradorClaves = getDataLearningPaths().values().iterator();
 			 while (iteradorClaves.hasNext()) {
 				 	LearningPath learningPath = iteradorClaves.next();
 			        if (learningPath.getTitulo().equalsIgnoreCase(nombreLearningPath)) {
@@ -68,18 +65,18 @@ public class Profesor extends Usuario {
 	}
 	
 	public LearningPath getLearningPathById(String id) {
-		boolean x= dataLearningPaths.containsKey(id);
+		boolean x= getDataLearningPaths().containsKey(id);
 		if (x) {
 			
-			return dataLearningPaths.get(id);
+			return getDataLearningPaths().get(id);
 		}
 		else return null;
 		}
 	
 	public Actividad buscarActividadPorNombre(String nombreActividad) {
 		
-		if(!dataActividades.isEmpty()) {
-			Iterator<Actividad> iteradorClaves = dataActividades.values().iterator();
+		if(!getDataActividades().isEmpty()) {
+			Iterator<Actividad> iteradorClaves = getDataActividades().values().iterator();
 			 while (iteradorClaves.hasNext()) {
 				 	Actividad actividad = iteradorClaves.next();
 			        if (actividad.getTitulo().equalsIgnoreCase(nombreActividad)) {
@@ -120,12 +117,14 @@ public class Profesor extends Usuario {
 			break;
 		}
 		return idActividadClonada;
-	}	public Actividad getActividadById(String id) {
-		boolean x= dataActividades.containsKey(id);
+	}	
+	
+	public Actividad getActividadById(String id) {
+		boolean x= getDataActividades().containsKey(id);
 		
 		if (x) {
 			
-			return dataActividades.get(id);
+			return getDataActividades().get(id);
 		} else return null;
 		}
 	
@@ -133,7 +132,7 @@ public class Profesor extends Usuario {
 	public String clonarTarea(Tarea tarea) throws Exception {
 	    Tarea actiClonada = tarea.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
-	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    getDataActividades().put(actiClonada.getId(), actiClonada);
 	    
 	    return actiClonada.getId();
 	}
@@ -141,35 +140,35 @@ public class Profesor extends Usuario {
 	public String clonarRecurso(Recurso recurso) throws Exception {
 	    Recurso actiClonada = recurso.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
-	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    getDataActividades().put(actiClonada.getId(), actiClonada);
 	    return actiClonada.getId();
 	}
 
 	public String clonarQuizVerdad(QuizVerdad quizVerdad) throws Exception {
 	    QuizVerdad actiClonada = quizVerdad.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
-	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    getDataActividades().put(actiClonada.getId(), actiClonada);
 	    return actiClonada.getId();
 	}
 
 	public String clonarQuiz(Quiz quiz) throws Exception {
 	    Quiz actiClonada = quiz.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
-	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    getDataActividades().put(actiClonada.getId(), actiClonada);
 	    return actiClonada.getId();
 	}
 
 	public String clonarExamen(Examen examen) throws Exception {
 	    Examen actiClonada = examen.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
-	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    getDataActividades().put(actiClonada.getId(), actiClonada);
 	    return actiClonada.getId();
 	}
 
 	public String clonarEncuesta(Encuesta encuesta) throws Exception {
 	    Encuesta actiClonada = encuesta.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
-	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    getDataActividades().put(actiClonada.getId(), actiClonada);
 	    return actiClonada.getId();
 	}
 
@@ -179,13 +178,13 @@ public class Profesor extends Usuario {
 			Recurso recurso = new Recurso(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, material);
 			System.out.println("Su actividad de tipo recurso ha sido creada.");
 			idActividadesCreadas.add(recurso.getId());
-			dataActividades.put(recurso.getId(), recurso);
+			getDataActividades().put(recurso.getId(), recurso);
 			return recurso;
 	}
 	
 	public void agregarActividadALearningPath(LearningPath learningPath, Actividad actividad) {
 		learningPath.agregarActividad(actividad);
-		dataLearningPaths.put(learningPath.getId(), learningPath);
+		getDataLearningPaths().put(learningPath.getId(), learningPath);
 	}
 	
 	public Tarea crearActividadTarea(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio,
@@ -199,7 +198,7 @@ public class Profesor extends Usuario {
 			Examen examen= new Examen(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			System.out.println("Su actividad de tipo examen ha sido creada.");
 			idActividadesCreadas.add(examen.getId());
-			dataActividades.put(examen.getId(), examen);
+			getDataActividades().put(examen.getId(), examen);
 			return examen;
 		}
 	
@@ -207,7 +206,7 @@ public class Profesor extends Usuario {
 			Encuesta encuesta= new Encuesta(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			System.out.println("Su actividad de tipo examen ha sido creada.");
 			idActividadesCreadas.add(encuesta.getId());
-			dataActividades.put(encuesta.getId(), encuesta);
+			getDataActividades().put(encuesta.getId(), encuesta);
 			return encuesta;
 		}
 	
@@ -291,7 +290,7 @@ public class Profesor extends Usuario {
 
 
 	public void guardarActividad(Actividad actividad) throws UsuarioExistenteException {
-		dataActividades.put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
+		getDataActividades().put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
 		idActividadesCreadas.add(actividad.getId()); // Lista con id de actividades
 		// NO SE CARGA, SE ACTUALIZA
 		//usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);
@@ -299,12 +298,12 @@ public class Profesor extends Usuario {
 	
 	public LearningPath crearLearningPath(String titulo, String objetivo, String nivel) {
 		LearningPath learningPath = new LearningPath(titulo, objetivo, nivel);
-		dataLearningPaths.put(learningPath.getId(), learningPath);
+		getDataLearningPaths().put(learningPath.getId(), learningPath);
 		return learningPath;
 	}
 	
 	public void guardarLearningPath(LearningPath learningPath) throws UsuarioExistenteException{
-		dataLearningPaths.put(learningPath.getId(),learningPath);
+		getDataLearningPaths().put(learningPath.getId(),learningPath);
 		idLearningPathsCreados.add(learningPath.getId());
 		// SE ACTUALIZA
 		//usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);

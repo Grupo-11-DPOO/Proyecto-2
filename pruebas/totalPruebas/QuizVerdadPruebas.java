@@ -1,4 +1,4 @@
-package actividadesPruebas;
+package totalPruebas;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -128,11 +128,16 @@ class QuizVerdadPruebas {
     }
     @Test
     void testGetRespuestas() {
-    	
-    	quiz.agregarPregunta("Java fue desarrollado por Michael Jackson.", VerdaderoFalso.Falso);
-    	
-    	assertEquals(1, quiz.getRespuestas().size(),"No se añadio correctamente la respuesta");
-    	assertEquals(VerdaderoFalso.Falso,quiz.getRespuestas().get(0),"La respuesta no era la esperada.");
+    	ArrayList<VerdaderoFalso> lista = new ArrayList<VerdaderoFalso>();
+    	lista.add(VerdaderoFalso.Falso);
+    	lista.add(VerdaderoFalso.Verdadero);
+    	quiz.setRespuestasCorrectas(lista);
+    	assertEquals(2, quiz.getRespuestasCorrectas().size(),"No se añadio correctamente la respuesta");
+    	assertEquals(VerdaderoFalso.Falso,quiz.getRespuestasCorrectas().get(0),"La respuesta no era la esperada.");
     }
-
+    
+    @Test
+    void testGetCalificacionMin() {
+    	assertEquals(80, quiz.getCalificacionMinima(),"La calificacion minima no es la esperada.");
+    }
 }

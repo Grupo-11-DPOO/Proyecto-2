@@ -23,17 +23,13 @@ import learningPaths.LearningPath;
 public class Estudiante extends Usuario {
 	private Actividad actividadEnCurso;
 	private LearningPath learningPathEnCurso; //Lista con los learningPaths en curso, donde se almacenan sus id
-	private HashMap <String, Actividad> dataActividades; // mapa con las actividades que existen
-	private HashMap <String, LearningPath> dataLearningPaths; // mapa con los learningPath que existen
 	private HashMap<String, Estado> registroActividades; //llave idActividades, valor Estado
 	private HashMap<String, Double> registroLearningPaths; //llave idLearningPaths, valor double del progeso 0 a 1
 	private List<String> intereses;
 	
 	public Estudiante(HashMap<String, Actividad> actividades, HashMap<String,LearningPath> learningPaths, String nLogin, String nPassword, List<String> intereses) {
-		super(nLogin, nPassword);
+		super(nLogin, nPassword, actividades, learningPaths);
 		this.intereses = intereses;
-		this.dataActividades = actividades;
-		this.dataLearningPaths = learningPaths;
 		this.actividadEnCurso = null;
 		this.learningPathEnCurso = null;
 		this.registroActividades = new HashMap<String, Estado>() ;
@@ -42,8 +38,8 @@ public class Estudiante extends Usuario {
 	
 	public LearningPath buscarLearningPathPorNombre(String nombreLearningPath) {
 		
-		if(!dataLearningPaths.isEmpty()) {
-			Iterator<LearningPath> iteradorClaves = dataLearningPaths.values().iterator();
+		if(!getDataLearningPaths().isEmpty()) {
+			Iterator<LearningPath> iteradorClaves = getDataLearningPaths().values().iterator();
 			 while (iteradorClaves.hasNext()) {
 				 	LearningPath learningPath = iteradorClaves.next();
 			        if (learningPath.getTitulo().equalsIgnoreCase(nombreLearningPath)) {
@@ -55,16 +51,16 @@ public class Estudiante extends Usuario {
 	}
 	
 	public LearningPath getLearningPathById(String id) {
-		boolean x= dataLearningPaths.containsKey(id);
+		boolean x= getDataLearningPaths().containsKey(id);
 		if (x) {
-			return dataLearningPaths.get(id);
+			return getDataLearningPaths().get(id);
 		}
 		else return null;
 		}
 	
 	public Actividad buscarActividadPorNombre(String nombreActividad) {
-		if(!dataActividades.isEmpty()) {
-			Iterator<Actividad> iteradorClaves = dataActividades.values().iterator();
+		if(!getDataActividades().isEmpty()) {
+			Iterator<Actividad> iteradorClaves = getDataActividades().values().iterator();
 			 while (iteradorClaves.hasNext()) {
 				 	Actividad actividad = iteradorClaves.next();
 			        if (actividad.getTitulo().equalsIgnoreCase(nombreActividad)) {
@@ -76,9 +72,9 @@ public class Estudiante extends Usuario {
 	}
 	
 	public Actividad getActividadById(String id) {
-		boolean x= dataActividades.containsKey(id);
+		boolean x= getDataActividades().containsKey(id);
 		if (x) {
-			return dataActividades.get(id);
+			return getDataActividades().get(id);
 		}
 		else return null;
 		}

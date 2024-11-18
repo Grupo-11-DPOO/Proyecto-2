@@ -1,4 +1,4 @@
-package actividadesPruebas;
+package totalPruebas;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,7 +78,7 @@ class EncuestaPruebas {
 
     @Test
     void testSetPreguntas() {
-        List<String> nuevasPreguntas = new ArrayList<>();
+        ArrayList<String> nuevasPreguntas = new ArrayList<>();
         nuevasPreguntas.add("¿Cómo fue la calidad del material?");
         encuesta.setPreguntas(nuevasPreguntas);
         assertEquals(1, encuesta.getPreguntas().size());
@@ -136,4 +136,5 @@ class EncuestaPruebas {
     void verPreguntasTestSinPreguntas(){
     	assertEquals("No hay preguntas que mostrar", encuesta.verPreguntas(),"No se muestra el mensaje correcto cuando no hay preguntas.");
     }
+    
 }
