@@ -36,6 +36,8 @@ public class Estudiante extends Usuario {
 		this.dataLearningPaths = learningPaths;
 		this.actividadEnCurso = null;
 		this.learningPathEnCurso = null;
+		this.registroActividades = new HashMap<String, Estado>() ;
+		this.registroLearningPaths = new HashMap<String, Double>(); 
 	}
 	
 	public LearningPath buscarLearningPathPorNombre(String nombreLearningPath) {
@@ -121,7 +123,7 @@ public class Estudiante extends Usuario {
 	}
 	
 	public boolean empezarActividad(Actividad actividad) {
-		if (actividadEnCurso!=null) {
+		if (actividadEnCurso==null) {
 			actividadEnCurso = actividad;
 			return true;
 		}
@@ -146,7 +148,7 @@ public class Estudiante extends Usuario {
     		String idActividad = actividad.getId();
     		Estado estado = registroActividadesEstudiante.get(idActividad);
     		if (estado != null) {
-    			if (estado == Estado.ENVIADA || estado == Estado.EXITOSA) {
+    			if (estado.equals(Estado.ENVIADA) || estado.equals(Estado.EXITOSA)) {
     				contadorCompletadas += 1;
     				if (estado == Estado.EXITOSA) {
     					contadorExitosas += 1;
@@ -154,8 +156,8 @@ public class Estudiante extends Usuario {
     			}
     		}
     	}
-    	double porcentajeCompletadas = (contadorCompletadas/cantidadActividades)*100;
-    	double porcentajeExitosas = (contadorExitosas/cantidadActividades)*100;
+    	double porcentajeCompletadas = ((double)contadorCompletadas/cantidadActividades)*100;
+    	double porcentajeExitosas = ((double)contadorExitosas/cantidadActividades)*100;
     	listaRetorno.add(porcentajeCompletadas);
     	listaRetorno.add(porcentajeExitosas);
     	return listaRetorno;
