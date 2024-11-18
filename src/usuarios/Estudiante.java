@@ -12,8 +12,10 @@ import actividades.Estado;
 import actividades.Examen;
 import actividades.Opcion;
 import actividades.Quiz;
+import actividades.QuizVerdad;
 import actividades.Recurso;
 import actividades.Tarea;
+import actividades.VerdaderoFalso;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
 
@@ -189,6 +191,12 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
+	public void realizarQuizVerdad(QuizVerdad quiz, ArrayList<VerdaderoFalso> respuestas) throws Exception {
+		
+		String idActividad = quiz.getId();
+		Estado estado = quiz.calificar(login, respuestas);
+		registroActividades.put(idActividad, estado);
+	}
 	public void realizarQuiz(Quiz quiz, ArrayList<Opcion> respuestas) throws Exception {
 		// TODO 
 		// Llamar a clase examen

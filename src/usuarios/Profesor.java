@@ -13,6 +13,7 @@ import actividades.Encuesta;
 import actividades.Estado;
 import actividades.Examen;
 import actividades.Quiz;
+import actividades.QuizVerdad;
 import actividades.Recurso;
 import actividades.Tarea;
 import actividades.TipoActividades;
@@ -181,6 +182,15 @@ public class Profesor extends Usuario {
 			return encuesta;
 	
 		}
+	public QuizVerdad crearQuizVerdaderoFalso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
+			boolean obligatorio, float calificacionMinima) {
+		
+		QuizVerdad quiz= new QuizVerdad(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima);
+		System.out.println("Su actividad de tipo quiz ha sido creada.");
+		return quiz;
+		
+		
+	}
 	
 	public Quiz crearActividadQuiz (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, float calificacionMinima) {	

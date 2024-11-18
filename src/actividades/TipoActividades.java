@@ -5,5 +5,6 @@ public enum TipoActividades {
 	Tarea,
 	Quiz,
 	Examen,
-	Encuesta
+	Encuesta,
+	QuizVerdad
 }
