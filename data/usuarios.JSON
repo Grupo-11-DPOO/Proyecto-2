@@ -4,4 +4,12 @@
     "tipoUsuario": "Profesor",
     "login": "Raul",
     "actividades": []
+},
+{
+	"password": "123",
+	"learningPaths": [],
+	"tipoUsuario": "Estudiante",
+	"login": "Sebas",
+	"actividades": []
+	
 }]

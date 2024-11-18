@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import actividades.Actividad;
 import actividades.Encuesta;
 import actividades.Estado;
@@ -49,8 +48,9 @@ public class Consola {
 	private static String[] opcionesVerYEditarActividades = {"Ver prerequisitos", "Ver reseñas", "Editar título", "Editar objetivo",
 			"Editar descripción", "Editar nivel", "Editar si es obligatorio", "Volver"};
 	private static String[] opcionesMenuEstudiantes = {"Ver Learning Paths", "Iniciar actividad del Learning Path actual", 
-			"Completar actividad en curso", "Agregar reseñas y/o rating a actividad", "Salir"};
+			"Completar actividad en curso", "Agregar reseñas y/o rating a actividad", "Ver progreso del Learning Path actual", "Salirse del Learning Path o Actividad actual", "Salir"};
 	private static String[] opcionesOfertaLearningPaths = {"Oferta total de Learning Paths", "Recomendación a partir de sus intereses.", "Volver"};
+	private static String[] opcionSalirLearningOActividad = {"Salir Learning Path actual", "Salir Actividad actual", "Volver al menú principal"};
 	
     /**
      * Le pide al usuario que ingrese una cadena de caracteres
@@ -885,7 +885,7 @@ public class Consola {
 			int opcionSeleccionada = mostrarMenu("Menu Principal Estudiantes", opcionesMenuEstudiantes);
 			
 			switch (opcionSeleccionada) {
-			case 5:
+			case 7:
 				System.out.println( "------------------------------------------------------" );
 				System.out.println("Saliendo del programa.");
 				System.out.println( "------------------------------------------------------" );
@@ -904,11 +904,61 @@ public class Consola {
 			case 4:
 				menuAgregarResenaORating();
 				break;
+			case 5:
+				verProgresoLearningPath();
+			case 6:
+				salirLearningPathOActividad();
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
+    }
+    
+    public static void salirLearningPathOActividad() {
+    	int opcion = mostrarMenu("Salir del Learning Path o Actividad actual", opcionSalirLearningOActividad);
+    	switch (opcion) {
+    	case 1:
+    		estudianteActual.setLearningPathEnCurso(null);
+    		System.out.println("Se salió del Learning Path actual exitosamente.");
+    		break;
+    	case 2:
+    		estudianteActual.setActividadEnCurso(null);
+    		System.out.println("Se salió de la actividad actual exitosamente.");
+    		break;
+    	case 3:
+    		menuEstudiante();
+    		break;
+    	}
+    }
+    
+    public static void verProgresoLearningPath() {
+    	//TODO mover a estudiante
+    	LearningPath learningPathEnCurso = estudianteActual.getLearningPathEnCurso();
+    	List<Actividad> actividadesLearningPath = learningPathEnCurso.getListaActividades();
+    	int cantidadActividades = actividadesLearningPath.size();
+    	HashMap<String, Estado> registroActividadesEstudiante = estudianteActual.getRegistroActividades();
+    	int contadorCompletadas = 0;
+    	int contadorExitosas = 0;
+    	List<Double> listaRetorno = new ArrayList<>();
+    	for (Actividad actividad: actividadesLearningPath) {
+    		String idActividad = actividad.getId();
+    		Estado estado = registroActividadesEstudiante.get(idActividad);
+    		if (estado != null) {
+    			if (estado == Estado.ENVIADA || estado == Estado.EXITOSA) {
+    				contadorCompletadas += 1;
+    				if (estado == Estado.EXITOSA) {
+    					contadorExitosas += 1;
+    				}
+    			}
+    		}
+    	}
+    	double porcentajeCompletadas = (contadorCompletadas/cantidadActividades)*100;
+    	double porcentajeExitosas = (contadorExitosas/cantidadActividades)*100;
+    	listaRetorno.add(porcentajeCompletadas);
+    	listaRetorno.add(porcentajeExitosas);
+    	
+    	
     }
     
     public static void verOfertaLearningPaths() throws Exception {
@@ -1231,7 +1281,8 @@ public class Consola {
     	// Realizar
     	estudianteActual.realizarRecurso(recurso);
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" enviada.");
+    	System.out.println("Este pendiente a la calificación del profesor.");
     	System.out.println( "------------------------------------------------------" );
     }
     
@@ -1239,13 +1290,16 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println(tarea.verActividad());
     	System.out.println( "------------------------------------------------------" );
-    	// Imprimir el material
-    	String medioEntrega = pedirCadenaAlUsuario("Ingrese el medio de entrega");
-    	System.out.println(recurso.getMaterial());
-    	// Realizar
-    	estudianteActual.realizarRecurso(recurso);
+    	// Imprimir el idActividadTarea
+    	System.out.println("ID de la actividad a realizar en la tarea:");
+    	System.out.println(tarea.getIdActividadesARealizar());
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" exitosa.");
+    	String medioEntrega = pedirCadenaAlUsuario("Ingrese el medio de entrega");
+    	// Realizar
+    	// Tiene que mandarle el medio de entrega
+    	estudianteActual.realizarTarea(tarea);
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Se ha marcado la actividad "+tarea.getTitulo()+" exitosa.");
     	System.out.println( "------------------------------------------------------" );
     }
     	

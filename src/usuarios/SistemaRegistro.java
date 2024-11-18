@@ -198,7 +198,6 @@ public class SistemaRegistro {
 	            	// registro no se como manejarlo
 	                null,
 	                null, 
-	                usuarios, 
 	                login, 
 	                password,
 	                interesesEstudiante
@@ -280,7 +279,7 @@ public class SistemaRegistro {
 	
 	public Estudiante registrarEstudiante(String login, String passWord, List<String> intereses) throws UsuarioExistenteException {
 		
-		Estudiante estudiante = new Estudiante(null, null, usuarios,login, passWord, intereses);
+		Estudiante estudiante = new Estudiante(null, null, login, passWord, intereses);
 		
 		usuarios.cargarEstudiante(login, passWord, intereses, estudiante.getRegistroActividades());
 		

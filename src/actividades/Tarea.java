@@ -26,7 +26,7 @@ public class Tarea extends Actividad{
 		return idActividadARealizar;
 	}
 
-	public Estado realizarTarea(String idEstudiante, String medioEntrega ) throws Exception {
+	public Estado realizarTarea(String idEstudiante, String medioEntrega ) {
 		respuestas.put(idEstudiante, medioEntrega);
 		return Estado.ENVIADA;	
 	}
