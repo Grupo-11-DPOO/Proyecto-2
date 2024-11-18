@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import learningPaths.Identificable;
+import learningPaths.LearningPath;
 import usuarios.Estudiante;
 
 public abstract class Actividad implements Identificable {
@@ -166,19 +167,26 @@ public abstract class Actividad implements Identificable {
 		return valido;
 	}
 	
-	// Falta revisar y reconstruir la funcion ya que se cambio el nombre de la variable a tiempoLimite y
-    public void establecerFechaLimite(Actividad actividadAnterior, int horasDespues) {
-        if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
-            System.out.println("La actividad anterior no es válida.");
-            this.tiempoLimite = null;
-        } else {
-	        Calendar calendario = Calendar.getInstance();
-	        calendario.setTime(new Date());
-	        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
-	        calendario.add(Calendar.HOUR, horasDespues);        
-	        // Establece la nueva fecha límite
-	        this.tiempoLimite = calendario.getTime();
-        }
+    public void establecerFechaLimite(Estudiante estudianteActual) {
+    	// Buscamos actividad anterior
+    	LearningPath learningPath = estudianteActual.getLearningPathEnCurso();
+    	List<Actividad> listaActividades = learningPath.getListaActividades();
+    	int index = listaActividades.indexOf(this);
+    	if (index > 0) {
+    		Actividad actividadAnterior = listaActividades.get(index-1);
+			if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
+				this.tiempoLimite = null;
+			} else {
+		        Calendar calendario = Calendar.getInstance();
+		        calendario.setTime(new Date());
+		        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
+		        calendario.add(Calendar.HOUR, 1);        
+		        // Establece la nueva fecha límite
+		        this.tiempoLimite = calendario.getTime();
+	        }
+    	} else {
+    		this.tiempoLimite = null;
+    	}
     }
     
     // Método para verificar si la actividad se está realizando después de la fecha límite

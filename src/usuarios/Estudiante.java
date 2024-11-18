@@ -53,18 +53,14 @@ public class Estudiante extends Usuario {
 	}
 	
 	public LearningPath getLearningPathById(String id) {
-		
 		boolean x= dataLearningPaths.containsKey(id);
-		
 		if (x) {
-			
 			return dataLearningPaths.get(id);
 		}
 		else return null;
-		
 		}
+	
 	public Actividad buscarActividadPorNombre(String nombreActividad) {
-		
 		if(!dataActividades.isEmpty()) {
 			Iterator<Actividad> iteradorClaves = dataActividades.values().iterator();
 			 while (iteradorClaves.hasNext()) {
@@ -78,37 +74,26 @@ public class Estudiante extends Usuario {
 	}
 	
 	public Actividad getActividadById(String id) {
-		
 		boolean x= dataActividades.containsKey(id);
-		
 		if (x) {
-			
 			return dataActividades.get(id);
 		}
 		else return null;
-		
 		}
 	
-	
 	public boolean empezarLearningPath(LearningPath learningPath) {
-			
-			if(learningPathEnCurso == null) {
-			
+		if(learningPathEnCurso == null) {
 			learningPathEnCurso = learningPath;
 			return true;
 		}
 			else {
 				return false;
 			}
-		
 	}
 	
 	public void finalizarLearningPath() {
-		
 		this.learningPathEnCurso = null;
-		
 	}
-	
 
 	public Actividad getActividadEnCurso() {
 		return actividadEnCurso;
@@ -136,9 +121,7 @@ public class Estudiante extends Usuario {
 	}
 	
 	public boolean empezarActividad(Actividad actividad) {
-		
 		if (actividadEnCurso!=null) {
-			
 			actividadEnCurso = actividad;
 			return true;
 		}
@@ -148,10 +131,35 @@ public class Estudiante extends Usuario {
 	}
 	
 	public void finalizarActividad() {
-		
 		actividadEnCurso = null; 
 	}
 	
+	public List<Double> verProgresoLearningPath() {
+		LearningPath learningPathEnCurso = getLearningPathEnCurso();
+    	List<Actividad> actividadesLearningPath = learningPathEnCurso.getListaActividades();
+    	int cantidadActividades = actividadesLearningPath.size();
+    	HashMap<String, Estado> registroActividadesEstudiante = getRegistroActividades();
+    	int contadorCompletadas = 0;
+    	int contadorExitosas = 0;
+    	List<Double> listaRetorno = new ArrayList<>();
+    	for (Actividad actividad: actividadesLearningPath) {
+    		String idActividad = actividad.getId();
+    		Estado estado = registroActividadesEstudiante.get(idActividad);
+    		if (estado != null) {
+    			if (estado == Estado.ENVIADA || estado == Estado.EXITOSA) {
+    				contadorCompletadas += 1;
+    				if (estado == Estado.EXITOSA) {
+    					contadorExitosas += 1;
+    				}
+    			}
+    		}
+    	}
+    	double porcentajeCompletadas = (contadorCompletadas/cantidadActividades)*100;
+    	double porcentajeExitosas = (contadorExitosas/cantidadActividades)*100;
+    	listaRetorno.add(porcentajeCompletadas);
+    	listaRetorno.add(porcentajeExitosas);
+    	return listaRetorno;
+	}
 	
 	public void realizarEncuesta(Encuesta encuesta, ArrayList<String> respuestas) {
 		// TODO 

@@ -39,7 +39,7 @@ public class Consola {
 	private static String[] opciones = {"Iniciar sesión", "Registrarse", "Salir"};
 	private static String[] opcionesRegistro = {"Crear usuario: Profesor", "Crear usuario: Estudiante", "Salir"};
 	private static String[] opcionesMenuProfesor = {"Crear LearningPath", "Ver y Editar LearningPath", "Crear Actividad", "Clonar Actividad",
-			"Ver y Editar Actividades", "Agregar reseñas y/o rating a actividad", "Salir"};
+			"Ver y Editar Actividades", "Agregar reseñas y/o rating a actividad", "Ver estadísticas", "Salir"};
 	private static String[] opcionesTipoActividad = {"Encuesta", "Examen", "Quiz múltiple", "Recurso", "Tarea", "Quiz V/F"};
 	private static String[] opcionesClonar = {"Clonar con ID de actividad", "Volver"};
 	private static String[] opcionesCrearLearningPath = {"Agregar actividad propia existente", "Crear nueva actividad"};
@@ -53,6 +53,8 @@ public class Consola {
 			"Completar actividad en curso", "Agregar reseñas y/o rating a actividad", "Ver progreso del Learning Path actual", "Salirse del Learning Path o Actividad actual", "Salir"};
 	private static String[] opcionesOfertaLearningPaths = {"Oferta total de Learning Paths", "Recomendación a partir de sus intereses.", "Volver"};
 	private static String[] opcionSalirLearningOActividad = {"Salir Learning Path actual", "Salir Actividad actual", "Volver al menú principal"};
+	private static String[] opcionesProgresoLearningPath = {"Ver progreso de actividades completadas y exitosas", "Ver progreso de actividades exitosas", "Volver al menú principal"};
+	private static String[] opcionesVerEstadisticas = {"Ver estadísticas por estudiante", "Ver estadísticas por Learning Path", "Volver al menú principal"};
 	
     /**
      * Le pide al usuario que ingrese una cadena de caracteres
@@ -202,10 +204,7 @@ public class Consola {
             			System.out.println("¡Estudiante registrado exitosamente!");
             			return;
             	}
-            }
-            	
-            else
-            {
+            } else {
                 System.out.println( "Esa no es una opción válida. Digite solamente números entre 1 y " + opciones.length );
                 crearUsuario( opciones );
             }
@@ -292,7 +291,6 @@ public class Consola {
         	iniciarSesion();
         } 
     }
-    
 
     /**
      * Muestra un menú y le pide al usuario que seleccione una opción
@@ -334,7 +332,7 @@ public class Consola {
 			int opcionSeleccionada = mostrarMenu("Menu Principal Profesores", opcionesMenuProfesor);
 			
 			switch (opcionSeleccionada) {
-			case 7:
+			case 8:
 				System.out.println( "------------------------------------------------------" );
 				System.out.println("Saliendo del programa.");
 				System.out.println( "------------------------------------------------------" );
@@ -356,6 +354,9 @@ public class Consola {
 				break;
 			case 6:
 				menuAgregarResenaORating();
+				break;
+			case 7: 
+				verEstadisticas();
 			}
 			
 		} catch (Exception e) {
@@ -780,7 +781,6 @@ public class Consola {
 	    	i++;
     	}
 		return listaPrerequisitos;
-    	
     }
     
     public static void menuClonarActividad() {
@@ -909,6 +909,90 @@ public class Consola {
     	}
     }
     
+    public static void verEstadisticas() {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Bienvenido profesor al menú de estadísticas");
+    	System.out.println( "------------------------------------------------------" );
+    	// TODO
+    	int opcion = mostrarMenu("Seleccione que desea visualizar", opcionesVerEstadisticas);
+    	switch (opcion) {
+    	case 1:
+    		// Por estudiante
+    		// Imprimimos lista estudiantes
+    		Collection<Estudiante> estudiantes = datosEstudiante.values();
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println( "Lista de todos los estudiantes" );
+    		System.out.println( "------------------------------------------------------" );
+    		for (Estudiante estudiante: estudiantes) {
+    			String loginEstudiante = estudiante.getLogin();
+    			System.out.println("Nombre de usuario: "+loginEstudiante);
+    		}
+    		System.out.println( "------------------------------------------------------" );
+    		String idEstudiante = pedirCadenaAlUsuario("Ingrese el login del estudiante a observar");
+    		Estudiante estudiante = datosEstudiante.get(idEstudiante);
+    		int opcionEstadistica = mostrarMenu("Seleccione lo que desea visualizar", opcionesProgresoLearningPath);
+    		String tituloLearningPathEnCurso = estudiante.getLearningPathEnCurso().getTitulo();
+    		List<Double> listaProgresos = estudiante.verProgresoLearningPath();
+        	double porcentajeCompletadas = listaProgresos.get(0);
+        	double porcentajeExitosas = listaProgresos.get(1);
+        	System.out.println( "------------------------------------------------------" );
+        	System.out.println( "Learning path de "+idEstudiante+"es "+tituloLearningPathEnCurso );
+    		switch (opcionEstadistica) {
+    		case 1:
+    			System.out.println( "------------------------------------------------------" );
+        		System.out.println( "Porcentaje de actividades completadas y/o exitosas: "+porcentajeCompletadas+"%" );
+        		System.out.println( "------------------------------------------------------" );    		
+        		break;
+        	case 2:
+        		System.out.println( "------------------------------------------------------" );
+        		System.out.println( "Porcentaje de actividades exitosas: "+porcentajeExitosas+"%" );
+        		System.out.println( "------------------------------------------------------" );    		
+        		break;
+        	case 3:
+        		menuProfesor();
+        		break;
+    		}
+    		break;
+    		
+    	case 2:
+    		// Estadisticas por Learning Path
+    		// Imprimir todos los Learning Paths
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println( "Lista de todos los Learning Paths" );
+    		System.out.println( "------------------------------------------------------" );
+    		verLearningPathsTotales();
+    		System.out.println( "------------------------------------------------------" );
+    		String idLearning = pedirCadenaAlUsuario("Ingrese el id del Learning Path a observar");
+    		LearningPath learningPath = learningPaths.get(idLearning);
+    		int opcionEstadistica1 = mostrarMenu("Seleccione lo que desea visualizar", opcionesProgresoLearningPath);
+    		String tituloLearningPath = learningPath.getTitulo();
+    		List<Double> listaProgresos1 = learningPath.getProgreso(datosEstudiante);
+        	double porcentajeCompletadas1 = listaProgresos1.get(0);
+        	double porcentajeExitosas1 = listaProgresos1.get(1);
+        	System.out.println( "------------------------------------------------------" );
+        	System.out.println( "Learning path "+tituloLearningPath );
+    		switch (opcionEstadistica1) {
+    		case 1:
+    			System.out.println( "------------------------------------------------------" );
+        		System.out.println( "Porcentaje de actividades completadas y/o exitosas: "+porcentajeCompletadas1+"%" );
+        		System.out.println( "------------------------------------------------------" );    		
+        		break;
+        	case 2:
+        		System.out.println( "------------------------------------------------------" );
+        		System.out.println( "Porcentaje de actividades exitosas: "+porcentajeExitosas1+"%" );
+        		System.out.println( "------------------------------------------------------" );   
+        		break;
+        	case 3:
+        		menuProfesor();
+        		break;
+    		}
+    		break;
+    	case 3:
+    		menuProfesor();
+    		break;
+    	}
+    }
+    
     public static void menuEstudiante() {
     	try {
 			int opcionSeleccionada = mostrarMenu("Menu Principal Estudiantes", opcionesMenuEstudiantes);
@@ -948,11 +1032,11 @@ public class Consola {
     	int opcion = mostrarMenu("Salir del Learning Path o Actividad actual", opcionSalirLearningOActividad);
     	switch (opcion) {
     	case 1:
-    		estudianteActual.setLearningPathEnCurso(null);
+    		estudianteActual.finalizarLearningPath();
     		System.out.println("Se salió del Learning Path actual exitosamente.");
     		break;
     	case 2:
-    		estudianteActual.setActividadEnCurso(null);
+    		estudianteActual.finalizarActividad();
     		System.out.println("Se salió de la actividad actual exitosamente.");
     		break;
     	case 3:
@@ -962,32 +1046,26 @@ public class Consola {
     }
     
     public static void verProgresoLearningPath() {
-    	//TODO mover a estudiante
-    	LearningPath learningPathEnCurso = estudianteActual.getLearningPathEnCurso();
-    	List<Actividad> actividadesLearningPath = learningPathEnCurso.getListaActividades();
-    	int cantidadActividades = actividadesLearningPath.size();
-    	HashMap<String, Estado> registroActividadesEstudiante = estudianteActual.getRegistroActividades();
-    	int contadorCompletadas = 0;
-    	int contadorExitosas = 0;
-    	List<Double> listaRetorno = new ArrayList<>();
-    	for (Actividad actividad: actividadesLearningPath) {
-    		String idActividad = actividad.getId();
-    		Estado estado = registroActividadesEstudiante.get(idActividad);
-    		if (estado != null) {
-    			if (estado == Estado.ENVIADA || estado == Estado.EXITOSA) {
-    				contadorCompletadas += 1;
-    				if (estado == Estado.EXITOSA) {
-    					contadorExitosas += 1;
-    				}
-    			}
-    		}
+    	//TODO
+    	List<Double> listaProgresos = estudianteActual.verProgresoLearningPath();
+    	double porcentajeCompletadas = listaProgresos.get(0);
+    	double porcentajeExitosas = listaProgresos.get(1);
+    	int opcion = mostrarMenu("Estadísticas de su progreso en el Learning Path en curso", opcionesProgresoLearningPath);
+    	switch (opcion) {
+    	case 1:
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println( "Porcentaje de actividades completadas y/o exitosas: "+porcentajeCompletadas+"%" );
+    		System.out.println( "------------------------------------------------------" );    		
+    		break;
+    	case 2:
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println( "Porcentaje de actividades exitosas: "+porcentajeExitosas+"%" );
+    		System.out.println( "------------------------------------------------------" );    		
+    		break;
+    	case 3:
+    		menuEstudiante();
     	}
-    	double porcentajeCompletadas = (contadorCompletadas/cantidadActividades)*100;
-    	double porcentajeExitosas = (contadorExitosas/cantidadActividades)*100;
-    	listaRetorno.add(porcentajeCompletadas);
-    	listaRetorno.add(porcentajeExitosas);
-    	
-    	
+    	menuEstudiante();
     }
     
     public static void verOfertaLearningPaths() throws Exception {
@@ -1020,7 +1098,6 @@ public class Consola {
     		menuEstudiante();
     		break;
     	}
-
     }
     
     public static void verLearningPathsTotales() {
@@ -1049,9 +1126,7 @@ public class Consola {
     	List<LearningPath> listaOrganizadaIntereses = estudianteActual.recomendarLearningPaths(learningPaths);
         System.out.println(String.format("%-10s | %-20s | %-30s | %-10s | %-20s | %-20s | %-10s | %-10s | %-10s", 
                 "ID", "Título", "Descripción", "Nivel", "Fecha Creación", "Fecha Modificación", "Duración", "Rating", "Versión"));
-
         System.out.println("=".repeat(160));
-
         // Iterar y formatear cada LearningPath
         for (int i = 0; i < listaOrganizadaIntereses.size(); i++) {
             LearningPath learningPath = listaOrganizadaIntereses.get(i);
@@ -1173,6 +1248,9 @@ public class Consola {
     public static void iniciarActividadEnCurso(Actividad actividad) throws Exception {
     	// Dependiendo del tipo de actividad empieza un metodo distinto
     	TipoActividades tipoActividad = actividad.getTipoActividad();
+    	// Calculamos fecha limite
+    	actividad.establecerFechaLimite(estudianteActual);
+    	
     	if (tipoActividad == TipoActividades.Encuesta) {
     		// Inciar actividad encuesta
     		Encuesta encuesta = (Encuesta) actividad;

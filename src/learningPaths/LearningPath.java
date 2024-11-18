@@ -1,12 +1,13 @@
 package learningPaths;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
+import java.util.HashMap;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
 import actividades.*;
+import usuarios.Estudiante;
 
 public class LearningPath implements Identificable{
 	
@@ -143,6 +144,38 @@ public class LearningPath implements Identificable{
 	
 	public List<Actividad> getListaActividades(){
 		return actividades;
+	}
+	
+	public List<Double> getProgreso(HashMap<String, Estudiante> datosEstudiante) {
+		List<Double> listaRetorno = new ArrayList<>();
+		List<Actividad> actividadesLearning = getListaActividades();
+		int cantidadActividades = actividadesLearning.size();
+		Collection<Estudiante> estudiantes = datosEstudiante.values();
+    	int contadorCompletadas = 0;
+    	int contadorExitosas = 0;
+		for (Estudiante estudiante: estudiantes) {
+			LearningPath learningEnCurso = estudiante.getLearningPathEnCurso();
+			if (learningEnCurso.getId()==this.getId()) {
+				HashMap<String, Estado> registroAct = estudiante.getRegistroActividades();
+				for (Actividad actividad: actividadesLearning) {
+					String idActividad = actividad.getId();
+					Estado estado = registroAct.get(idActividad);
+		    		if (estado != null) {
+		    			if (estado == Estado.ENVIADA || estado == Estado.EXITOSA) {
+		    				contadorCompletadas += 1;
+		    				if (estado == Estado.EXITOSA) {
+		    					contadorExitosas += 1;
+		    				}
+		    			}
+		    		}
+				}
+			}
+		}
+		double porcentajeCompletadas = (contadorCompletadas/cantidadActividades)*100;
+    	double porcentajeExitosas = (contadorExitosas/cantidadActividades)*100;
+    	listaRetorno.add(porcentajeCompletadas);
+    	listaRetorno.add(porcentajeExitosas);
+    	return listaRetorno;
 	}
 
 	@Override
