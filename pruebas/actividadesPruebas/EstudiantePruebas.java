@@ -305,7 +305,19 @@ class EstudiantePruebas {
         assertEquals(66.67, progreso.get(0), 0.01, "El porcentaje de actividades completadas no es el esperado.");
         assertEquals(33.33, progreso.get(1), 0.01, "El porcentaje de actividades exitosas no es el esperado.");
     }
-
+    
+    @Test
+    
+    void testAgregarResena() {
+    	QuizVerdad quiz = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "Fácil", 15, true, 80);
+    	String resena = "Actividad muy sencilla, la podria completar sin haber hecho el curso.";
+    	
+    	estudiante.agregarResenaActividad(quiz, resena);
+    	
+    	assertEquals(1,quiz.getResenas().size(),"La reseña no se añadio correctamente");
+    	assertTrue(quiz.getResenas().contains("Actividad muy sencilla, la podria completar sin haber hecho el curso."), "No se guardo correctamente la reseña");
+    	
+    }
     @Test
     void testVerProgresoLearningPathSinActividadesCompletadas() {
        

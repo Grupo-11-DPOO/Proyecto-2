@@ -268,6 +268,15 @@ public class Estudiante extends Usuario {
         return listaCompletaLearningPaths;
     }
     
+    public void agregarResenaActividad(Actividad actividad, String resena) {
+    	actividad.agregarResena(resena);
+    }
+    
+    public void agregarRatingActividad(Actividad actividad, Float rating) throws Exception {
+    	actividad.agregarRating(rating);
+    	
+    }
+    
     // Recomienda una actividad con respecto al estado de la finalizada
     public Actividad recomendarActividad(Actividad actividadFinalizada, LearningPath learningPath) {
     	Estado estado = registroActividades.get(actividadFinalizada.getId());
