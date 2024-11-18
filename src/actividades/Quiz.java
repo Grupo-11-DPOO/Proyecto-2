@@ -10,9 +10,7 @@ public class Quiz extends Actividad{
 	private HashMap<String, HashMap<Opcion, HashMap<String,String>>> preguntas;//Mapa de las preguntas con sus opciones, la llave es la preg¿unta, la clave es un mapa donde la llave es la opcion y su valor otro mapa donde ya este ultimo mapa contiene como llave el enunciado de la opcion y como valor la explicación del porque es correcta
 	private ArrayList<Opcion> respuestasCorrectas; // Mapa donde la llave es la pregunta y la clave es la respuesta correcta
 	private HashMap<String,ArrayList<Opcion>> respuestasEstudiantes;
-	
-	
-	
+
 	public Quiz(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio,float calificacionMinima) {
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
@@ -35,11 +33,10 @@ public class Quiz extends Actividad{
 		return calificacionMinima;
 	}
 
-	public void setCalificacionMinima(float d) {
-		this.calificacionMinima = d;
+	public void setCalificacionMinima(float calificacionMin) {
+		this.calificacionMinima = calificacionMin;
 	}
 
-	
 	public HashMap<String, HashMap<Opcion, HashMap<String, String>>> getPreguntas() {
 		return preguntas;
 	}
@@ -62,7 +59,7 @@ public class Quiz extends Actividad{
 		respuestasCorrectas.add(opcionCorrecta);
 	}
 	
-	public void agregarOpcion(String enunciadoPregunta, String enunciadoRespuesta ,Opcion opcion, String explicacionRespuesta) {
+	public void agregarOpcion(String enunciadoPregunta, String enunciadoRespuesta, Opcion opcion, String explicacionRespuesta) {
 			HashMap<Opcion, HashMap<String,String>> entry = preguntas.get(enunciadoPregunta); 
 			HashMap<String,String> enunciadoExplicacion = new HashMap<>();
 			enunciadoExplicacion.put(enunciadoRespuesta, explicacionRespuesta);
@@ -97,34 +94,33 @@ public class Quiz extends Actividad{
 	    return resultado.toString(); 
 	}
 	
-		public String verPreguntasConExplicaciones() {
-		    StringBuilder resultado = new StringBuilder();
-		    
-		    if (!this.preguntas.isEmpty()) {
-		        for (Map.Entry<String, HashMap<Opcion, HashMap<String,String>>> entradaPregunta : preguntas.entrySet()) {
-		            String enunciadoPregunta = entradaPregunta.getKey();
-		            HashMap<Opcion, HashMap<String,String>> opciones = entradaPregunta.getValue();
+	public String verPreguntasConExplicaciones() {
+	    StringBuilder resultado = new StringBuilder();
+	    
+	    if (!this.preguntas.isEmpty()) {
+	        for (Map.Entry<String, HashMap<Opcion, HashMap<String,String>>> entradaPregunta : preguntas.entrySet()) {
+	            String enunciadoPregunta = entradaPregunta.getKey();
+	            HashMap<Opcion, HashMap<String,String>> opciones = entradaPregunta.getValue();
 
-		            resultado.append("Pregunta: ").append(enunciadoPregunta).append("\nOpciones:\n");
-		            if (!opciones.isEmpty()) {
-		                for (Map.Entry<Opcion, HashMap<String,String>> entradaOpciones : opciones.entrySet()) {
-		                    String opcion = entradaOpciones.getKey().name();
-		                    HashMap<String,String> entradaOpcion = entradaOpciones.getValue();
-		                    if(!entradaOpcion.isEmpty()) {
-		                    	for(Map.Entry<String, String> entry: entradaOpcion.entrySet()) {
-		                    		String enunciado = entry.getKey();
-		                    		String explicacion = entry.getValue();
-		    	                    resultado.append(opcion).append("): ").append(enunciado).append("\n");
-		    	                    resultado.append("\nExplicación: \n"+explicacion+"\n");
-		                    	}
-		                    }
-		                }
-		            }
-		        }
-		    } else {
-		        return "No hay preguntas que mostrar";
-		    }
-
+	            resultado.append("Pregunta: ").append(enunciadoPregunta).append("\nOpciones:\n");
+	            if (!opciones.isEmpty()) {
+	                for (Map.Entry<Opcion, HashMap<String,String>> entradaOpciones : opciones.entrySet()) {
+	                    String opcion = entradaOpciones.getKey().name();
+	                    HashMap<String,String> entradaOpcion = entradaOpciones.getValue();
+	                    if(!entradaOpcion.isEmpty()) {
+	                    	for(Map.Entry<String, String> entry: entradaOpcion.entrySet()) {
+	                    		String enunciado = entry.getKey();
+	                    		String explicacion = entry.getValue();
+	    	                    resultado.append(opcion).append("): ").append(enunciado).append("\n");
+	    	                    resultado.append("\nExplicación: \n"+explicacion+"\n");
+	                    	}
+	                    }
+	                }
+	            }
+	        }
+	    } else {
+	        return "No hay preguntas que mostrar";
+	    }
 	    return resultado.toString();
 	}
 		

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Encuesta extends Actividad{
 	
-	private List<String> preguntas;
+	private ArrayList<String> preguntas;
 	private HashMap<String, ArrayList<String>> respuestasDeTodos;
 
 	public Encuesta(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
@@ -25,11 +25,8 @@ public class Encuesta extends Actividad{
 	}
 	
 	public void eliminarPregunta(String pregunta) {
-		
 		boolean x = this.preguntas.contains(pregunta);
-		
 		if (x) {
-			
 			this.preguntas.remove(pregunta);
 		}
 	}
@@ -50,15 +47,12 @@ public class Encuesta extends Actividad{
 		}
 		return preguntasString.toString();
 	}	
-		
-	
-	
 
 	public List<String> getPreguntas() {
 		return preguntas;
 	}
 
-	public void setPreguntas(List<String> preguntas) {
+	public void setPreguntas(ArrayList<String> preguntas) {
 		this.preguntas = preguntas;
 	}
 
@@ -70,7 +64,6 @@ public class Encuesta extends Actividad{
 		this.respuestasDeTodos = respuestas;
 	}
 
-	
 	public Estado contestarEncuesta(String idEstudiante, ArrayList<String> respuestas) {
 	
 		this.respuestasDeTodos.put(idEstudiante, respuestas);
@@ -83,5 +76,4 @@ public class Encuesta extends Actividad{
 		copia.crearId();
 		return copia;
 	}
-
 }

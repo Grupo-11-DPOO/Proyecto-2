@@ -40,8 +40,6 @@ public abstract class Actividad implements Identificable, Cloneable {
 		this.rating = 0;
 		this.cantidadRating = 0;
 		crearId();
-		
-		
 	}
 
 	public Date getTiempoLimite() {
@@ -238,8 +236,7 @@ public abstract class Actividad implements Identificable, Cloneable {
 
         return informacion.toString();
     }
-
-			
+	
 	@Override
 	public void crearId() {
 		// Genera el ID
@@ -252,9 +249,7 @@ public abstract class Actividad implements Identificable, Cloneable {
 		return id;
 	}
 	
-	
 	public TipoActividades getTipoActividad() {
 		return tipoActividad;
 	}
-	
 }
