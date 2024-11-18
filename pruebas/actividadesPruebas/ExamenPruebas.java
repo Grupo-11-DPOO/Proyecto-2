@@ -32,12 +32,30 @@ class ExamenPruebas {
     void tearDown() {
         examen = null;
     }
-
+    
     @Test
     void agregarPreguntaTest() {
         examen.agregarPregunta("¿Qué es una clase en Java?");
         assertEquals(1, examen.getPreguntas().size(), "La pregunta no fue agregada correctamente.");
         assertTrue(examen.getPreguntas().contains("¿Qué es una clase en Java?"));
+    }
+    
+    @Test
+    void setPreguntasTest() {
+        List<String> nuevasPreguntas = new ArrayList<>();
+        nuevasPreguntas.add("¿Qué es el polimorfismo?");
+        examen.setPreguntas(nuevasPreguntas);
+        assertEquals(1, examen.getPreguntas().size());
+        assertEquals("¿Qué es el polimorfismo?", examen.getPreguntas().get(0));
+    }
+    
+    @Test
+    void agregarPreguntaTestPreguntasNull() {
+    	examen.setPreguntas(null);
+    	assertNull(examen.getPreguntas(),"La lista de preguntas no es null");
+    	examen.agregarPregunta("¿Que es un Enum en Java?");
+    	assertEquals(1, examen.getPreguntas().size(), "La pregunta no fue agregada correctamente.");
+        assertTrue(examen.getPreguntas().contains("¿Que es un Enum en Java?"));
     }
 
     @Test
@@ -49,13 +67,18 @@ class ExamenPruebas {
     }
 
     @Test
-    void verPreguntasTest() {
+    void verPreguntasTestConPreguntas() {
         examen.agregarPregunta("¿Qué es un método estático?");
         examen.agregarPregunta("¿Cuál es la diferencia entre una interfaz y una clase abstracta?");
-        List<String> preguntas = examen.getPreguntas();
-        assertEquals(2, preguntas.size(), "No se agregaron las preguntas correctamente.");
-        assertEquals("¿Qué es un método estático?", preguntas.get(0));
-        assertEquals("¿Cuál es la diferencia entre una interfaz y una clase abstracta?", preguntas.get(1));
+        StringBuilder pregunta = new StringBuilder();
+        pregunta.append("1. ¿Qué es un método estático?\n");
+        pregunta.append("2. ¿Cuál es la diferencia entre una interfaz y una clase abstracta?\n");
+        
+        assertEquals(pregunta.toString(), examen.verPreguntas(), "El examen no muestra como se espera las preguntas cuando se llama la funcion  ver preguntas");
+    }
+    @Test 
+    void verPreguntasTestSinPreguntas(){
+    	assertEquals("No hay preguntas que mostrar", examen.verPreguntas(),"No se muestra el mensaje correcto cuando no hay preguntas.");
     }
 
     @Test
@@ -72,14 +95,6 @@ class ExamenPruebas {
         assertEquals(2, respuestas.get("12345").size(), "La cantidad de respuestas no es la esperada.");
     }
 
-    @Test
-    void setPreguntasTest() {
-        List<String> nuevasPreguntas = new ArrayList<>();
-        nuevasPreguntas.add("¿Qué es el polimorfismo?");
-        examen.setPreguntas(nuevasPreguntas);
-        assertEquals(1, examen.getPreguntas().size());
-        assertEquals("¿Qué es el polimorfismo?", examen.getPreguntas().get(0));
-    }
 
     @Test
     void setRespuestasTest() {

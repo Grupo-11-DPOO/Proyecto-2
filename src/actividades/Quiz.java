@@ -11,7 +11,7 @@ public class Quiz extends Actividad{
 	
 	public float calificacionMinima;
 	private HashMap<String, HashMap<Opcion, HashMap<String,String>>> preguntas;//Mapa de las preguntas con sus opciones, la llave es la preg¿unta, la clave es un mapa donde la llave es la opcion y su valor otro mapa donde ya este ultimo mapa contiene como llave el enunciado de la opcion y como valor la explicación del porque es correcta
-	private HashMap<String,Opcion> respuestasCorrectas; // Mapa donde la llave es la pregunta y la clave es la respuesta correcta
+	private ArrayList<Opcion> respuestasCorrectas; // Mapa donde la llave es la pregunta y la clave es la respuesta correcta
 	private HashMap<String,ArrayList<Opcion>> respuestasEstudiantes;
 	
 	
@@ -21,7 +21,7 @@ public class Quiz extends Actividad{
 		super(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 		this.calificacionMinima = calificacionMinima;
 		this.preguntas = new HashMap<>();
-		this.respuestasCorrectas = new HashMap<>();
+		this.respuestasCorrectas = new ArrayList<>();
 		this.respuestasEstudiantes = new HashMap<>();
 		this.tipoActividad = TipoActividades.Quiz;
 	}
@@ -51,18 +51,18 @@ public class Quiz extends Actividad{
 		this.preguntas = preguntas;
 	}
 
-	public HashMap<String, Opcion> getRespuestasCorrectas() {
+	public ArrayList<Opcion> getRespuestasCorrectas() {
 		return respuestasCorrectas;
 	}
 
-	public void setRespuestasCorrectas(HashMap<String, Opcion> respuestasCorrectas) {
+	public void setRespuestasCorrectas(ArrayList<Opcion> respuestasCorrectas) {
 		this.respuestasCorrectas = respuestasCorrectas;
 	}
 	
 	public void agregarPregunta(String enunciado, Opcion opcionCorrecta) {
 		HashMap<Opcion,HashMap<String,String>> entryOpcion = new HashMap<>();
 		preguntas.put(enunciado, entryOpcion);
-		respuestasCorrectas.put(enunciado, opcionCorrecta);
+		respuestasCorrectas.add(opcionCorrecta);
 	}
 	
 	public void agregarOpcion(String enunciadoPregunta, String enunciadoRespuesta ,Opcion opcion, String explicacionRespuesta) {
@@ -118,7 +118,7 @@ public class Quiz extends Actividad{
 		                    		String enunciado = entry.getKey();
 		                    		String explicacion = entry.getValue();
 		    	                    resultado.append(opcion).append("): ").append(enunciado).append("\n");
-		    	                    resultado.append("\nExplicación: \n").append(explicacion).append("\n");
+		    	                    resultado.append("\nExplicación: \n"+explicacion+"\n");
 		                    	}
 		                    }
 		                }
@@ -132,19 +132,20 @@ public class Quiz extends Actividad{
 	}
 		
 	public Estado calificar(String idEstudiante, ArrayList<Opcion> respuestas) throws Exception{
-		if (preguntas.size()==respuestas.size()) {
+		if (respuestasCorrectas.size()==respuestas.size()) {
 			respuestasEstudiantes.put(idEstudiante, respuestas);
 			int contadorCorrectas = 0;
 			int contador= 0;
-			for (Map.Entry<String, Opcion> respuestaCorrecta: respuestasCorrectas.entrySet()) {
+			for (Opcion opcion: respuestasCorrectas) {
 				Opcion respuestaSeleccionada = respuestas.get(contador);
-				Opcion correcta = respuestaCorrecta.getValue();
-				if (respuestaSeleccionada== correcta) {
-					contadorCorrectas += 1;
+				Opcion correcta = opcion;
+				if (respuestaSeleccionada.equals(correcta)) {
+					contadorCorrectas ++;
 				}
 				contador++;
 			}
-			float calificacion = (contadorCorrectas/respuestasCorrectas.size())*100;
+			float calificacion = ((float) contadorCorrectas / respuestasCorrectas.size()) * 100;
+
 			verPreguntasConExplicaciones();
 			if (calificacion >= calificacionMinima) {
 				return Estado.EXITOSA;

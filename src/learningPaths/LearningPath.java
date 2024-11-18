@@ -51,11 +51,15 @@ public class LearningPath implements Identificable{
 	public float calcularRating(List<Actividad> listaActividades) {
 		float suma = 0;
 		int cantidad = 0;
+		float rpt = 0;
 		for (Actividad acti: listaActividades){
 			suma += acti.getRating();
 			cantidad ++;
 		}
-		float rpt = suma/cantidad;
+		if(cantidad != 0) {
+			rpt = suma/cantidad;
+		}
+		this.rating = rpt;
 		return rpt;
 	}
 
@@ -64,6 +68,7 @@ public class LearningPath implements Identificable{
 	}
 
 	public double getRating() {
+		calcularRating(actividades);
 		return rating;
 	}
 
@@ -105,15 +110,6 @@ public class LearningPath implements Identificable{
 		this.duracion = duracionMinutosAcumulada;
 		this.fechaModificacion = LocalDateTime.now();
 		this.version += 1;
-	}
-
-	public void setFechaModificacion(Date fechaModificacion) {
-		this.fechaModificacion = LocalDateTime.now();
-		this.version += 1;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
 	}
 	
 	public void agregarActividad(Actividad actividad) {

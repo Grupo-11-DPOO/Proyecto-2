@@ -41,11 +41,29 @@ class EncuestaPruebas {
     }
 
     @Test
+    void agregarPreguntaTestPreguntasNull() {
+    	encuesta.setPreguntas(null);
+    	assertNull(encuesta.getPreguntas(),"La lista de preguntas no es null");
+    	encuesta.agregarPregunta("¿Se siente satisfecho con el curso?");
+    	assertEquals(1, encuesta.getPreguntas().size(), "La pregunta no fue agregada correctamente.");
+        assertTrue(encuesta.getPreguntas().contains("¿Se siente satisfecho con el curso?"));
+    }
+
+    @Test
     void testEliminarPregunta() {
         encuesta.agregarPregunta("¿Qué mejorarías?");
         encuesta.eliminarPregunta("¿Qué mejorarías?");
         assertFalse(encuesta.getPreguntas().contains("¿Qué mejorarías?"));
         assertEquals(0, encuesta.getPreguntas().size(), "La pregunta no fue eliminada correctamente.");
+    }
+    @Test
+    
+    void testEliminarPreguntaNoExistente() {
+    	encuesta.agregarPregunta("¿Como estas?");
+    	assertEquals(1, encuesta.getPreguntas().size(),"La pregunta no se agrego correctamente");
+    	encuesta.eliminarPregunta("¿Que día es hoy?");
+    	assertEquals(1, encuesta.getPreguntas().size(),"La pregunta se elimino");
+    	
     }
 
     @Test
@@ -102,5 +120,20 @@ class EncuestaPruebas {
         HashMap<String, ArrayList<String>> respuestas = encuesta.getRespuestas();
         assertNotNull(respuestas);
         assertEquals(1, respuestas.size(), "La cantidad de respuestas guardadas no es la esperada.");
+    }
+    
+    @Test
+    void verPreguntasTestConPreguntas() {
+        encuesta.agregarPregunta("¿Le parece que se uso una cantidad apropiada de actividades?");
+        encuesta.agregarPregunta("¿Siente que con este Learning Path realmente aprendio?");
+        StringBuilder pregunta = new StringBuilder();
+        pregunta.append("1. ¿Le parece que se uso una cantidad apropiada de actividades?\n");
+        pregunta.append("2. ¿Siente que con este Learning Path realmente aprendio?\n");
+        
+        assertEquals(pregunta.toString(), encuesta.verPreguntas(), "La encuesta no muestra como se espera las preguntas cuando se llama la funcion  ver preguntas");
+    }
+    @Test 
+    void verPreguntasTestSinPreguntas(){
+    	assertEquals("No hay preguntas que mostrar", encuesta.verPreguntas(),"No se muestra el mensaje correcto cuando no hay preguntas.");
     }
 }

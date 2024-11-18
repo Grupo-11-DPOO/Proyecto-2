@@ -128,4 +128,18 @@ class LearningPathTest {
     void getIdTest() {
         assertNotNull(learnPath.getId(), "El ID no debería ser nulo.");
     }
+    @Test
+    void getRatingInicial() {
+    	assertEquals(0,learnPath.getRating(),"El rating encontrado no fue 0 como se esperaba.");
+    	
+    }
+    @Test 
+    void getRatingConCambios() {
+    	quiz1.setRating(5);
+    	quiz2.setRating(4.5f);
+    	learnPath.agregarActividad(quiz1);
+    	learnPath.agregarActividad(quiz2);
+        float ratingEsperado = (float) (5.0f + 4.5f) / 2;
+        assertEquals(ratingEsperado, learnPath.getRating(), 0.01,"La respuesta no fue la esperada");
+    }
 }

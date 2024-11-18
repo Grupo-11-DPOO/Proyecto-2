@@ -268,7 +268,7 @@ public class SistemaRegistro {
 	
 	public Profesor registrarProfesor(String login, String passWord) throws UsuarioExistenteException {
 		
-		Profesor profesor = new Profesor(usuarios,persistenciaLearningPath,persistenciaActividades,login, passWord, null, null);
+		Profesor profesor = new Profesor(this.actividades,this.learningPaths,login, passWord);
 		
 		
 		usuarios.cargarProfesor(login, passWord, null, null);
@@ -279,7 +279,11 @@ public class SistemaRegistro {
 	
 	public Estudiante registrarEstudiante(String login, String passWord, List<String> intereses) throws UsuarioExistenteException {
 		
+<<<<<<< HEAD
 		Estudiante estudiante = new Estudiante(null, null, login, passWord, intereses);
+=======
+		Estudiante estudiante = new Estudiante(this.actividades, this.learningPaths,login, passWord, intereses);
+>>>>>>> branch 'master' of https://github.com/Grupo-11-DPOO/Proyecto-2.git
 		
 		usuarios.cargarEstudiante(login, passWord, intereses, estudiante.getRegistroActividades());
 		

@@ -8,5 +8,14 @@ public abstract class Usuario {
 	public Usuario(String nLogin, String nPassword) {
 		this.login = nLogin;
 		this.password = nPassword;
-	}	
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+	
 }

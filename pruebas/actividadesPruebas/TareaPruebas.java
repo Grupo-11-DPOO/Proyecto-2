@@ -2,6 +2,8 @@ package actividadesPruebas;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,89 +24,35 @@ class TareaPruebas {
                 "Intermedio", 
                 120, 
                 true, 
-                "Crear un programa que calcule la suma de números", 
-                "Plataforma virtual"
+                "123454321"
         );
     }
 
     @AfterEach
     void tearDown() {
-        tarea = null; // Limpiamos la referencia después de cada prueba
+        tarea = null;
     }
 
     @Test
-    void testGetMedioEntrega() {
-        assertEquals("Plataforma virtual", tarea.getMedioEntrega(), "El medio de entrega no es el esperado.");
+    void testGetIdActividadesARealizar() {
+    	assertEquals("123454321", tarea.getIdActividadesARealizar(), "El id de la actividad a realizar no es correcto.");
     }
-
+    
     @Test
-    void testGetContenido() {
-        assertEquals("Crear un programa que calcule la suma de números", tarea.getContenido(), "El contenido no es el esperado.");
-    }
+    void testSetRespuestasYGetRespuestas(){
+    	HashMap<String,String> respuestasPrueba = new HashMap<String, String>();
+    	respuestasPrueba.put("123", "PDF");
+    	tarea.setRespuestas(respuestasPrueba);
+    	HashMap<String,String> respuestas = tarea.getRespuestas();
+    	assertTrue(respuestas.containsKey("123"));
 
+    	
+    }
+    
     @Test
-    void testSetContenido() {
-        tarea.setContenido("Actualizar el programa para restar números");
-        assertEquals("Actualizar el programa para restar números", tarea.getContenido(), "El contenido no se actualizó correctamente.");
+    void testRealizarTarea() {
+    	assertEquals(Estado.ENVIADA, tarea.realizarTarea("Javier", "Video"),"Realizar tarea no devolvio estado enviada");
+    	HashMap<String,String> respuestas = tarea.getRespuestas();
+    	assertTrue(respuestas.containsKey("Javier"));
     }
-
-    @Test
-    void testEstadoInicial() {
-        assertEquals(Estado.PENDIENTE, tarea.getEstadoTarea(), "El estado inicial de la tarea no es PENDIENTE.");
-    }
-
-    @Test
-    void testEnviarTareaExito() {
-        try {
-            tarea.enviarTarea();
-        } catch (Exception e) {
-            assertEquals("El medio de entrega es incorrecto.", e.getMessage(), "El mensaje de excepción no es el esperado.");
-        }
-        assertEquals(Estado.ENVIADA, tarea.getEstadoTarea(), "El estado de la tarea no es ENVIADA después de enviarla.");
-    }
-
-    @Test
-    void testEnviarTareaDosVeces() {
-        try {
-            tarea.enviarTarea(); // Primer envío exitoso
-        } catch (Exception e) {
-            fail("No debería haber lanzado una excepción en el primer envío.");
-        }
-
-        Exception exception = assertThrows(Exception.class, () -> {
-            tarea.enviarTarea(); // Segundo envío debería fallar
-        });
-
-        assertEquals("La tarea ya se encuentra enviada.", exception.getMessage(), "El mensaje de error no es correcto.");
-    }
-
-    @Test
-    void testMarcarComoExitosa() {
-        try {
-            tarea.enviarTarea();
-        } catch (Exception e) {
-            fail("No debería haber lanzado una excepción al enviar la tarea.");
-        }
-        tarea.marcarComoExitosa(true);
-        assertEquals(Estado.EXITOSA, tarea.getEstadoTarea(), "La tarea no fue marcada como EXITOSA correctamente.");
-    }
-
-    @Test
-    void testMarcarComoNoExitosa() {
-        try {
-            tarea.enviarTarea();
-        } catch (Exception e) {
-            fail("No debería haber lanzado una excepción al enviar la tarea.");
-        }
-        tarea.marcarComoExitosa(false);
-        assertEquals(Estado.NO_EXITOSA, tarea.getEstadoTarea(), "La tarea no fue marcada como NO_EXITOSA correctamente.");
-    }
-
-    @Test
-    void testMarcarComoExitosaSinEnviar() {
-        tarea.marcarComoExitosa(true);
-        assertEquals(Estado.PENDIENTE, tarea.getEstadoTarea(), "El estado no debería cambiar si la tarea no fue enviada.");
-    }
-
-  
 }

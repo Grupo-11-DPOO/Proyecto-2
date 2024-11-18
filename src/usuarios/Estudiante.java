@@ -2,84 +2,113 @@ package usuarios;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import actividades.*;
+import actividades.Actividad;
+import actividades.Encuesta;
+import actividades.Estado;
+import actividades.Examen;
+import actividades.Opcion;
+import actividades.Quiz;
+import actividades.QuizVerdad;
+import actividades.Recurso;
+import actividades.Tarea;
+import actividades.VerdaderoFalso;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
-import persistencia.PersistenciaUsuarios;
 
 
 public class Estudiante extends Usuario {
-	
-	private PersistenciaUsuarios usuarios;
 	private Actividad actividadEnCurso;
-	private LearningPath learningPathEnCurso;
+	private LearningPath learningPathEnCurso; //Lista con los learningPaths en curso, donde se almacenan sus id
+	private HashMap <String, Actividad> dataActividades; // mapa con las actividades que existen
+	private HashMap <String, LearningPath> dataLearningPaths; // mapa con los learningPath que existen
 	private HashMap<String, Estado> registroActividades; //llave idActividades, valor Estado
 	private HashMap<String, Double> registroLearningPaths; //llave idLearningPaths, valor double del progeso 0 a 1
-	private List<LearningPath> learningPaths;
 	private List<String> intereses;
 	
-	public Estudiante(HashMap<String, Estado> registroActividades, HashMap<String, Double> registroLearningPaths, String nLogin, String nPassword, List<String> intereses) {
+	public Estudiante(HashMap<String, Actividad> actividades, HashMap<String,LearningPath> learningPaths, String nLogin, String nPassword, List<String> intereses) {
 		super(nLogin, nPassword);
-		this.usuarios = new PersistenciaUsuarios();
-		this.registroActividades= registroActividades;
-		this.registroLearningPaths= registroLearningPaths;
+		this.intereses = intereses;
+		this.dataActividades = actividades;
+		this.dataLearningPaths = learningPaths;
 		this.actividadEnCurso = null;
 		this.learningPathEnCurso = null;
 	}
 	
-	
-	public LearningPath getLearningPath(String id) {
-		for (LearningPath learningPath: learningPaths) {
-			if (learningPath.getId().equals(id)) {
-				System.out.println("Se encontró el siguiente learningPath: ");
-				mostrarLearningPath(learningPath);
-				return learningPath;
+	public LearningPath buscarLearningPathPorNombre(String nombreLearningPath) {
+		
+		if(!dataLearningPaths.isEmpty()) {
+			Iterator<LearningPath> iteradorClaves = dataLearningPaths.values().iterator();
+			 while (iteradorClaves.hasNext()) {
+				 	LearningPath learningPath = iteradorClaves.next();
+			        if (learningPath.getTitulo().equalsIgnoreCase(nombreLearningPath)) {
+			            return learningPath;
+			        }
+			    }
 			}
-		}
-		System.out.println("Lo siento no se encontró un learningPath con ese titulo");
 		return null;
 	}
 	
-	public void mostrarLearningPath(LearningPath learning) {
-		System.out.println("Titulo: "+learning.getTitulo()+"\n"+"Descripción: "+learning.getDescripcion()+"\n"+"Nivel"+learning.getNivel()+"\n"+"Duracion"+learning.getDuracion()+"\n"+"Rating"+learning.getRating());
-		for(Actividad actividad: learning.getListaActividades()) {
-			System.out.println("Titulo"+actividad.getTitulo()+"\n"+"descripcion"+actividad.getDescripcion()+"\n"+"objetivo"+actividad.getObjetivo()+"\n"+"Es obligatoria?"+actividad.isObligatorio()+"\n"+"rating"+actividad.getRating()+"\n"+"resenas:"+actividad.getResenas()+"\n"+"Tipo Actividad: "+actividad.getTipoActividad().name()+"\n"+"Duracion"+actividad.getDuracionMinutos());
-			if(actividad.getPrerequisitos()!=null) {
-				for(Actividad preActividad:actividad.getPrerequisitos() ) {
-					System.out.println("Titulo"+preActividad.getTitulo()+"\n"+"descripcion"+preActividad.getDescripcion()+"\n"+"objetivo"+preActividad.getObjetivo()+"\n"+"Es obligatoria?"+preActividad.isObligatorio()+"\n"+"rating"+preActividad.getRating()+"\n"+"resenas:"+preActividad.getResenas()+"\n"+"Tipo Actividad: "+preActividad.getTipoActividad().name()+"\n"+"Duracion"+preActividad.getDuracionMinutos());
-				}
-			}
-		}
-	}
+	public LearningPath getLearningPathById(String id) {
 		
-	public void agregarLearningPath(LearningPath learning) {
-		this.learningPathEnCurso= learning;
+		boolean x= dataLearningPaths.containsKey(id);
+		
+		if (x) {
+			
+			return dataLearningPaths.get(id);
+		}
+		else return null;
+		
+		}
+	public Actividad buscarActividadPorNombre(String nombreActividad) {
+		
+		if(!dataActividades.isEmpty()) {
+			Iterator<Actividad> iteradorClaves = dataActividades.values().iterator();
+			 while (iteradorClaves.hasNext()) {
+				 	Actividad actividad = iteradorClaves.next();
+			        if (actividad.getTitulo().equalsIgnoreCase(nombreActividad)) {
+			            return actividad;
+			        }
+			    }
+			}
+		return null;
 	}
 	
-	public void mostrarActividadesLearningPathEnCurso() {
-		mostrarLearningPath(this.learningPathEnCurso);
-	}
-	public void elegirActividad(String titulo) {
-		for(Actividad actividad: this.learningPathEnCurso.getListaActividades()) {
-			if(actividad.getTitulo().equals(titulo)) {
-				this.actividadEnCurso= actividad;
-			} else {
-				System.out.println("No se encontro actividad con ese titulo en el learningPath");
+	public Actividad getActividadById(String id) {
+		
+		boolean x= dataActividades.containsKey(id);
+		
+		if (x) {
+			
+			return dataActividades.get(id);
+		}
+		else return null;
+		
+		}
+	
+	
+	public boolean empezarLearningPath(LearningPath learningPath) {
+			
+			if(learningPathEnCurso == null) {
+			
+			learningPathEnCurso = learningPath;
+			return true;
+		}
+			else {
+				return false;
 			}
-		}		
+		
 	}
-
-	public PersistenciaUsuarios getUsuarios() {
-		return usuarios;
+	
+	public void finalizarLearningPath() {
+		
+		this.learningPathEnCurso = null;
+		
 	}
-
-	public void setUsuarios(PersistenciaUsuarios usuarios) {
-		this.usuarios = usuarios;
-	}
+	
 
 	public Actividad getActividadEnCurso() {
 		return actividadEnCurso;
@@ -97,22 +126,6 @@ public class Estudiante extends Usuario {
 		this.learningPathEnCurso = learningPathEnCurso;
 	}
 
-	public HashMap<String, Estado> getRegistroActividades() {
-		return registroActividades;
-	}
-
-	public void registroActividades(HashMap<String, Estado> registroActividades) {
-		this.registroActividades = registroActividades;
-	}
-
-	public List<LearningPath> getLearningPaths() {
-		return learningPaths;
-	}
-
-	public void setLearningPaths(List<LearningPath> learningPaths) {
-		this.learningPaths = learningPaths;
-	}
-
 	public List<String> getIntereses() {
 		return intereses;
 	}
@@ -122,32 +135,75 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registro);
 	}
 	
-	public void realizarEncuesta(Encuesta encuesta) {
+	public boolean empezarActividad(Actividad actividad) {
+		
+		if (actividadEnCurso!=null) {
+			
+			actividadEnCurso = actividad;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public void finalizarActividad() {
+		
+		actividadEnCurso = null; 
+	}
+	
+	
+	public void realizarEncuesta(Encuesta encuesta, ArrayList<String> respuestas) {
 		// TODO 
 		// Llamar a clase encuesta
-		String idActividad = encuesta.getId();
-		registroActividades.put(idActividad, estado);
+		Estado estado = encuesta.contestarEncuesta(this.login, respuestas);
+		String id= encuesta.getId();
+		registroActividades.put(id, estado);
 
 		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
-	public void realizarExamen(Examen examen) {
+	public HashMap<String, Estado> getRegistroActividades() {
+		return registroActividades;
+	}
+
+	public void setRegistroActividades(HashMap<String, Estado> registroActividades) {
+		this.registroActividades = registroActividades;
+	}
+
+	public HashMap<String, Double> getRegistroLearningPaths() {
+		return registroLearningPaths;
+	}
+
+	public void setRegistroLearningPaths(HashMap<String, Double> registroLearningPaths) {
+		this.registroLearningPaths = registroLearningPaths;
+	}
+
+	public void realizarExamen(Examen examen, ArrayList<String> respuestas) {
 		// TODO 
 		// Llamar a clase examen
 		String idActividad = examen.getId();
+		Estado estado = examen.contestarExamen(login, respuestas);
 		registroActividades.put(idActividad, estado);
 
 		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
-	public void realizarQuiz(Quiz quiz) {
+	public void realizarQuizVerdad(QuizVerdad quiz, ArrayList<VerdaderoFalso> respuestas) throws Exception {
+		
+		String idActividad = quiz.getId();
+		Estado estado = quiz.calificar(login, respuestas);
+		registroActividades.put(idActividad, estado);
+	}
+	public Estado realizarQuiz(Quiz quiz, ArrayList<Opcion> respuestas) throws Exception {
 		// TODO 
 		// Llamar a clase examen
 		String idActividad = quiz.getId();
+		Estado estado = quiz.calificar(login, respuestas);
 		registroActividades.put(idActividad, estado);
-
+		return estado;
 		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
@@ -161,50 +217,15 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
-	public void realizarTarea(Tarea tarea) {
+	public void realizarTarea(Tarea tarea, String medioEntrega) throws Exception {
 		String idActividad = tarea.getId();
+		Estado estado = tarea.realizarTarea(login, medioEntrega);
 		registroActividades.put(idActividad, estado);
 		
 		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
-	protected String getLogin() {
-		return login;
-	}
-
-	protected String getPassword() {
-		return password;
-	}
-		
-	public void responderExamen(String respuesta) {
-		
-		Examen examen = (Examen) actividadEnCurso; 
-		examen.responder(respuesta);
-		registro.put(examen.getTitulo(), examen.getEstado());
-		//usuarios.cargarEstudiante(login, password, intereses, registro);
-	}
-	
-	public void responderQuiz(List<String> respuesta) throws Exception {
-		
-		Quiz quiz = (Quiz) actividadEnCurso; 
-		quiz.agregarRespuestas(respuesta);
-		quiz.calificar(respuesta);
-		quiz.mostrarExplicaciones();
-		registro.put(quiz.getTitulo(), quiz.getEstado());
-		usuarios.cargarEstudiante(login, password, intereses, registro);
-	}
-	
-	public void responderEncuesta(String respuesta) {
-		
-		Encuesta encuesta = (Encuesta) actividadEnCurso; 
-		encuesta.responder(respuesta);
-		registro.put(encuesta.getTitulo(), encuesta.getEstado());
-		//usuarios.cargarEstudiante(login, password, intereses, registro);
-		// deberia ser actualozar estudiante NO CARGAR
-	}
-	
-    // Calculamos un índice de similitud entre los intereses y el nombre/descripción de un Learning Path.
 	public int calcularSimilitud(LearningPath learningPath) {
         int puntuacion = 0;
         List<String> intereses = getIntereses().stream().map(String::toLowerCase).collect(Collectors.toList());
