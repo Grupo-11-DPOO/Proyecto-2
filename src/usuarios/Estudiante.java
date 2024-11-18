@@ -191,15 +191,19 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
-	public void realizarQuizVerdad(QuizVerdad quiz, ArrayList<VerdaderoFalso> respuestas) throws Exception {
+	public Estado realizarQuizVerdad(QuizVerdad quiz, ArrayList<VerdaderoFalso> respuestas) throws Exception {
 		
 		String idActividad = quiz.getId();
 		Estado estado = quiz.calificar(login, respuestas);
 		registroActividades.put(idActividad, estado);
+		return estado;
+		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
+		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
+	
 	public Estado realizarQuiz(Quiz quiz, ArrayList<Opcion> respuestas) throws Exception {
 		// TODO 
-		// Llamar a clase examen
+		// Llamar a clase quiz
 		String idActividad = quiz.getId();
 		Estado estado = quiz.calificar(login, respuestas);
 		registroActividades.put(idActividad, estado);
@@ -217,7 +221,7 @@ public class Estudiante extends Usuario {
 		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
-	public void realizarTarea(Tarea tarea, String medioEntrega) throws Exception {
+	public void realizarTarea(Tarea tarea, String medioEntrega) {
 		String idActividad = tarea.getId();
 		Estado estado = tarea.realizarTarea(login, medioEntrega);
 		registroActividades.put(idActividad, estado);

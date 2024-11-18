@@ -16,9 +16,11 @@ import actividades.Estado;
 import actividades.Examen;
 import actividades.Opcion;
 import actividades.Quiz;
+import actividades.QuizVerdad;
 import actividades.Recurso;
 import actividades.Tarea;
 import actividades.TipoActividades;
+import actividades.VerdaderoFalso;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
 import usuarios.Estudiante;
@@ -38,7 +40,7 @@ public class Consola {
 	private static String[] opcionesRegistro = {"Crear usuario: Profesor", "Crear usuario: Estudiante", "Salir"};
 	private static String[] opcionesMenuProfesor = {"Crear LearningPath", "Ver y Editar LearningPath", "Crear Actividad", "Clonar Actividad",
 			"Ver y Editar Actividades", "Agregar reseñas y/o rating a actividad", "Salir"};
-	private static String[] opcionesTipoActividad = {"Encuesta", "Examen", "Quiz", "Recurso", "Tarea"};
+	private static String[] opcionesTipoActividad = {"Encuesta", "Examen", "Quiz múltiple", "Recurso", "Tarea", "Quiz V/F"};
 	private static String[] opcionesClonar = {"Clonar con ID de actividad", "Volver"};
 	private static String[] opcionesCrearLearningPath = {"Agregar actividad propia existente", "Crear nueva actividad"};
 	private static String[] opcionesSiNo = {"Si", "No"};
@@ -645,7 +647,7 @@ public class Consola {
 				break;
 				
 			case 3:
-				// Crear quiz
+				// Crear quiz opciones multiples
 				// Atributos propios de quiz
 				float calificacionMinima = pedirNumeroAlUsuario("Calificación mínima (0 a 100)");
 				
@@ -715,6 +717,33 @@ public class Consola {
 				profesorActual.guardarActividad(tarea);
 				idActividadTarea = tarea.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividadTarea);
+				break;
+				
+			case 6:
+				// Crear quiz verdadero falso
+				// Atributos propios de quiz
+				float calificacionMinima1 = pedirNumeroAlUsuario("Calificación mínima (0 a 100)");
+				
+				QuizVerdad quizVerdadero = profesorActual.crearQuizVerdaderoFalso(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima1);
+				quizVerdadero.setPrerequisitos(listaPrerequisitos);
+				// Agregamos preguntas
+				int cantidadPreguntas21 = pedirEnteroAlUsuario("Cantidad de preguntas");
+				int i21 = 0;
+				while (i21 < cantidadPreguntas21) {
+					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
+					String opcionCorrecta = pedirCadenaAlUsuario("Opción correcta (V o F)");
+					opcionCorrecta.toLowerCase();
+					VerdaderoFalso opcionCorrectaEnum;
+					if (opcionCorrecta.equals("v")) {
+						opcionCorrectaEnum = VerdaderoFalso.Verdadero;
+					} else {
+						opcionCorrectaEnum = VerdaderoFalso.Falso;
+					}
+					quizVerdadero.agregarPregunta(enunciado, opcionCorrectaEnum);
+				}
+				profesorActual.guardarActividad(quizVerdadero);
+				idActividad = quizVerdadero.getId();
+				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				break;
 			}
 			
@@ -787,7 +816,7 @@ public class Consola {
     	System.out.println("Ver y Editar Actividades");
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Lista de actividades");
-    	List<String> idActividadesPropias = profesorActual.getActividadesPropias();
+    	List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
     	imprimirActividadesPropiasProfesor(idActividadesPropias);
     	
     	int opcion = mostrarMenu("Opciones para las actividades mostradas", opcionesVerYEditarActividades);
@@ -1141,7 +1170,7 @@ public class Consola {
     	menuEstudiante();
     }
     
-    public static void iniciarActividadEnCurso(Actividad actividad) {
+    public static void iniciarActividadEnCurso(Actividad actividad) throws Exception {
     	// Dependiendo del tipo de actividad empieza un metodo distinto
     	TipoActividades tipoActividad = actividad.getTipoActividad();
     	if (tipoActividad == TipoActividades.Encuesta) {
@@ -1155,7 +1184,7 @@ public class Consola {
     		realizarExamen(examen);
     		
     	} else if (tipoActividad == TipoActividades.Quiz) {
-    		// Iniciar actividad quiz
+    		// Iniciar actividad quiz opciones multiples
     		Quiz quiz = (Quiz) actividad;
     		realizarQuiz(quiz);
     		
@@ -1168,6 +1197,10 @@ public class Consola {
     		// Iniciar actividad tarea
     		Tarea tarea = (Tarea) actividad;
     		realizarTarea(tarea);
+    	} else if (tipoActividad == TipoActividades.QuizVerdad) {
+    		// Iniciar actividad quiz verdadero o falso
+    		QuizVerdad quiz = (QuizVerdad) actividad;
+    		realizarQuizVerdad(quiz);
     	}
     	System.out.println("Recuerde que puede dejar una reseña o rating de la actividad si desea!");
     	// Marcamos actividad actual como vacia.
@@ -1269,6 +1302,42 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     }
     
+    public static void realizarQuizVerdad(QuizVerdad quiz) throws Exception {
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println(quiz.verActividad());
+    	int cantidadPreguntas = quiz.getPreguntas().size();
+    	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Preguntas:");
+    	System.out.println(quiz.verPreguntas());
+    	// Realizar
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println( "Respuestas:" );
+    	int i = 0;
+    	ArrayList<VerdaderoFalso> respuestas = new ArrayList<>();
+    	while (i < cantidadPreguntas) {
+    		String respuesta = pedirCadenaAlUsuario("Respuesta (V o F) a la pregunta #"+i);
+    		respuesta.toLowerCase();
+    		VerdaderoFalso respuestaEnum;
+			if (respuesta.equals("v")) {
+				respuestaEnum = VerdaderoFalso.Verdadero;
+			} else {
+				respuestaEnum = VerdaderoFalso.Falso;
+			}
+    		respuestas.add(respuestaEnum);
+    		i++;
+    	}
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Ahora, se va a calificar... ");
+    	System.out.println( "------------------------------------------------------" );
+    	// Manda las respuestas
+    	Estado resultado = estudianteActual.realizarQuizVerdad(quiz,respuestas);
+    	// Vuelven calificadas
+    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("El quiz "+quiz.getTitulo()+" ha sido "+resultado);
+    	System.out.println( "------------------------------------------------------" );
+    }
+    
     public static void realizarRecurso(Recurso recurso) {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println(recurso.verActividad());
@@ -1297,7 +1366,7 @@ public class Consola {
     	String medioEntrega = pedirCadenaAlUsuario("Ingrese el medio de entrega");
     	// Realizar
     	// Tiene que mandarle el medio de entrega
-    	estudianteActual.realizarTarea(tarea);
+    	estudianteActual.realizarTarea(tarea, medioEntrega);
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Se ha marcado la actividad "+tarea.getTitulo()+" exitosa.");
     	System.out.println( "------------------------------------------------------" );
