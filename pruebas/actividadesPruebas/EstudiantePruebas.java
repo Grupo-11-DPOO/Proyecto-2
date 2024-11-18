@@ -318,6 +318,25 @@ class EstudiantePruebas {
     	assertTrue(quiz.getResenas().contains("Actividad muy sencilla, la podria completar sin haber hecho el curso."), "No se guardo correctamente la reseña");
     	
     }
+    
+    @Test
+    void testAgregarRating() throws Exception{
+    	QuizVerdad quiz = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "Fácil", 15, true, 80);
+    	Float rating = 4.6f;
+    	Float rating2 = 3.3f;
+    	
+    	Float ratingEsperado = (Float)(rating +rating2) /2;
+    	estudiante.agregarRatingActividad(quiz, rating);
+    	estudiante.agregarRatingActividad(quiz, rating2);
+    	
+    	assertEquals(ratingEsperado,quiz.getRating(),0.1,"El rating no se añadio correctamente");
+    	Exception exception = assertThrows(Exception.class, () -> {
+            estudiante.agregarRatingActividad(quiz, 7.3f);
+        });
+
+        assertEquals("Rating debe estar entre 0 y 5.", exception.getMessage(), "El mensaje de excepción no es el esperado.");
+    	
+    }
     @Test
     void testVerProgresoLearningPathSinActividadesCompletadas() {
        

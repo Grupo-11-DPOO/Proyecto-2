@@ -26,4 +26,11 @@ public class Recurso extends Actividad{
 		Estado estado = Estado.EXITOSA;
 		return estado;
 	}
+	
+	@Override
+	public Recurso clone() {
+		Recurso copia = (Recurso) super.clone();
+		copia.crearId();
+		return copia;
+	}
 }

@@ -30,4 +30,11 @@ public class Tarea extends Actividad{
 		respuestas.put(idEstudiante, medioEntrega);
 		return Estado.ENVIADA;	
 	}
+	
+	@Override
+	public Tarea clone() {
+		Tarea copia = (Tarea) super.clone();
+		copia.crearId();
+		return copia;
+	}
 }

@@ -12,6 +12,7 @@ import actividades.Quiz;
 import actividades.QuizVerdad;
 import actividades.Recurso;
 import actividades.Tarea;
+import actividades.TipoActividades;
 import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
 
@@ -99,12 +100,49 @@ public class Profesor extends Usuario {
 		}
 	
 	
-	public void clonarActividad(Actividad actividad) throws UsuarioExistenteException {
-		Actividad acti = actividad.clonarActividad();
-		idActividadesCreadas.add(acti.getId());
-		dataActividades.put(acti.getId(), acti);
-		//guardarActividad(acti);	
+	public String clonarTarea(Tarea tarea) throws Exception {
+	    Tarea actiClonada = tarea.clone();
+	    idActividadesCreadas.add(actiClonada.getId());
+	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    
+	    return actiClonada.getId();
 	}
+
+	public String clonarRecurso(Recurso recurso) throws Exception {
+	    Recurso actiClonada = recurso.clone();
+	    idActividadesCreadas.add(actiClonada.getId());
+	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    return actiClonada.getId();
+	}
+
+	public String clonarQuizVerdad(QuizVerdad quizVerdad) throws Exception {
+	    QuizVerdad actiClonada = quizVerdad.clone();
+	    idActividadesCreadas.add(actiClonada.getId());
+	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    return actiClonada.getId();
+	}
+
+	public String clonarQuiz(Quiz quiz) throws Exception {
+	    Quiz actiClonada = quiz.clone();
+	    idActividadesCreadas.add(actiClonada.getId());
+	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    return actiClonada.getId();
+	}
+
+	public String clonarExamen(Examen examen) throws Exception {
+	    Examen actiClonada = examen.clone();
+	    idActividadesCreadas.add(actiClonada.getId());
+	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    return actiClonada.getId();
+	}
+
+	public String clonarEncuesta(Encuesta encuesta) throws Exception {
+	    Encuesta actiClonada = encuesta.clone();
+	    idActividadesCreadas.add(actiClonada.getId());
+	    dataActividades.put(actiClonada.getId(), actiClonada);
+	    return actiClonada.getId();
+	}
+
 
 	public Recurso crearActividadRecurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, String material) throws Exception {
@@ -248,18 +286,25 @@ public class Profesor extends Usuario {
 	}
 	
 	@SuppressWarnings("unused")
-	private void mostrarResenas(LearningPath learnPath) {
+	public String mostrarResenas(LearningPath learnPath) {
+		StringBuilder sb = new StringBuilder();
 		List<Actividad> actividades  = learnPath.getListaActividades();
-		for(Actividad actividad :actividades) {
-			List<String> resenas = actividad.getResenas();
-			System.out.println("Titulo: "+ actividad.getTitulo());
-			int counter = 1;
-			for(String resena: resenas){
-		
-				System.out.println("Resena "+ counter+": " + resena);
+		if(!actividades.isEmpty()) {
+			for(Actividad actividad :actividades) {
+				List<String> resenas = actividad.getResenas();
+				sb.append("Titulo: "+ actividad.getTitulo());
+				int counter = 1;
+				for(String resena: resenas){
 			
-			System.out.println("---------------------------------------");
+					sb.append("Resena "+ counter+": " + resena);
+				
+					sb.append("---------------------------------------");
+					counter++;
+				}
 			}
+		} else {
+			return "No hay reseñas por mostrar.";
 		}
+		return sb.toString();
 	}
 }

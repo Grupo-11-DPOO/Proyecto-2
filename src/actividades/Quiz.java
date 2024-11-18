@@ -156,5 +156,11 @@ public class Quiz extends Actividad{
 			throw new Exception("La cantidad de respuestas no coincide con el número de preguntas.");
 		}
 	}
-
+	
+	@Override
+	public Quiz clone() {
+		Quiz copia = (Quiz) super.clone();
+		copia.crearId();
+		return copia;
+	}
 }

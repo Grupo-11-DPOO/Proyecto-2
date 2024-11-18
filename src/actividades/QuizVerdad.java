@@ -83,4 +83,10 @@ public class QuizVerdad extends Actividad {
 		}
 	}
 	
+	@Override
+	public QuizVerdad clone() {
+		QuizVerdad copia = (QuizVerdad) super.clone();
+		copia.crearId();
+		return copia;
+	}
 }

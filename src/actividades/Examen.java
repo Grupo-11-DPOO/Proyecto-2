@@ -72,5 +72,11 @@ public class Examen extends Actividad{
 		return Estado.PENDIENTE;
 		
 	}
+	@Override
+	public Examen clone() {
+		Examen copia = (Examen) super.clone();
+		copia.crearId();
+		return copia;
+	}
 }
 	

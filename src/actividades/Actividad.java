@@ -11,7 +11,7 @@ import learningPaths.Identificable;
 import learningPaths.LearningPath;
 import usuarios.Estudiante;
 
-public abstract class Actividad implements Identificable {
+public abstract class Actividad implements Identificable, Cloneable {
 	
 	protected String id;
 	public String titulo;
@@ -135,8 +135,10 @@ public abstract class Actividad implements Identificable {
 		if (ratingPersonal <= 0 || ratingPersonal > 5) {
 			throw new Exception("Rating debe estar entre 0 y 5.");
 		} else {
-			float nuevoRating = ((this.rating*this.cantidadRating)+ratingPersonal)/(this.cantidadRating+1);
-			this.rating = nuevoRating;
+			
+			float nuevoRating = ((this.rating*this.cantidadRating)+ratingPersonal);
+			this.cantidadRating+=1;
+			this.rating = nuevoRating/this.cantidadRating;
 		}
 	}
 	
@@ -209,12 +211,11 @@ public abstract class Actividad implements Identificable {
 		this.prerequisitos.add(actividad);
 		
 	}
-	
-    public Actividad clonarActividad() {
+	@Override
+    public Actividad clone() {
         try {
-            Actividad copia = (Actividad) this.clone();
-            copia.crearId();
-            return copia;
+            return(Actividad) super.clone();
+            
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;

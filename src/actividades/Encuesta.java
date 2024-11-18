@@ -76,6 +76,12 @@ public class Encuesta extends Actividad{
 		this.respuestasDeTodos.put(idEstudiante, respuestas);
 		return Estado.EXITOSA;
 	}
-
+	
+	@Override
+	public Encuesta clone() {
+		Encuesta copia = (Encuesta) super.clone();
+		copia.crearId();
+		return copia;
+	}
 
 }
