@@ -89,16 +89,6 @@ public class Profesor extends Usuario {
 			}
 		return null;
 	}
-	
-	public Actividad getActividadById(String id) {
-		boolean x= dataActividades.containsKey(id);
-		
-		if (x) {
-			
-			return dataActividades.get(id);
-		} else return null;
-		}
-
 	public String clonarActividad(Actividad actividad) throws Exception {
 		// Metodo madre
 		TipoActividades tipo = actividad.getTipoActividad();
@@ -130,7 +120,15 @@ public class Profesor extends Usuario {
 			break;
 		}
 		return idActividadClonada;
-	}
+	}	public Actividad getActividadById(String id) {
+		boolean x= dataActividades.containsKey(id);
+		
+		if (x) {
+			
+			return dataActividades.get(id);
+		} else return null;
+		}
+	
 	
 	public String clonarTarea(Tarea tarea) throws Exception {
 	    Tarea actiClonada = tarea.clone();
@@ -230,6 +228,7 @@ public class Profesor extends Usuario {
 	
 	public String mostrarRespuestasExamen(Examen examen) {
 		 StringBuilder sb = new StringBuilder();
+		 if(!examen.getRespuestas().entrySet().isEmpty()) {
 		    for (Map.Entry<String, ArrayList<String>> entry : examen.getRespuestas().entrySet()) {
 		        String login = entry.getKey();
 		        ArrayList<String> respuestas = entry.getValue();
@@ -245,6 +244,9 @@ public class Profesor extends Usuario {
 		        sb.append("\n");
 		    }
 		    return sb.toString();
+		 }else {
+			 return "No hay respuestas por mostrar.";
+		 }
 	}
 	
 //	private void calificarExamen(String idEstudiante, Examen examen, Estado estado) {

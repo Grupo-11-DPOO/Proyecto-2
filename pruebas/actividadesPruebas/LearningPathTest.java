@@ -2,13 +2,20 @@ package actividadesPruebas;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import actividades.Actividad;
+import actividades.Estado;
 import actividades.Quiz;
+import actividades.Tarea;
 import learningPaths.LearningPath;
+import usuarios.Estudiante;
 
 class LearningPathTest {
 	LearningPath learnPath;
@@ -142,4 +149,33 @@ class LearningPathTest {
         float ratingEsperado = (float) (5.0f + 4.5f) / 2;
         assertEquals(ratingEsperado, learnPath.getRating(), 0.01,"La respuesta no fue la esperada");
     }
+    
+    @Test
+    void testGetProgreso() {
+        HashMap<String, Estudiante> datosEstudiante = new HashMap<>();
+        
+        LearningPath learningPath = new LearningPath("Python Avanzado", "Aprender conceptos avanzados de Python", "Intermedio");
+        Tarea tarea1 = new Tarea("Tarea 1", "Resolver ejercicios básicos", "Matemáticas básicas", "Fácil", 30, true, "PDF");
+        Tarea tarea2 = new Tarea("Tarea 2", "Resolver ejercicios intermedios", "Matemáticas intermedias", "Intermedio", 45, true, "PDF");
+        Quiz quiz1 = new Quiz("Quiz 1", "Evaluar conocimientos básicos de Python", "Preguntas de opción múltiple", "Intermedio", 20, true, 70);
+
+        learningPath.agregarActividad(tarea1);
+        learningPath.agregarActividad(tarea2);
+        learningPath.agregarActividad(quiz1);
+
+        Estudiante estudiante1 = new Estudiante(new HashMap<>(), new HashMap<>(), "estudiante1", "password123", new ArrayList<>());
+        estudiante1.setLearningPathEnCurso(learningPath);
+        estudiante1.getRegistroActividades().put(tarea1.getId(), Estado.EXITOSA);
+        estudiante1.getRegistroActividades().put(tarea2.getId(), Estado.ENVIADA);
+        estudiante1.getRegistroActividades().put(quiz1.getId(), Estado.NO_EXITOSA);
+
+        datosEstudiante.put(estudiante1.getLogin(), estudiante1);
+        
+
+        List<Double> progreso = learningPath.getProgreso(datosEstudiante);
+
+        assertEquals(66.67, progreso.get(0), 0.01, "El porcentaje de actividades completadas no es el esperado.");
+        assertEquals(33.34, progreso.get(1), 0.01, "El porcentaje de actividades exitosas no es el esperado.");
+    }
+
 }

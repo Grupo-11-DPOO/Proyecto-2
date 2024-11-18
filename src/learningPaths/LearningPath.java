@@ -171,8 +171,8 @@ public class LearningPath implements Identificable{
 				}
 			}
 		}
-		double porcentajeCompletadas = (contadorCompletadas/cantidadActividades)*100;
-    	double porcentajeExitosas = (contadorExitosas/cantidadActividades)*100;
+		double porcentajeCompletadas = ((double)contadorCompletadas/cantidadActividades)*100;
+    	double porcentajeExitosas = ((double)contadorExitosas/cantidadActividades)*100;
     	listaRetorno.add(porcentajeCompletadas);
     	listaRetorno.add(porcentajeExitosas);
     	return listaRetorno;

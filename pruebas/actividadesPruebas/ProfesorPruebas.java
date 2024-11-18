@@ -238,7 +238,57 @@ class ProfesorPruebas {
 		sb.append("Resena "+ 2+": " + resena2);
 		sb.append("---------------------------------------");
 		assertEquals(sb.toString(), profesor.mostrarResenas(lp),"El mensaje no es el esperado.");
-			
+		
+		
 		
     }
+    
+    @Test
+    void testMostrarRespuestasExamen() throws Exception {
+        
+        Examen examen = profesor.crearActividadExamen("Examen Final", "Evaluar conocimientos adquiridos", 
+                "Examen escrito sobre conceptos clave", "Avanzado", 45, true);
+        
+        assertEquals("No hay respuestas por mostrar.", profesor.mostrarRespuestasExamen(examen),"Se mostro el mensaje equivocado cuando no hay respuestas");
+        
+        ArrayList<String> respuestasEstudiante = new ArrayList<>();
+        respuestasEstudiante.add("Respuesta 1");
+        respuestasEstudiante.add("Respuesta 2");
+        respuestasEstudiante.add("Respuesta 3");
+        examen.contestarExamen("IdEstudiante23", respuestasEstudiante);
+
+        
+        StringBuilder sb=new StringBuilder();
+        sb.append("Estudiante: IdEstudiante23").append("\n");
+        sb.append("Respuestas al examen: ");
+        sb.append("Respuesta 1, ").append("Respuesta 2, ").append("Respuesta 3");
+        sb.append("\n");
+        String resultado = profesor.mostrarRespuestasExamen(examen);
+        assertEquals(sb.toString(),resultado,"El mensaje no es el esperado");
+    }
+    
+    @Test
+    void testMostrarRespuestasTarea() throws Exception {
+        
+        Tarea tarea = profesor.crearActividadTarea("Tarea 1", "Resolver ejercicios", 
+                "Matemáticas básicas", "Intermedio", 30, true, "Entrega en PDF");
+
+        tarea.getRespuestas().put("estudiante1", "Entrega en PDF");
+        tarea.getRespuestas().put("estudiante2", "Entrega en línea");
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Estudiante: estudiante1").append("\n");
+        sb.append("Medio de entrega de la tarea: Entrega en PDF").append("\n");
+
+     
+        sb.append("Estudiante: estudiante2").append("\n");
+        sb.append("Medio de entrega de la tarea: Entrega en línea").append("\n");
+
+        String resultadoEsperado = sb.toString();
+
+        String resultado = profesor.mostrarRespuestasTarea(tarea);
+
+        assertEquals(resultadoEsperado, resultado, "El mensaje devuelto no es el esperado");
+    }
+
 }
