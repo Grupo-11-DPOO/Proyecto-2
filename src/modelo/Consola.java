@@ -50,11 +50,14 @@ public class Consola {
 	private static String[] opcionesVerYEditarActividades = {"Ver prerequisitos", "Ver reseñas", "Editar título", "Editar objetivo",
 			"Editar descripción", "Editar nivel", "Editar si es obligatorio", "Volver"};
 	private static String[] opcionesMenuEstudiantes = {"Ver Learning Paths", "Iniciar actividad del Learning Path actual", 
-			"Completar actividad en curso", "Agregar reseñas y/o rating a actividad", "Ver progreso del Learning Path actual", "Salirse del Learning Path o Actividad actual", "Salir"};
+			"Completar actividad en curso", "Agregar reseñas y/o rating a actividad", "Ver progreso del Learning Path actual",
+			"Salirse del Learning Path o Actividad actual", "Salir"};
 	private static String[] opcionesOfertaLearningPaths = {"Oferta total de Learning Paths", "Recomendación a partir de sus intereses.", "Volver"};
 	private static String[] opcionSalirLearningOActividad = {"Salir Learning Path actual", "Salir Actividad actual", "Volver al menú principal"};
-	private static String[] opcionesProgresoLearningPath = {"Ver progreso de actividades completadas y exitosas", "Ver progreso de actividades exitosas", "Volver al menú principal"};
-	private static String[] opcionesVerEstadisticas = {"Ver estadísticas por estudiante", "Ver estadísticas por Learning Path", "Volver al menú principal"};
+	private static String[] opcionesProgresoLearningPath = {"Ver progreso de actividades completadas y exitosas",
+			"Ver progreso de actividades exitosas", "Volver al menú principal"};
+	private static String[] opcionesVerEstadisticas = {"Ver estadísticas por estudiante", "Ver estadísticas por Learning Path",
+			"Volver al menú principal"};
 	
     /**
      * Le pide al usuario que ingrese una cadena de caracteres

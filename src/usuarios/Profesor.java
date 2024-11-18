@@ -98,7 +98,39 @@ public class Profesor extends Usuario {
 			return dataActividades.get(id);
 		} else return null;
 		}
-	
+
+	public String clonarActividad(Actividad actividad) throws Exception {
+		// Metodo madre
+		TipoActividades tipo = actividad.getTipoActividad();
+		String idActividadClonada = null;
+		switch (tipo) {
+		case Recurso:
+			Recurso recurso = (Recurso) actividad;
+			idActividadClonada = clonarRecurso(recurso);
+			break;
+		case Tarea:
+			Tarea tarea = (Tarea) actividad;
+			idActividadClonada = clonarTarea(tarea);
+			break;
+		case Quiz:
+			Quiz quiz = (Quiz) actividad;
+			idActividadClonada = clonarQuiz(quiz);
+			break;
+		case Examen:
+			Examen examen = (Examen) actividad;
+			idActividadClonada = clonarExamen(examen);
+			break;
+		case Encuesta:
+			Encuesta encuesta = (Encuesta) actividad;
+			idActividadClonada = clonarEncuesta(encuesta);
+			break;
+		case QuizVerdad:
+			QuizVerdad quizVerdad = (QuizVerdad) actividad;
+			idActividadClonada = clonarQuizVerdad(quizVerdad);
+			break;
+		}
+		return idActividadClonada;
+	}
 	
 	public String clonarTarea(Tarea tarea) throws Exception {
 	    Tarea actiClonada = tarea.clone();
