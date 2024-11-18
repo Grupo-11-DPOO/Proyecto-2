@@ -913,7 +913,6 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Bienvenido profesor al menú de estadísticas");
     	System.out.println( "------------------------------------------------------" );
-    	// TODO
     	int opcion = mostrarMenu("Seleccione que desea visualizar", opcionesVerEstadisticas);
     	switch (opcion) {
     	case 1:
@@ -1046,7 +1045,6 @@ public class Consola {
     }
     
     public static void verProgresoLearningPath() {
-    	//TODO
     	List<Double> listaProgresos = estudianteActual.verProgresoLearningPath();
     	double porcentajeCompletadas = listaProgresos.get(0);
     	double porcentajeExitosas = listaProgresos.get(1);
@@ -1281,6 +1279,14 @@ public class Consola {
     		realizarQuizVerdad(quiz);
     	}
     	System.out.println("Recuerde que puede dejar una reseña o rating de la actividad si desea!");
+    	// Recomendar actividad con respecto al estado
+    	if (estudianteActual.recomendarActividad(actividad, estudianteActual.getLearningPathEnCurso()) != null) {
+    		Actividad actividadRecomendada = estudianteActual.recomendarActividad(actividad, estudianteActual.getLearningPathEnCurso());
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println("Se recomienda que continue con la actividad "+actividadRecomendada.getTitulo());
+    	} else {
+    		System.out.println("No hay actividades anteriores para sugerir.");
+    	}
     	// Marcamos actividad actual como vacia.
     	estudianteActual.setActividadEnCurso(null);
     	menuEstudiante();

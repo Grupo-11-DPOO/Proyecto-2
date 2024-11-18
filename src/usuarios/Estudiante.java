@@ -265,4 +265,29 @@ public class Estudiante extends Usuario {
 
         return listaCompletaLearningPaths;
     }
+    
+    // Recomienda una actividad con respecto al estado de la finalizada
+    public Actividad recomendarActividad(Actividad actividadFinalizada, LearningPath learningPath) {
+    	Estado estado = registroActividades.get(actividadFinalizada.getId());
+    	List<Actividad> listaActividades = learningPath.getListaActividades();
+    	int indiceActual = listaActividades.indexOf(actividadFinalizada);
+    	Actividad actividadSugerida = null;
+    	switch (estado) {
+        case ENVIADA:
+        case EXITOSA:
+            // Verificar si hay una actividad siguiente
+            if (indiceActual + 1 < listaActividades.size()) {
+                actividadSugerida = listaActividades.get(indiceActual + 1);
+            }
+            break;
+
+        case NO_EXITOSA:
+            // Verificar si hay una actividad anterior
+            if (indiceActual - 1 >= 0) {
+            	actividadSugerida = listaActividades.get(indiceActual - 1);
+            }
+            break;
+    	}
+    	return actividadSugerida;
+    }
 }
