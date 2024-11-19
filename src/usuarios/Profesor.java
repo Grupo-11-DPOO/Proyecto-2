@@ -276,8 +276,12 @@ public class Profesor extends Usuario {
 	}
 
 	public void guardarActividad(Actividad actividad) {
+		if(idActividadesCreadas.contains(actividad.getId())) {
+			
+		}else {
+			idActividadesCreadas.add(actividad.getId());
+		}
 		getDataActividades().put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
-		idActividadesCreadas.add(actividad.getId()); // Lista con id de actividades
 	}
 	
 	public LearningPath crearLearningPath(String titulo, String objetivo, String nivel) {
@@ -288,18 +292,19 @@ public class Profesor extends Usuario {
 	}
 	
 	public void guardarLearningPath(LearningPath learningPath) throws UsuarioExistenteException{
+		if(idLearningPathsCreados.contains(learningPath.getId())) {
+			
+		}
+		else {
+			idLearningPathsCreados.add(learningPath.getId());
+		}
 		getDataLearningPaths().put(learningPath.getId(),learningPath);
-		idLearningPathsCreados.add(learningPath.getId());
-		// SE ACTUALIZA
-		//usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);
 	}
 
 	public void agregarActividad(Actividad actividad, LearningPath learnPath) throws UsuarioExistenteException {
 		List<Actividad> actividadesLearn = learnPath.getListaActividades();
 		actividadesLearn.add(actividad);
 		guardarActividad(actividad);
-		// Se actualiza no se carga!!!
-		//usuarios.cargarProfesor(login, password, idLearningPaths, idActividades);
 	}
 	
 	public String mostrarResenas(LearningPath learnPath) {
