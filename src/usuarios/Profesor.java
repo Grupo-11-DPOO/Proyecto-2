@@ -125,8 +125,7 @@ public class Profesor extends Usuario {
 			
 			return getDataActividades().get(id);
 		} else return null;
-		}
-	
+	}
 	
 	public String clonarTarea(Tarea tarea) throws Exception {
 	    Tarea actiClonada = tarea.clone();
@@ -170,7 +169,6 @@ public class Profesor extends Usuario {
 	    getDataActividades().put(actiClonada.getId(), actiClonada);
 	    return actiClonada.getId();
 	}
-
 
 	public Recurso crearActividadRecurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, String material) throws Exception {
@@ -223,7 +221,6 @@ public class Profesor extends Usuario {
 		return quiz;
 	}
 	
-	
 	public String mostrarRespuestasExamen(Examen examen) {
 		 StringBuilder sb = new StringBuilder();
 		 if(!examen.getRespuestas().entrySet().isEmpty()) {
@@ -246,12 +243,6 @@ public class Profesor extends Usuario {
 			 return "No hay respuestas por mostrar.";
 		 }
 	}
-	
-//	private void calificarExamen(String idEstudiante, Examen examen, Estado estado) {
-//		
-//		
-//		
-//	}
 	
 	public String mostrarRespuestasEncuesta(Encuesta encuesta) {
 		
@@ -287,7 +278,6 @@ public class Profesor extends Usuario {
 		    return sb.toString();
 	}
 
-
 	public void guardarActividad(Actividad actividad) {
 		getDataActividades().put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
 		idActividadesCreadas.add(actividad.getId()); // Lista con id de actividades
@@ -296,6 +286,7 @@ public class Profesor extends Usuario {
 	public LearningPath crearLearningPath(String titulo, String objetivo, String nivel) {
 		LearningPath learningPath = new LearningPath(titulo, objetivo, nivel);
 		getDataLearningPaths().put(learningPath.getId(), learningPath);
+		idLearningPathsCreados.add(learningPath.getId());
 		return learningPath;
 	}
 	
@@ -305,17 +296,15 @@ public class Profesor extends Usuario {
 		// SE ACTUALIZA
 		//usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);
 	}
-//	
-	@SuppressWarnings("unused")
+
 	public void agregarActividad(Actividad actividad, LearningPath learnPath) throws UsuarioExistenteException {
 		List<Actividad> actividadesLearn = learnPath.getListaActividades();
 		actividadesLearn.add(actividad);
-		guardarLearningPath(learnPath);
+		guardarActividad(actividad);
 		// Se actualiza no se carga!!!
 		//usuarios.cargarProfesor(login, password, idLearningPaths, idActividades);
 	}
 	
-	@SuppressWarnings("unused")
 	public String mostrarResenas(LearningPath learnPath) {
 		StringBuilder sb = new StringBuilder();
 		List<Actividad> actividades  = learnPath.getListaActividades();

@@ -71,6 +71,10 @@ public class SistemaRegistro {
 		return profesores;
 	}
 	
+	public void guardarProfesor(Profesor profesor) {
+		persistenciaProfesores.guardarProfesor(profesor);
+	}
+	
 	public void cargarDatos() throws UsuarioExistenteException, JSONException, ParseException{
 		this.actividades = cargarActividades();
 		this.learningPaths = cargarLearningPaths(actividades);

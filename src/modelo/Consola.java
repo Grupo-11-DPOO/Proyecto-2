@@ -331,6 +331,9 @@ public class Consola {
     }
     
     public static void menuProfesor() {
+    	List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
+    	System.out.println(idActividadesPropias);
+    	
     	try {
 			int opcionSeleccionada = mostrarMenu("Menu Principal Profesores", opcionesMenuProfesor);
 			
@@ -375,7 +378,8 @@ public class Consola {
 		String objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
 		String nivel = pedirCadenaAlUsuario("Ingrese el nivel");
 		LearningPath learningPath = profesorActual.crearLearningPath(titulo, objetivo, nivel);
-		sistemaRegistro.cargarLearningPaths(actividades);
+		sistemaRegistro.guardarLearningPath(learningPath);
+		sistemaRegistro.guardarProfesor(profesorActual);
 		System.out.println("El Learning Path se ha creado exitosamente, sin embargo, está vacio.");
 		int cantidadActividades = pedirEnteroAlUsuario("Ingrese la cantidad de actividades que tendrá");
 		int opcion = mostrarMenu("Agregar actividades. Recuerde que van en orden.", opcionesCrearLearningPath);
@@ -633,6 +637,7 @@ public class Consola {
 				}
 				profesorActual.guardarActividad(encuesta);
 				sistemaRegistro.guardarActividad(encuesta);
+				sistemaRegistro.guardarProfesor(profesorActual);
 				idActividad = encuesta.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				menuProfesor();

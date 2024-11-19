@@ -1,6 +1,9 @@
 [{
     "passWord": "123",
     "login": "Raul",
-    "idActividadesCreadas": [],
-    "idLearningPathsCreados": []
+    "idActividadesCreadas": [
+        "32be51e0-2390-476d-b686-e61152aada36",
+        "32be51e0-2390-476d-b686-e61152aada36"
+    ],
+    "idLearningPathsCreados": ["b0541de0-0888-4258-860b-75a9f9a92445"]
 }]

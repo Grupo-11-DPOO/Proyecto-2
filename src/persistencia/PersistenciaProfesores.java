@@ -177,7 +177,7 @@ public class PersistenciaProfesores {
             boolean encontrada = false;
             for (int i = 0; i < profesoresArray.length(); i++) {
                 JSONObject profesorExistente = profesoresArray.getJSONObject(i);
-                if (profesorExistente.getString("id").equals(profesor.getLogin())) {
+                if (profesorExistente.getString("login").equals(profesor.getLogin())) {
                 	profesoresArray.put(i, nuevoProfesor);
                     encontrada = true;
                     break;
