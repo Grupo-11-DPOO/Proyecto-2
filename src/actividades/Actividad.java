@@ -22,7 +22,7 @@ public abstract class Actividad implements Identificable, Cloneable {
 	public boolean obligatorio;
 	public Date tiempoLimite;
 	private float rating;
-	protected List<Actividad> prerequisitos;
+	protected ArrayList<Actividad> prerequisitos;
 	public int cantidadRating;
 	public List<String> resenas; // las resenas que un estudiante ingresa a la actividad y pueda visualizar un profesor
 	protected TipoActividades tipoActividad;
@@ -120,11 +120,11 @@ public abstract class Actividad implements Identificable, Cloneable {
 	}
 
 
-	public List<Actividad> getPrerequisitos() {
+	public ArrayList<Actividad> getPrerequisitos() {
 		return prerequisitos;
 	}
 
-	public void setPrerequisitos(List<Actividad> prerequisitos) {
+	public void setPrerequisitos(ArrayList<Actividad> prerequisitos) {
 		this.prerequisitos = prerequisitos;
 	}
 	
@@ -202,6 +202,7 @@ public abstract class Actividad implements Identificable, Cloneable {
         return false;
     }
     
+    
     // Se clona la actividad por si un profesor desea poder ser el nuevo dueño y modificarla.
 	
 	public void agregarPrerrequisito(Actividad actividad) {
@@ -248,7 +249,11 @@ public abstract class Actividad implements Identificable, Cloneable {
 	public String getId() {
 		return id;
 	}
-	
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public TipoActividades getTipoActividad() {
 		return tipoActividad;
 	}

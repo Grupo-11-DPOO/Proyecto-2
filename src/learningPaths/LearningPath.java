@@ -177,6 +177,38 @@ public class LearningPath implements Identificable{
     	listaRetorno.add(porcentajeExitosas);
     	return listaRetorno;
 	}
+	
+	public List<Actividad> getActividades() {
+		return actividades;
+	}
+
+	public void setActividades(List<Actividad> actividades) {
+		this.actividades = actividades;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setDuracion(int duracion) {
+		this.duracion = duracion;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
+	}
+
+	public void setFechaCreacion(LocalDateTime fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public void setFechaModificacion(LocalDateTime fechaModificacion) {
+		this.fechaModificacion = fechaModificacion;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
 
 	@Override
 	public void crearId() {
