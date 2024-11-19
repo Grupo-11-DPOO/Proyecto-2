@@ -40,6 +40,7 @@ public abstract class Actividad implements Identificable, Cloneable {
 		this.rating = 0;
 		this.cantidadRating = 0;
 		crearId();
+		this.tiempoLimite = new Date();
 	}
 
 	public Date getTiempoLimite() {

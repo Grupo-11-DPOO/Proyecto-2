@@ -10,28 +10,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import actividades.Actividad;
 import actividades.Estado;
 import learningPaths.LearningPath;
 import usuarios.Estudiante;
-import usuarios.Profesor;
 
 public class PersistenciaEstudiantes {
 	
+	private File archivo;
+	private final static String ruta = "data/estudiantes.JSON";
+	public JSONArray estudiantesArray = new JSONArray();
+	
 	public PersistenciaEstudiantes(){
-		
 	}
 	
-	
-	private File archivo;
-    private final static String ruta = "data/estudiantes.JSON";
-    public JSONArray estudiantesArray = new JSONArray();
-    
     public void crearArchivo() {
         archivo = new File(ruta);
 	    File carpeta = archivo.getParentFile();
@@ -42,9 +37,7 @@ public class PersistenciaEstudiantes {
 		        // Si el archivo no existe, lo crea
 		        if (!archivo.exists()) {
 		            archivo.createNewFile();
-		            System.out.println("Archivo creado exitosamente: " + archivo.getAbsolutePath());
 		        } else {
-		            System.out.println("El archivo ya existe y será utilizado: " + archivo.getAbsolutePath());
 		        }
 		    } catch (IOException e) {
 		        System.err.println("Error al crear o utilizar el archivo: " + e.getMessage());
@@ -57,11 +50,9 @@ public class PersistenciaEstudiantes {
             try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
                 StringBuilder stringBuilder = new StringBuilder();
                 String linea;
-                
                 while ((linea = reader.readLine()) != null) {
                     stringBuilder.append(linea);
                 }
-
                 String jsonString = stringBuilder.toString().trim();
 
                 if (jsonString.isEmpty()) {
@@ -92,61 +83,41 @@ public class PersistenciaEstudiantes {
     }
     
     public HashMap<String,Estudiante> cargarEstudiantes(HashMap<String,Actividad> actividades, HashMap<String, LearningPath> learningPaths){
-    	
-    	
     	HashMap<String,Estudiante> estudiantes = new HashMap<>();
-    	
     	JSONArray estudiantesJsonArray = leerEstudiantes();
-    	
     	for(int i =0; i<estudiantesJsonArray.length();i++) {
-    		
     		JSONObject estudianteJson = estudiantesJsonArray.getJSONObject(i);
-    		
     		Estudiante estudiante = convertirJsonToEstudiante(estudianteJson, actividades,learningPaths);
-    		
     		estudiantes.put(estudiante.getLogin(), estudiante);
     	}
     	return estudiantes;
     }
     
-    
     public JSONObject convertirEstudianteToJson(Estudiante estudiante) {
-    	
-    	
     	JSONObject estudianteJson = new JSONObject();
-    	
     	String login = estudiante.getLogin();
-    	
     	String passWord = estudiante.getPassword();
-    	
     	List<String> intereses = estudiante.getIntereses();
     	String idActividadEnCurso = "";
     	if(estudiante.getActividadEnCurso()!= null) {
 	    	idActividadEnCurso = estudiante.getActividadEnCurso().getId();
     	}
-    	
     	String idLearningPathEnCurso = "";
     	if(estudiante.getLearningPathEnCurso()!=null) {
     	idLearningPathEnCurso = estudiante.getLearningPathEnCurso().getId();
     	}
     	HashMap<String, Estado> registroActividades = estudiante.getRegistroActividades();
-    	
     	HashMap<String, Double> registroLearningPaths = estudiante.getRegistroLearningPaths();
-    	
     	JSONObject registroJson = new JSONObject();
-    	   
     	JSONObject registroLearningPathJson = new JSONObject();
-        
         for (Map.Entry<String, Double> entrada : registroLearningPaths.entrySet()) {
             String clave = entrada.getKey();
-            Double valor = entrada.getValue();
-            
+            Double valor = entrada.getValue();  
             registroLearningPathJson.put(clave, valor); 
         }
 	    for (Map.Entry<String, Estado> entrada : registroActividades.entrySet()) {
 	        String clave = entrada.getKey();
-	        Estado valor = entrada.getValue();
-	        
+	        Estado valor = entrada.getValue(); 
 	        registroJson.put(clave, valor.name());
 	    }
 	    estudianteJson.put("registroLearningPaths", registroLearningPathJson);
@@ -155,34 +126,21 @@ public class PersistenciaEstudiantes {
 	    estudianteJson.put("passWord", passWord);
 	    estudianteJson.put("intereses", intereses != null? new JSONArray(intereses): new JSONArray());
 	    estudianteJson.put("idActividadEnCurso", idActividadEnCurso);
-	    estudianteJson.put("idLearningPathEnCurso", idLearningPathEnCurso);
-    	    	
+	    estudianteJson.put("idLearningPathEnCurso", idLearningPathEnCurso);	
     	return estudianteJson;
-    	
-    	
-    	
     }
-    
-    
+
     public Estudiante convertirJsonToEstudiante(JSONObject estudianteJson, HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths) {
-    	
-    	
-    	
     	Estudiante estudiante = null;
-    	
     	String login = estudianteJson.getString("login");
         String passWord = estudianteJson.getString("passWord");
-        
         JSONArray interesesArray = estudianteJson.getJSONArray("intereses");
         List<String> intereses = new ArrayList<>();
         for (int i = 0; i < interesesArray.length(); i++) {
             intereses.add(interesesArray.getString(i));
         }
-        
         String idActividadEnCurso = estudianteJson.optString("idActividadEnCurso", null);
-        
         String idLearningPathEnCurso = estudianteJson.optString("idLearningPathEnCurso", null);
-        
         JSONObject registroJson = estudianteJson.getJSONObject("registroActividades");
         HashMap<String, Estado> registroActividades = new HashMap<>();
         for (String clave : registroJson.keySet()) {
@@ -190,7 +148,6 @@ public class PersistenciaEstudiantes {
             Estado estado = Estado.valueOf(estadoString); 
             registroActividades.put(clave, estado);
         }
-        
         JSONObject registroLearningPathsJson = estudianteJson.getJSONObject("registroLearningPaths");
         HashMap<String, Double> registroLearningPaths = new HashMap<>();
         for (String clave : registroLearningPathsJson.keySet()) {
@@ -199,14 +156,12 @@ public class PersistenciaEstudiantes {
         }   
         Actividad actividadEnCurso = null;
         if (idActividadEnCurso != null && !idActividadEnCurso.isEmpty()) {
-            actividadEnCurso = actividades.get(idActividadEnCurso); // Implementar esta lógica según tu sistema
+            actividadEnCurso = actividades.get(idActividadEnCurso); 
         }
         LearningPath learningPathEnCurso = null;
-        
         if (idLearningPathEnCurso != null && !idLearningPathEnCurso.isEmpty()) {
-            learningPathEnCurso = learningPaths.get(idLearningPathEnCurso) ;// Implementar esta lógica
+            learningPathEnCurso = learningPaths.get(idLearningPathEnCurso);
         }
-        
         estudiante = new Estudiante(actividades, learningPaths,login,passWord,intereses);
         estudiante.setActividadEnCurso(actividadEnCurso);
         estudiante.setRegistroActividades(registroActividades);
@@ -214,14 +169,12 @@ public class PersistenciaEstudiantes {
         estudiante.setLearningPathEnCurso(learningPathEnCurso);
         estudiante.setActividadEnCurso(actividadEnCurso);
         return estudiante;
-    	
     }
+    
     public void guardarEstudiante(Estudiante estudiante) {
         try {
             JSONArray estudiantesArray = leerEstudiantes();
-            
             JSONObject nuevoEstudiante = convertirEstudianteToJson(estudiante);
-            
             boolean encontrada = false;
             for (int i = 0; i < estudiantesArray.length(); i++) {
                 JSONObject estudianteExistente = estudiantesArray.getJSONObject(i);
@@ -231,35 +184,15 @@ public class PersistenciaEstudiantes {
                     break;
                 }
             }
-            
             if (!encontrada) {
             	estudiantesArray.put(nuevoEstudiante);
             }
-            
             try (FileWriter fileWriter = new FileWriter(ruta)) {
                 fileWriter.write(estudiantesArray.toString(4)); // Formato bonito con indentación de 4 espacios
             }
-            
             System.out.println("Estudiante guardado exitosamente.");
         } catch (Exception e) {
             System.err.println("Error al guardar el Estudiante: " + e.getMessage());
         }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }  
 }
-	

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import actividades.Actividad;
 import actividades.Encuesta;
 import actividades.Estado;
@@ -269,8 +268,7 @@ public class Estudiante extends Usuario {
     }
     
     public void agregarRatingActividad(Actividad actividad, Float rating) throws Exception {
-    	actividad.agregarRating(rating);
-    	
+    	actividad.agregarRating(rating);	
     }
     
     // Recomienda una actividad con respecto al estado de la finalizada

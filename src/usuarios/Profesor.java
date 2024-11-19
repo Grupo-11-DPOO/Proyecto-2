@@ -18,7 +18,6 @@ import learningPaths.LearningPath;
 
 public class Profesor extends Usuario {
 
-	
 	private ArrayList<String> idActividadesCreadas;
 	private ArrayList<String> idLearningPathsCreados;
 	
@@ -204,7 +203,7 @@ public class Profesor extends Usuario {
 	
 	public Encuesta crearActividadEncuesta (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) throws Exception {
 			Encuesta encuesta= new Encuesta(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
-			System.out.println("Su actividad de tipo examen ha sido creada.");
+			System.out.println("Su actividad de tipo encuesta ha sido creada.");
 			idActividadesCreadas.add(encuesta.getId());
 			getDataActividades().put(encuesta.getId(), encuesta);
 			return encuesta;
@@ -213,14 +212,14 @@ public class Profesor extends Usuario {
 	public QuizVerdad crearQuizVerdaderoFalso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, float calificacionMinima) {
 		QuizVerdad quiz= new QuizVerdad(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima);
-		System.out.println("Su actividad de tipo quiz ha sido creada.");
+		System.out.println("Su actividad de tipo quiz de verdadero o falso ha sido creada.");
 		return quiz;
 	}
 	
 	public Quiz crearActividadQuiz (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,
 			boolean obligatorio, float calificacionMinima) {	
 		Quiz quiz= new Quiz(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima);
-		System.out.println("Su actividad de tipo quiz ha sido creada.");
+		System.out.println("Su actividad de tipo quiz de selección multiple ha sido creada.");
 		return quiz;
 	}
 	
@@ -289,11 +288,9 @@ public class Profesor extends Usuario {
 	}
 
 
-	public void guardarActividad(Actividad actividad) throws UsuarioExistenteException {
+	public void guardarActividad(Actividad actividad) {
 		getDataActividades().put(actividad.getId(),actividad); // Mapa id, Actividad TOTALES
 		idActividadesCreadas.add(actividad.getId()); // Lista con id de actividades
-		// NO SE CARGA, SE ACTUALIZA
-		//usuarios.cargarProfesor(login, password, idActividades, idLearningPaths);
 	}
 	
 	public LearningPath crearLearningPath(String titulo, String objetivo, String nivel) {

@@ -367,7 +367,7 @@ public class Consola {
 		}	
     }
     
-    public static void menuCrearLearningPath() {
+    public static void menuCrearLearningPath() throws UsuarioExistenteException {
 		System.out.println( "------------------------------------------------------" );
 		System.out.println("Crear Learning Path");
 		System.out.println( "------------------------------------------------------" );
@@ -375,6 +375,7 @@ public class Consola {
 		String objetivo = pedirCadenaAlUsuario("Ingrese el objetivo");
 		String nivel = pedirCadenaAlUsuario("Ingrese el nivel");
 		LearningPath learningPath = profesorActual.crearLearningPath(titulo, objetivo, nivel);
+		sistemaRegistro.cargarLearningPaths(actividades);
 		System.out.println("El Learning Path se ha creado exitosamente, sin embargo, está vacio.");
 		int cantidadActividades = pedirEnteroAlUsuario("Ingrese la cantidad de actividades que tendrá");
 		int opcion = mostrarMenu("Agregar actividades. Recuerde que van en orden.", opcionesCrearLearningPath);
@@ -521,6 +522,7 @@ public class Consola {
     			break;
     		}
     		// TODO Guardar - actualizar
+    		sistemaRegistro.cargarProfesores(actividades, learningPaths);
     		menuProfesor();
     		
     	}
@@ -608,7 +610,7 @@ public class Consola {
 			String tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
 			tienePrerequisitosString.toLowerCase();
 			// Por defecto no tiene
-			List<Actividad> listaPrerequisitos = null;
+			ArrayList<Actividad> listaPrerequisitos = new ArrayList<>();;
 			if (tienePrerequisitosString.equals("si")) {
 				// Entro al metodo para agregar prerequisitos
 				listaPrerequisitos = crearPrerequisitos();
@@ -627,10 +629,13 @@ public class Consola {
 				while (i < cantidadPreguntas) {
 					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
 					encuesta.agregarPregunta(enunciado);
+					i++;
 				}
 				profesorActual.guardarActividad(encuesta);
+				sistemaRegistro.guardarActividad(encuesta);
 				idActividad = encuesta.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
+				menuProfesor();
 				break;
 				
 			case 2:
@@ -644,10 +649,13 @@ public class Consola {
 				while (i1 < cantidadPreguntas1) {
 					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
 					examen.agregarPregunta(enunciado);
+					i1++;
 				}
 				profesorActual.guardarActividad(examen);
+				sistemaRegistro.guardarActividad(examen);
 				idActividad = examen.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
+				menuProfesor();
 				break;
 				
 			case 3:
@@ -695,8 +703,10 @@ public class Consola {
 					i2++;
 				}
 				profesorActual.guardarActividad(quiz);
+				sistemaRegistro.guardarActividad(quiz);
 				idActividad = quiz.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
+				menuProfesor();
 				break;
 				
 			case 4:
@@ -707,8 +717,10 @@ public class Consola {
 				recurso.setPrerequisitos(listaPrerequisitos);
 				// Guardamos
 				profesorActual.guardarActividad(recurso);
+				sistemaRegistro.guardarActividad(recurso);
 				idActividad = recurso.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
+				menuProfesor();
 				break;
 				
 			case 5:
@@ -719,15 +731,16 @@ public class Consola {
 				tarea.setPrerequisitos(listaPrerequisitos);
 				// Guardamos
 				profesorActual.guardarActividad(tarea);
+				sistemaRegistro.guardarActividad(tarea);
 				idActividadTarea = tarea.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividadTarea);
+				menuProfesor();
 				break;
 				
 			case 6:
 				// Crear quiz verdadero falso
 				// Atributos propios de quiz
 				float calificacionMinima1 = pedirNumeroAlUsuario("Calificación mínima (0 a 100)");
-				
 				QuizVerdad quizVerdadero = profesorActual.crearQuizVerdaderoFalso(titulo, objetivo, descripcion,nivel ,duracionMinutos, obligatorio, calificacionMinima1);
 				quizVerdadero.setPrerequisitos(listaPrerequisitos);
 				// Agregamos preguntas
@@ -744,10 +757,13 @@ public class Consola {
 						opcionCorrectaEnum = VerdaderoFalso.Falso;
 					}
 					quizVerdadero.agregarPregunta(enunciado, opcionCorrectaEnum);
+					i21++;
 				}
 				profesorActual.guardarActividad(quizVerdadero);
+				sistemaRegistro.guardarActividad(quizVerdadero);
 				idActividad = quizVerdadero.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
+				menuProfesor();
 				break;
 			}
 			
@@ -756,27 +772,27 @@ public class Consola {
 		}
     }
     
-    public static List<Actividad> crearPrerequisitos(){
+    public static ArrayList<Actividad> crearPrerequisitos(){
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Agregar Prerequisitos");
     	System.out.println( "------------------------------------------------------" );
     	// Imprime todas las actividades, solo id y titulo 
-		 for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
-	            String id = entry.getKey();
-	            Object titulo = entry.getValue();
-	
-	            if (titulo instanceof Map) {
-	                Map<?, ?> valueMap = (Map<?, ?>) titulo;
-	                Object tituloOb = valueMap.get("titulo");
-	                System.out.println(String.format("%-10s | %-20s", id, tituloOb));
-	            } else {
-	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
-	            }
-	        }
-    	List<Actividad> listaPrerequisitos = new ArrayList<>();
+		for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
+		String id = entry.getKey();
+        Object titulo = entry.getValue();
+
+            if (titulo instanceof Map) {
+                Map<?, ?> valueMap = (Map<?, ?>) titulo;
+                Object tituloOb = valueMap.get("titulo");
+                System.out.println(String.format("%-10s | %-20s", id, tituloOb));
+            } else {
+                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
+            }
+    	}
+		ArrayList<Actividad> listaPrerequisitos = new ArrayList<>();
     	int cantidadPrerequisitos = pedirEnteroAlUsuario("Ingrese la cantidad de prerequisitos");
     	int i = 0;
-    	while (i <= cantidadPrerequisitos) {
+    	while (i < cantidadPrerequisitos) {
 	    	String codigoActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a agregar");
 	    	// toma la lista de actividadades totales y las filtra.
 	    	Actividad actividadAgregar = actividades.get(codigoActividad);
@@ -818,7 +834,6 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Ver y Editar Actividades");
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Lista de actividades");
     	List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
     	imprimirActividadesPropiasProfesor(idActividadesPropias);
     	
@@ -872,6 +887,7 @@ public class Consola {
     			break;
 	    	}
     		// TODO Guardar - actualizar
+    		sistemaRegistro.cargarProfesores(actividades, learningPaths);
 	    	menuProfesor();
     	} else {
     		menuProfesor();

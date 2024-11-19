@@ -9,12 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import actividades.Actividad;
 import actividades.Estado;
 import learningPaths.LearningPath;
@@ -22,17 +19,13 @@ import usuarios.Estudiante;
 import usuarios.Profesor;
 
 public class PersistenciaProfesores {
+	private File archivo;
+	private final static String ruta = "data/profesores.JSON";
+	public JSONArray profesoresArray = new JSONArray();
 	
-	
-	public PersistenciaProfesores() {
-		
+	public PersistenciaProfesores() {	
 	}
 	
-	
-	private File archivo;
-    private final static String ruta = "data/profesores.JSON";
-    public JSONArray profesoresArray = new JSONArray();
-    
     public void crearArchivo() {
         archivo = new File(ruta);
 	    File carpeta = archivo.getParentFile();
@@ -43,9 +36,7 @@ public class PersistenciaProfesores {
 		        // Si el archivo no existe, lo crea
 		        if (!archivo.exists()) {
 		            archivo.createNewFile();
-		            System.out.println("Archivo creado exitosamente: " + archivo.getAbsolutePath());
 		        } else {
-		            System.out.println("El archivo ya existe y será utilizado: " + archivo.getAbsolutePath());
 		        }
 		    } catch (IOException e) {
 		        System.err.println("Error al crear o utilizar el archivo: " + e.getMessage());
@@ -93,60 +84,33 @@ public class PersistenciaProfesores {
     }
     
     public HashMap<String,Profesor> cargarProfesores(HashMap<String,Actividad> actividades, HashMap<String, LearningPath> learningPaths){
-    	
-    	
     	HashMap<String,Profesor> profesores = new HashMap<>();
-    	
     	JSONArray profesoresJsonArray = leerProfesores();
-    	
     	for(int i =0; i<profesoresJsonArray.length();i++) {
-    		
     		JSONObject profesorJson = profesoresJsonArray.getJSONObject(i);
-    		
-    		Profesor profesor = convertirJsonToProfesor(profesorJson, actividades,learningPaths);
-    		
+    		Profesor profesor = convertirJsonToProfesor(profesorJson, actividades, learningPaths);
     		profesores.put(profesor.getLogin(), profesor);
     	}
     	return profesores;
     }
     
-    
     public JSONObject convertirProfesorToJson(Profesor profesor) {
-    	
-    	
     	JSONObject profesorJson = new JSONObject();
-    	
     	String login = profesor.getLogin();
-    	
     	String passWord = profesor.getPassword();
-    	
     	ArrayList<String> idActividadesCreadas = profesor.getIdActividadesCreadas();
     	ArrayList<String> idLearningPathsCreados = profesor.getIdLearningPathsCreados();
-    	
     	profesorJson.put("login", login);
-    	
     	profesorJson.put("passWord", passWord);
-    	
     	profesorJson.put("idActividadesCreadas", idActividadesCreadas != null ? new JSONArray(idActividadesCreadas) : new JSONArray());
-    	
     	profesorJson.put("idLearningPathsCreados", idLearningPathsCreados != null ? new JSONArray(idLearningPathsCreados) : new JSONArray() );
-    	
-    			
-    	
     	return profesorJson;
-    	
-    	
-    	
     }
+    
     public Profesor convertirJsonToProfesor(JSONObject profesorJson, HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths) {
-    	
-    	
     	Profesor profesor = null;
-    	
     	String login = profesorJson.getString("login");
-    	
-    	String passWord = profesorJson.getString("PassWord");
-    	
+    	String passWord = profesorJson.getString("passWord");
     	JSONArray idActividadesCreadasArray = profesorJson.getJSONArray("idActividadesCreadas");
     	JSONArray idLearningPathsCreadosArray = profesorJson.getJSONArray("idLearningPathsCreados");
     	ArrayList<String> idLearningPathsCreados = new ArrayList<>();
@@ -157,41 +121,23 @@ public class PersistenciaProfesores {
         for (int i = 0; i < idLearningPathsCreadosArray.length(); i++) {
         	idLearningPathsCreados.add(idLearningPathsCreadosArray.getString(i));
         }
-        
         profesor = new Profesor(actividades,learningPaths, login, passWord);
-        
         profesor.setIdActividadesCreadas(idActividadesCreadas);
         profesor.setIdLearningPathsCreados(idLearningPathsCreados);
-        
-        
-        
-    	
-    	
-    	
-    	
     	return profesor;
     }
     
-    
     public Estudiante convertirJsonToEstudiante(JSONObject estudianteJson, HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths) {
-    	
-    	
-    	
     	Estudiante estudiante = null;
-    	
     	String login = estudianteJson.getString("login");
         String passWord = estudianteJson.getString("passWord");
-        
         JSONArray interesesArray = estudianteJson.getJSONArray("intereses");
         List<String> intereses = new ArrayList<>();
         for (int i = 0; i < interesesArray.length(); i++) {
             intereses.add(interesesArray.getString(i));
         }
-        
         String idActividadEnCurso = estudianteJson.optString("idActividadEnCurso", null);
-        
         String idLearningPathEnCurso = estudianteJson.optString("idLearningPathEnCurso", null);
-        
         JSONObject registroJson = estudianteJson.getJSONObject("registroActividades");
         HashMap<String, Estado> registroActividades = new HashMap<>();
         for (String clave : registroJson.keySet()) {
@@ -199,7 +145,6 @@ public class PersistenciaProfesores {
             Estado estado = Estado.valueOf(estadoString); 
             registroActividades.put(clave, estado);
         }
-        
         JSONObject registroLearningPathsJson = estudianteJson.getJSONObject("registroLearningPaths");
         HashMap<String, Double> registroLearningPaths = new HashMap<>();
         for (String clave : registroLearningPathsJson.keySet()) {
@@ -211,11 +156,9 @@ public class PersistenciaProfesores {
             actividadEnCurso = actividades.get(idActividadEnCurso); // Implementar esta lógica según tu sistema
         }
         LearningPath learningPathEnCurso = null;
-        
         if (idLearningPathEnCurso != null && !idLearningPathEnCurso.isEmpty()) {
             learningPathEnCurso = learningPaths.get(idLearningPathEnCurso) ;// Implementar esta lógica
         }
-        
         estudiante = new Estudiante(actividades, learningPaths,login,passWord,intereses);
         estudiante.setActividadEnCurso(actividadEnCurso);
         estudiante.setRegistroActividades(registroActividades);
@@ -223,7 +166,6 @@ public class PersistenciaProfesores {
         estudiante.setLearningPathEnCurso(learningPathEnCurso);
         estudiante.setActividadEnCurso(actividadEnCurso);
         return estudiante;
-    	
     }
     
     public void guardarProfesor(Profesor profesor) {
@@ -241,19 +183,15 @@ public class PersistenciaProfesores {
                     break;
                 }
             }
-            
             if (!encontrada) {
             	profesoresArray.put(nuevoProfesor);
             }
-            
             try (FileWriter fileWriter = new FileWriter(ruta)) {
                 fileWriter.write(profesoresArray.toString(4)); // Formato bonito con indentación de 4 espacios
-            }
-            
+            }  
             System.out.println("Profesor guardado exitosamente.");
         } catch (Exception e) {
             System.err.println("Error al guardar el profesor: " + e.getMessage());
         }
     }
-
 }

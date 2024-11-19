@@ -20,7 +20,8 @@ public class PersistenciaLearningPath {
 
 	private File archivo;
     private final static String ruta = "data/learningPaths.JSON";
-    public JSONArray learningPathArray = new JSONArray();    
+    public JSONArray learningPathArray = new JSONArray();
+    
     public PersistenciaLearningPath() {
 	    }
     
@@ -34,9 +35,7 @@ public class PersistenciaLearningPath {
 		        // Si el archivo no existe, lo crea
 		        if (!archivo.exists()) {
 		            archivo.createNewFile();
-		            System.out.println("Archivo creado exitosamente: " + archivo.getAbsolutePath());
 		        } else {
-		            System.out.println("El archivo ya existe y será utilizado: " + archivo.getAbsolutePath());
 		        }
 		    } catch (IOException e) {
 		        System.err.println("Error al crear o utilizar el archivo: " + e.getMessage());
@@ -49,13 +48,10 @@ public class PersistenciaLearningPath {
             try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
                 StringBuilder stringBuilder = new StringBuilder();
                 String linea;
-                
                 while ((linea = reader.readLine()) != null) {
                     stringBuilder.append(linea);
                 }
-
                 String jsonString = stringBuilder.toString().trim();
-
                 if (jsonString.isEmpty()) {
                 	learningPathArray = new JSONArray();
                 } else {
@@ -83,64 +79,33 @@ public class PersistenciaLearningPath {
         return learningPathArray;
     }
     
-    
     public HashMap<String, LearningPath> cargarLearningPaths(HashMap<String,Actividad> actividades ){
-    	
     	JSONArray learningPathsJsonArray = leerLearningPaths();
-    	
     	HashMap<String,LearningPath> learningPaths= new HashMap<>();
-    	
     	for(int i = 0; i<learningPathsJsonArray.length();i++) {
-    		
     		JSONObject learningPathJson = learningPathsJsonArray.getJSONObject(i);
-    		
     		LearningPath learningPath = convertirJsonToLearningPath(learningPathJson,actividades);
-    		
     		learningPaths.put(learningPath.getId(), learningPath);
-    		
     	}
-    	
-    	
-    	
     	return learningPaths;
-    	
     }
     
-    
     public JSONObject convertirLearningPathToJson(LearningPath learningPath) {
-    	
     	ArrayList<String> idActividades = new ArrayList<>();
     	for(Actividad actividad: learningPath.getListaActividades()) {
-    		
     		idActividades.add(actividad.getId());
-    		
     	}
-    	
     	JSONObject jsonObject = new JSONObject();
-    	
-    	
     	JSONArray actividadesArray = new JSONArray(idActividades);
-    	
     	String titulo = learningPath.getTitulo();
-    	
     	String id = learningPath.getId();
-    	
     	String descripcion = learningPath.getDescripcion();
-    	
     	String nivel = learningPath.getNivel();
-    	
     	String fechaCreacion = learningPath.getFechaCreacion().toString();
-    	
     	String fechaModificacion = learningPath.getFechaModificacion().toString();
-    	
-    	
     	double rating = learningPath.getRating();
-    	
     	int duracion = learningPath.getDuracion();
-    	
     	int version = learningPath.getVersion();
-    	
-    	
     	jsonObject.put("id", id);
     	jsonObject.put("titulo", titulo);
     	jsonObject.put("actividades",actividadesArray );
@@ -151,25 +116,15 @@ public class PersistenciaLearningPath {
     	jsonObject.put("rating", rating);
     	jsonObject.put("duracion", duracion);
     	jsonObject.put("version", version);
-
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
     	return jsonObject;
-    	
-    	
-    	
     }
-    
     
     public LearningPath convertirJsonToLearningPath(JSONObject jsonObject, HashMap<String, Actividad> actividades) {
         // Recuperar los atributos básicos del LearningPath
+    	System.out.println("pasa");
+    	System.out.println(jsonObject.toString());
         String id = jsonObject.getString("id");
+        System.out.println("pasa");
         String titulo = jsonObject.getString("titulo");
         String descripcion = jsonObject.getString("descripcion");
         String nivel = jsonObject.getString("nivel");
@@ -178,11 +133,9 @@ public class PersistenciaLearningPath {
         double rating = jsonObject.getDouble("rating");
         int duracion = jsonObject.getInt("duracion");
         int version = jsonObject.getInt("version");
-        
         // Parsear fechas desde String
         LocalDateTime fechaCreacion = LocalDateTime.parse(fechaCreacionStr);
         LocalDateTime fechaModificacion = LocalDateTime.parse(fechaModificacionStr);
-
         // Recuperar la lista de actividades
         JSONArray actividadesArray = jsonObject.getJSONArray("actividades");
         ArrayList<Actividad> listaActividades = new ArrayList<>();
@@ -204,19 +157,14 @@ public class PersistenciaLearningPath {
         learningPath.setDuracion(duracion);
         learningPath.setVersion(version);
         learningPath.setRating(rating);
-        
         return learningPath;
         // Crear y retornar el objeto LearningPath
-        
-        
     }
     
     public void guardarLearningPath(LearningPath learningPath) {
         try {
             JSONArray learningPathArray = leerLearningPaths();
-            
             JSONObject nuevoLearnignPathJson = convertirLearningPathToJson(learningPath);
-            
             boolean encontrada = false;
             for (int i = 0; i < learningPathArray.length(); i++) {
                 JSONObject learningPathExistente = learningPathArray.getJSONObject(i);
@@ -226,25 +174,15 @@ public class PersistenciaLearningPath {
                     break;
                 }
             }
-            
             if (!encontrada) {
             	learningPathArray.put(nuevoLearnignPathJson);
             }
-            
             try (FileWriter fileWriter = new FileWriter(ruta)) {
                 fileWriter.write(learningPathArray.toString(4)); 
             }
-            
             System.out.println("LearningPath guardado exitosamente.");
         } catch (Exception e) {
             System.err.println("Error al guardar el learningPath: " + e.getMessage());
         }
     }
-
-
-    
-    
-    
-    
-
 }

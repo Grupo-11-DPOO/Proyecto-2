@@ -1,7 +1,10 @@
 package usuarios;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONException;
 
 import actividades.Actividad;
 import exceptions.UsuarioExistenteException;
@@ -10,7 +13,6 @@ import persistencia.PersistenciaActividades;
 import persistencia.PersistenciaEstudiantes;
 import persistencia.PersistenciaLearningPath;
 import persistencia.PersistenciaProfesores;
-
 
 public class SistemaRegistro {
 	private PersistenciaEstudiantes persistenciaEstudiantes;
@@ -22,7 +24,7 @@ public class SistemaRegistro {
 	public HashMap<String,LearningPath> learningPaths;
 	public HashMap<String, Actividad> actividades;
 	
-	public SistemaRegistro() {
+	public SistemaRegistro() throws JSONException {
 		this.persistenciaEstudiantes = new PersistenciaEstudiantes();
 		this.persistenciaProfesores = new PersistenciaProfesores();
 		this.persistenciaActividades= new PersistenciaActividades();
@@ -35,82 +37,72 @@ public class SistemaRegistro {
 			cargarDatos();
 	} catch (UsuarioExistenteException e) {
 			e.printStackTrace();
-		}
+		} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 	
-	
-	private HashMap<String, Actividad> cargarActividades() {
+	public HashMap<String, Actividad> cargarActividades() throws JSONException, ParseException {
 		HashMap<String, Actividad> actividades = persistenciaActividades.cargarActividades();
 		return actividades;
 	}
 	
+	public void guardarActividad(Actividad actividad) {
+		persistenciaActividades.guardarActividad(actividad);
+	}
 	
-	private HashMap<String, LearningPath> cargarLearningPaths(HashMap<String,Actividad> actividades){
-		
+	public HashMap<String, LearningPath> cargarLearningPaths(HashMap<String,Actividad> actividades){
 		HashMap<String,LearningPath> learningPaths = persistenciaLearningPath.cargarLearningPaths(actividades);
 		return learningPaths;
 	}
 	
+	public void guardarLearningPath(LearningPath learningPath) {
+		persistenciaLearningPath.guardarLearningPath(learningPath);
+	}
+	
 	public HashMap<String,Estudiante> cargarEstudiantes(HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths) {
-		
 		HashMap<String,Estudiante> estudiantes = persistenciaEstudiantes.cargarEstudiantes(actividades, learningPaths);
-		
 		return estudiantes;
-		
 	}
 	
 	public HashMap<String,Profesor> cargarProfesores(HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths){
-		
 		HashMap<String,Profesor> profesores = persistenciaProfesores.cargarProfesores(actividades, learningPaths);
-		
 		return profesores;
-		
 	}
 	
-	public void cargarDatos() throws UsuarioExistenteException{
+	public void cargarDatos() throws UsuarioExistenteException, JSONException, ParseException{
 		this.actividades = cargarActividades();
 		this.learningPaths = cargarLearningPaths(actividades);
 		this.datosEstudiantes = cargarEstudiantes(actividades,learningPaths);
 		this.datosProfesores = cargarProfesores(actividades,learningPaths);
-		
-		
 	}
 		
-	
 	public Profesor registrarProfesor(String login, String passWord) throws UsuarioExistenteException {
-		
 		boolean x = datosProfesores.containsKey(login);
 		if(x) {
-			
 			return null;
 		}
 		else {
-			
-		
 			Profesor profesor = new Profesor(this.actividades,this.learningPaths,login, passWord);
-			
-			
-			//usuarios.cargarProfesor(login, passWord, null, null);
-			
+			persistenciaProfesores.guardarProfesor(profesor);
 			return profesor;
-		}
-			
+		}	
 	}
 	
 	public Estudiante registrarEstudiante(String login, String passWord, List<String> intereses) throws UsuarioExistenteException {
 		boolean x = datosEstudiantes.containsKey(login);
-		
 		if(x) {
 			return null;
 	}
 		else {
 			Estudiante estudiante = new Estudiante(actividades,learningPaths,login,passWord,intereses);
+			persistenciaEstudiantes.guardarEstudiante(estudiante);
 			return estudiante;
 		}
 	}
 	
 	public boolean iniciarSesionProfesor(String login, String password) {
-		
 	    for (Map.Entry<String, Profesor> entry : datosProfesores.entrySet()) {
 	        Profesor profesor = entry.getValue();
 	        if (profesor.getLogin().equals(login) && profesor.getPassword().equals(password)) {
@@ -145,7 +137,4 @@ public class SistemaRegistro {
 	public void setDatosEstudiantes(HashMap<String, Estudiante> datosEstudiantes) {
 		this.datosEstudiantes = datosEstudiantes;
 	}
-
-	
 }
-

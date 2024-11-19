@@ -42,5 +42,4 @@ public abstract class Usuario {
 	public void setDataActividades(HashMap <String, Actividad> dataActividades) {
 		this.dataActividades = dataActividades;
 	}
-	
 }
