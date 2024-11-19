@@ -1,13 +1,41 @@
-[{
-    "passWord": "12345",
-    "registroActividades": {},
-    "idLearningPathEnCurso": "",
-    "login": "Camila",
-    "intereses": [
-        "Futbol",
-        "Programar",
-        "Derecho"
-    ],
-    "registroLearningPaths": {},
-    "idActividadEnCurso": ""
-}]
+[
+    {
+        "passWord": "12345",
+        "registroActividades": {},
+        "idLearningPathEnCurso": "",
+        "login": "Camila",
+        "intereses": [
+            "Futbol",
+            "Programar",
+            "Derecho"
+        ],
+        "registroLearningPaths": {},
+        "idActividadEnCurso": ""
+    },
+    {
+        "passWord": "milo",
+        "registroActividades": {},
+        "idLearningPathEnCurso": "",
+        "login": "Gaby",
+        "intereses": [
+            "fisica",
+            "otakus",
+            "sofa"
+        ],
+        "registroLearningPaths": {},
+        "idActividadEnCurso": ""
+    },
+    {
+        "passWord": "kitty",
+        "registroActividades": {},
+        "idLearningPathEnCurso": "",
+        "login": "Male",
+        "intereses": [
+            "gatos",
+            "programar",
+            "rap de fisica"
+        ],
+        "registroLearningPaths": {},
+        "idActividadEnCurso": ""
+    }
+]

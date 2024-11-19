@@ -121,10 +121,7 @@ public class PersistenciaLearningPath {
     
     public LearningPath convertirJsonToLearningPath(JSONObject jsonObject, HashMap<String, Actividad> actividades) {
         // Recuperar los atributos básicos del LearningPath
-    	System.out.println("pasa");
-    	System.out.println(jsonObject.toString());
         String id = jsonObject.getString("id");
-        System.out.println("pasa");
         String titulo = jsonObject.getString("titulo");
         String descripcion = jsonObject.getString("descripcion");
         String nivel = jsonObject.getString("nivel");

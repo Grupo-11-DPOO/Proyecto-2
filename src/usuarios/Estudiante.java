@@ -272,7 +272,8 @@ public class Estudiante extends Usuario {
     }
     
     // Recomienda una actividad con respecto al estado de la finalizada
-    public Actividad recomendarActividad(Actividad actividadFinalizada, LearningPath learningPath) {
+    @SuppressWarnings("incomplete-switch")
+	public Actividad recomendarActividad(Actividad actividadFinalizada, LearningPath learningPath) {
     	Estado estado = registroActividades.get(actividadFinalizada.getId());
     	List<Actividad> listaActividades = learningPath.getListaActividades();
     	int indiceActual = listaActividades.indexOf(actividadFinalizada);

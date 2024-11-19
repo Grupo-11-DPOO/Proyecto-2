@@ -281,7 +281,7 @@ public class Consola {
         } 
         if (resultado) {
         	System.out.println( "------------------------------------------------------" );
-        	System.out.println("Bienvenido "+login+"!");
+        	System.out.println("Bienvenid@ "+login+"!");
         	if (tipoUsuario == 1) {
         		profesorActual = datosProfesor.get(login);
         		menuProfesor();
@@ -658,6 +658,7 @@ public class Consola {
 				}
 				profesorActual.guardarActividad(examen);
 				sistemaRegistro.guardarActividad(examen);
+				sistemaRegistro.guardarProfesor(profesorActual);
 				idActividad = examen.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				menuProfesor();
@@ -709,6 +710,7 @@ public class Consola {
 				}
 				profesorActual.guardarActividad(quiz);
 				sistemaRegistro.guardarActividad(quiz);
+				sistemaRegistro.guardarProfesor(profesorActual);
 				idActividad = quiz.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				menuProfesor();
@@ -723,6 +725,7 @@ public class Consola {
 				// Guardamos
 				profesorActual.guardarActividad(recurso);
 				sistemaRegistro.guardarActividad(recurso);
+				sistemaRegistro.guardarProfesor(profesorActual);
 				idActividad = recurso.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				menuProfesor();
@@ -737,6 +740,7 @@ public class Consola {
 				// Guardamos
 				profesorActual.guardarActividad(tarea);
 				sistemaRegistro.guardarActividad(tarea);
+				sistemaRegistro.guardarProfesor(profesorActual);
 				idActividadTarea = tarea.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividadTarea);
 				menuProfesor();
@@ -766,12 +770,12 @@ public class Consola {
 				}
 				profesorActual.guardarActividad(quizVerdadero);
 				sistemaRegistro.guardarActividad(quizVerdadero);
+				sistemaRegistro.guardarProfesor(profesorActual);
 				idActividad = quizVerdadero.getId();
 				System.out.println("La actividad fue cargada exitosamente con el id "+idActividad);
 				menuProfesor();
 				break;
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

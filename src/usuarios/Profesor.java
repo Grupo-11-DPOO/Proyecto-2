@@ -174,7 +174,6 @@ public class Profesor extends Usuario {
 			boolean obligatorio, String material) throws Exception {
 			Recurso recurso = new Recurso(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, material);
 			System.out.println("Su actividad de tipo recurso ha sido creada.");
-			idActividadesCreadas.add(recurso.getId());
 			getDataActividades().put(recurso.getId(), recurso);
 			return recurso;
 	}
@@ -194,7 +193,6 @@ public class Profesor extends Usuario {
 	public Examen crearActividadExamen (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) throws Exception {
 			Examen examen= new Examen(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			System.out.println("Su actividad de tipo examen ha sido creada.");
-			idActividadesCreadas.add(examen.getId());
 			getDataActividades().put(examen.getId(), examen);
 			return examen;
 		}
@@ -202,7 +200,6 @@ public class Profesor extends Usuario {
 	public Encuesta crearActividadEncuesta (String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) throws Exception {
 			Encuesta encuesta= new Encuesta(titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio);
 			System.out.println("Su actividad de tipo encuesta ha sido creada.");
-			idActividadesCreadas.add(encuesta.getId());
 			getDataActividades().put(encuesta.getId(), encuesta);
 			return encuesta;
 		}
