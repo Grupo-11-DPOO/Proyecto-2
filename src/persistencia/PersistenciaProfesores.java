@@ -187,9 +187,8 @@ public class PersistenciaProfesores {
             	profesoresArray.put(nuevoProfesor);
             }
             try (FileWriter fileWriter = new FileWriter(ruta)) {
-                fileWriter.write(profesoresArray.toString(4)); // Formato bonito con indentación de 4 espacios
+                fileWriter.write(profesoresArray.toString(4));
             }  
-            System.out.println("Profesor guardado exitosamente.");
         } catch (Exception e) {
             System.err.println("Error al guardar el profesor: " + e.getMessage());
         }

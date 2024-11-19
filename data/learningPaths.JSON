@@ -1,12 +1,65 @@
-[{
-    "descripcion": "no",
-    "fechaModificacion": "2024-11-19T01:10:45.553681800",
-    "rating": 0,
-    "titulo": "pruebaLearning",
-    "fechaCreacion": "2024-11-19T01:10:45.552681800",
-    "duracion": 0,
-    "id": "b0541de0-0888-4258-860b-75a9f9a92445",
-    "actividades": [],
-    "nivel": "alto",
-    "version": 1
-}]
+[
+    {
+        "descripcion": "Nueva descripcion",
+        "fechaModificacion": "2024-11-19T13:39:20.212192800",
+        "rating": 0,
+        "titulo": "Prueba LearningPath",
+        "fechaCreacion": "2024-11-19T01:10:45.552681800",
+        "duracion": 0,
+        "id": "b0541de0-0888-4258-860b-75a9f9a92445",
+        "actividades": [],
+        "nivel": "avanzado",
+        "version": 4
+    },
+    {
+        "descripcion": "Aprender sobre geografia latina",
+        "fechaModificacion": "2024-11-19T13:22:28.421852900",
+        "rating": 0,
+        "titulo": "Introduccion a Geografia",
+        "fechaCreacion": "2024-11-19T12:58:54.063133900",
+        "duracion": 5,
+        "id": "6a93823f-f3bf-4c5d-956a-2953f636c6a6",
+        "actividades": ["594c3b48-c915-4e44-be93-b28b9e00a268"],
+        "nivel": "bajo",
+        "version": 3
+    },
+    {
+        "descripcion": "Orientada a objetos",
+        "fechaModificacion": "2024-11-19T13:47:07.073093300",
+        "rating": 0,
+        "titulo": "DPOO",
+        "fechaCreacion": "2024-11-19T13:47:07.073093300",
+        "duracion": 0,
+        "id": "ac9903af-697f-4df4-8e36-0db85e11b2aa",
+        "actividades": [],
+        "nivel": "avanzado",
+        "version": 1
+    },
+    {
+        "descripcion": "NO HAY",
+        "fechaModificacion": "2024-11-19T13:50:16.573823900",
+        "rating": 0,
+        "titulo": "Fisica 2",
+        "fechaCreacion": "2024-11-19T13:48:59.323421400",
+        "duracion": 0,
+        "id": "8ef30894-c55e-4f01-8ad5-efc81526ae36",
+        "actividades": [],
+        "nivel": "denso",
+        "version": 2
+    },
+    {
+        "descripcion": "Ser cracks en geografia",
+        "fechaModificacion": "2024-11-19T15:10:01.709985300",
+        "rating": 1.8333333730697632,
+        "titulo": "Geografia Seccion Andrea",
+        "fechaCreacion": "2024-11-19T14:53:03.358004600",
+        "duracion": 15,
+        "id": "4cd37215-501f-42de-834a-afd385bbe990",
+        "actividades": [
+            "018b9a37-ee7e-4568-a51a-61b3be7d9e74",
+            "9408875b-72de-40d4-b336-2a6d0ef563b4"
+        ],
+        "nivel": "avanzado",
+        "version": 7
+    }
+]

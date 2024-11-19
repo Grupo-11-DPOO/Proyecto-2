@@ -177,7 +177,6 @@ public class PersistenciaLearningPath {
             try (FileWriter fileWriter = new FileWriter(ruta)) {
                 fileWriter.write(learningPathArray.toString(4)); 
             }
-            System.out.println("LearningPath guardado exitosamente.");
         } catch (Exception e) {
             System.err.println("Error al guardar el learningPath: " + e.getMessage());
         }

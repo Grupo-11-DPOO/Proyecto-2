@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
 import learningPaths.Identificable;
 import learningPaths.LearningPath;
 import usuarios.Estudiante;
@@ -26,7 +25,6 @@ public abstract class Actividad implements Identificable, Cloneable {
 	public int cantidadRating;
 	public List<String> resenas; // las resenas que un estudiante ingresa a la actividad y pueda visualizar un profesor
 	protected TipoActividades tipoActividad;
-	// Metodos
 	
 	public Actividad(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos, boolean obligatorio) {
 		this.titulo = titulo;
@@ -203,14 +201,11 @@ public abstract class Actividad implements Identificable, Cloneable {
         return false;
     }
     
-    
     // Se clona la actividad por si un profesor desea poder ser el nuevo dueño y modificarla.
-	
 	public void agregarPrerrequisito(Actividad actividad) {
-		
 		this.prerequisitos.add(actividad);
-		
 	}
+	
 	@Override
     public Actividad clone() {
         try {
@@ -224,7 +219,6 @@ public abstract class Actividad implements Identificable, Cloneable {
 
     public String verActividad() {
         StringBuilder informacion = new StringBuilder();
-
         informacion.append("ID: ").append(id != null ? id : "N/A").append("\n");
         informacion.append("Título: ").append(titulo != null ? titulo : "N/A").append("\n");
         informacion.append("Objetivo: ").append(objetivo != null ? objetivo : "N/A").append("\n");
@@ -234,8 +228,7 @@ public abstract class Actividad implements Identificable, Cloneable {
         informacion.append("Obligatorio: ").append(obligatorio ? "Sí" : "No").append("\n");
         informacion.append("Tiempo Límite: ").append(tiempoLimite != null ? tiempoLimite.toString() : "Sin límite").append("\n");
         informacion.append("Rating: ").append(rating).append(" (").append(cantidadRating).append(" calificaciones)\n");
-        informacion.append("Tipo de Actividad: ").append(tipoActividad != null ? tipoActividad : "No especificado").append("\n");
-
+        informacion.append("Tipo de Actividad: ").append(tipoActividad != null ? tipoActividad : "No especificado");
         return informacion.toString();
     }
 	

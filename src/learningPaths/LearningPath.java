@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import actividades.*;
@@ -22,8 +23,6 @@ public class LearningPath implements Identificable{
 	private int version;
 	public List<Actividad> actividades;
 	
-	// Metodos
-	
 	public LearningPath(String titulo, String descripcion, String nivel) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
@@ -34,7 +33,6 @@ public class LearningPath implements Identificable{
 		this.rating = 0;
 		setDuracion();
 		crearId();
-		
 	}
 
 	public String getTitulo() {
@@ -208,6 +206,26 @@ public class LearningPath implements Identificable{
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	public String verLearningPath() {
+        StringBuilder informacion = new StringBuilder();
+
+        informacion.append("ID: ").append(id != null ? id : "N/A").append("\n");
+        informacion.append("Título: ").append(titulo != null ? titulo : "N/A").append("\n");
+        informacion.append("Descripción: ").append(descripcion != null ? descripcion : "N/A").append("\n");
+        informacion.append("Nivel: ").append(nivel != null ? nivel : "N/A").append("\n");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy, hh:mm a");
+        String formattedDateCrea = fechaCreacion.format(formatter);
+        String formattedDateModi = fechaModificacion.format(formatter);
+        informacion.append("Fecha creación: ").append(formattedDateCrea).append("\n");
+        informacion.append("Fecha modificación: ").append(formattedDateModi).append("\n");
+        informacion.append("Duración (minutos): ").append(duracion).append("\n");
+        informacion.append("Rating: ").append(rating).append("\n");
+        informacion.append("Versión: ").append(version).append("\n");
+        informacion.append("Cantidad acividades: ").append(getActividades().size());
+
+        return informacion.toString();
 	}
 
 	@Override

@@ -32,9 +32,6 @@ public class PersistenciaActividades {
     public JSONArray actividadesArray = new JSONArray();
     
     public PersistenciaActividades() {
-        //crearArchivo(); 
-        //getActividades(); 
-        //cargarActividad();
 	    }
 
     public Actividad convertirJsonToActividad(JSONObject jsonObject) throws JSONException, ParseException {
@@ -339,47 +336,6 @@ public class PersistenciaActividades {
         }
         return jsonObject;
     }
-
-    // Guardar la actividad en el archivo
-//    public void guardar() {
-//        try {
-//            JSONArray actividades = leerActividades();
-//
-//            // Leer el archivo si ya existe y tiene contenido
-//            if (archivo.exists() && archivo.length() > 0) {
-//                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-//                actividades = new JSONArray(contenido);
-//            } else {
-//                actividades = new JSONArray();
-//            }
-//
-//            // Actualizar la actividad si ya existe en el archivo (por ID)
-//            boolean actualizado = false;
-//            for (int i = 0; i < actividades.length(); i++) {
-//                JSONObject obj = actividades.getJSONObject(i);
-//                if (obj.getString("id").equals(id)) {
-//                    actividades.put(i, this.toJSON()); // Actualizar actividad
-//                    actualizado = true;
-//                    break;
-//                }
-//            }
-//
-//            // Si no se encontró, agregarla como nueva
-//            if (!actualizado) {
-//                actividades.put(this.toJSON());
-//            }
-//
-//            // Guardar el nuevo contenido en el archivo
-//            try (FileWriter writer = new FileWriter(archivo)) {
-//                writer.write(actividades.toString(4)); // Indentación para legibilidad
-//            }
-//
-//            System.out.println("Archivo actualizado exitosamente: " + archivo.getAbsolutePath());
-//
-//        } catch (IOException e) {
-//            System.err.println("Error al guardar la actividad: " + e.getMessage());
-//        }
-//    }
     
     public void crearArchivo() {
         archivo = new File(ruta);

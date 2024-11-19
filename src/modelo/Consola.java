@@ -38,7 +38,7 @@ public class Consola {
 	private static Estudiante estudianteActual;
 	private static String[] opciones = {"Iniciar sesión", "Registrarse", "Salir"};
 	private static String[] opcionesRegistro = {"Crear usuario: Profesor", "Crear usuario: Estudiante", "Salir"};
-	private static String[] opcionesMenuProfesor = {"Crear LearningPath", "Ver y Editar LearningPath", "Crear Actividad", "Clonar Actividad",
+	private static String[] opcionesMenuProfesor = {"Crear Learning Path", "Ver y Editar Learning Path", "Crear Actividad", "Clonar Actividad",
 			"Ver y Editar Actividades", "Agregar reseñas y/o rating a actividad", "Ver estadísticas", "Salir"};
 	private static String[] opcionesTipoActividad = {"Encuesta", "Examen", "Quiz múltiple", "Recurso", "Tarea", "Quiz V/F"};
 	private static String[] opcionesClonar = {"Clonar con ID de actividad", "Volver"};
@@ -331,9 +331,6 @@ public class Consola {
     }
     
     public static void menuProfesor() {
-    	List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
-    	System.out.println(idActividadesPropias);
-    	
     	try {
 			int opcionSeleccionada = mostrarMenu("Menu Principal Profesores", opcionesMenuProfesor);
 			
@@ -382,49 +379,51 @@ public class Consola {
 		sistemaRegistro.guardarProfesor(profesorActual);
 		System.out.println("El Learning Path se ha creado exitosamente, sin embargo, está vacio.");
 		int cantidadActividades = pedirEnteroAlUsuario("Ingrese la cantidad de actividades que tendrá");
-		int opcion = mostrarMenu("Agregar actividades. Recuerde que van en orden.", opcionesCrearLearningPath);
-		switch(opcion) {
-		case 1:
-			List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
-			int cantidadActividadesProfesor = idActividadesPropias.size();
-			if (cantidadActividadesProfesor > 0) {
-				imprimirActividadesPropiasProfesor(idActividadesPropias);
-				int i = 0;
-				while (i < cantidadActividades) {
-					System.out.println( "------------------------------------------------------" );
-					String idActividadAgregar = pedirCadenaAlUsuario("Ingrese el id de la actividad candidata (se muestran las reseñas)");
-					Actividad actividad = actividades.get(idActividadAgregar);
-					verResenasActividad(actividad);
-					int agregar = mostrarMenu("¿Desea agregar la actividad?", opcionesSiNo);
-					if (agregar == 1) {
-						learningPath.agregarActividad(actividad);
-						System.out.println("Actividad agregada exitosamente.");						
+		if (cantidadActividades > 0) {
+			int opcion = mostrarMenu("Agregar actividades. Recuerde que van en orden.", opcionesCrearLearningPath);
+			switch(opcion) {
+			case 1:
+				List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
+				int cantidadActividadesProfesor = idActividadesPropias.size();
+				if (cantidadActividadesProfesor > 0) {
+					imprimirActividadesPropiasProfesor(idActividadesPropias);
+					int i = 0;
+					while (i < cantidadActividades) {
+						String idActividadAgregar = pedirCadenaAlUsuario("Ingrese el id de la actividad candidata (se muestran las reseñas)");
+						Actividad actividad = actividades.get(idActividadAgregar);
+						verResenasActividad(actividad);
+						int agregar = mostrarMenu("¿Desea agregar la actividad?", opcionesSiNo);
+						if (agregar == 1) {
+							learningPath.agregarActividad(actividad);
+							sistemaRegistro.guardarLearningPath(learningPath);
+							System.out.println("Actividad agregada exitosamente.");						
+						}
+						i++;
 					}
-					i++;
+				} else {
+					System.out.println("Usted no cuenta con actividades propias. El Learning Path se dejará vacio, cuando cree actividades podrá editarlo y agregarselas.");
+					System.out.println("Redirigiendo al menu de crear actividades...");
+					menuCrearActividad();
 				}
-			} else {
-				System.out.println("Usted no cuenta con actividades propias. El Learning Path se dejará vacio, cuando cree actividades podrá editarlo y agregarselas.");
+				break;
+				
+			case 2:
+				System.out.println("El Learning Path se dejará vacio, cuando cree actividades podrá editarlo y agregarselas.");
 				System.out.println("Redirigiendo al menu de crear actividades...");
 				menuCrearActividad();
+				break;
 			}
-			break;
-			
-		case 2:
-			System.out.println("El Learning Path se dejará vacio, cuando cree actividades podrá editarlo y agregarselas.");
-			System.out.println("Redirigiendo al menu de crear actividades...");
-			menuCrearActividad();
-			break;
 		}
+		menuProfesor();
     }
     
     public static void verResenasActividad(Actividad actividad) {
     	String titulo = actividad.getTitulo();
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Reseñas de la actividad "+titulo);
-    	System.out.println( "------------------------------------------------------" );
+    	System.out.println("Reseñas de la actividad: "+titulo);
     	for (String resena: actividad.getResenas()) {
-    		System.out.println(resena);
     		System.out.println( "------------------------------------------------------" );
+    		System.out.println(resena);
     	}
     }
     
@@ -442,40 +441,29 @@ public class Consola {
     	}
     }
     
+    public static void imprimirLearningPathsPropios(List<String> idLearningPathPropios) {
+		System.out.println( "Lista de sus LearningPaths" );
+		for (String idLearning: idLearningPathPropios) {
+			System.out.println( "------------------------------------------------------" );
+			LearningPath learningPath = learningPaths.get(idLearning);
+			if (learningPath != null) {
+				System.out.println(learningPath.verLearningPath());
+			}
+		}
+    }
+    
     public static void menuVerYEditarLearningPath() {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Ver y Editar Learning Paths");
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Lista de Learning Paths");
     	List<String> idLearningPathsPropios = profesorActual.getIdLearningPathsCreados();
-    	for (Map.Entry<String, LearningPath> entry : learningPaths.entrySet()) {
-            String id = entry.getKey();
-            if (idLearningPathsPropios.contains(id)) {
-	            Object learning = entry.getValue();
-	
-	            if (learning instanceof Map) {
-	                Map<?, ?> valueMap = (Map<?, ?>) learning;
-	                Object titulo = valueMap.get("titulo");
-	                Object descripcion = valueMap.get("descripcion");
-	                Object nivel = valueMap.get("nivel");
-	                Object fechaCreacion = valueMap.get("fechaCreacion");
-	                Object fechaModificacion = valueMap.get("fechaModificacion");
-	                Object duracion = valueMap.get("duracion");
-	                Object rating = valueMap.get("rating");
-	                Object version = valueMap.get("version");
-	                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, descripcion, nivel, fechaCreacion, fechaModificacion, duracion, rating, version));
-	            } else {
-	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
-	            }
-            }
-        }
+    	imprimirLearningPathsPropios(idLearningPathsPropios);
     	int opcion = mostrarMenu("¿Desea editar algún Learning Path?", opcionesSiNo);
     	if (opcion == 1) {
     		String id = pedirCadenaAlUsuario("ID del Learning Path");
     		LearningPath learningPathEditar = learningPaths.get(id);
     		System.out.println( "------------------------------------------------------" );
     		System.out.println("Editar Learning Path "+learningPathEditar.getTitulo());
-    		System.out.println( "------------------------------------------------------" );
     		int opcionSeleccionada = mostrarMenu("Seleccione que desea editar", opcionesEditarLearningPath);
     		switch (opcionSeleccionada) {
     		case 1:
@@ -525,10 +513,10 @@ public class Consola {
     			}
     			break;
     		}
-    		// TODO Guardar - actualizar
+    		System.out.println("Se edito correctamente");
     		sistemaRegistro.cargarProfesores(actividades, learningPaths);
+    		sistemaRegistro.guardarLearningPath(learningPathEditar);
     		menuProfesor();
-    		
     	}
     	else {
     		menuProfesor();
@@ -536,53 +524,21 @@ public class Consola {
     }
     
     public static void imprimirActividadesPropiasProfesor(List<String> idActividadesPropias) {
-    	System.out.println( "------------------------------------------------------" );
 		System.out.println( "Lista de sus actividades" );
-		System.out.println( "------------------------------------------------------" );
-		for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
-            String id = entry.getKey();
-            if (idActividadesPropias.contains(id)) {
-	            Object learning = entry.getValue();
-	
-	            if (learning instanceof Map) {
-	                Map<?, ?> valueMap = (Map<?, ?>) learning;
-	                Object titulo = valueMap.get("titulo");
-	                Object objetivo = valueMap.get("objetivo");
-	                Object descripcion = valueMap.get("descripcion");
-	                Object nivel = valueMap.get("nivel");
-	                Object duracionMinutos = valueMap.get("duracionMinutos");
-	                Object obligatorio = valueMap.get("obligatorio");
-	                Object rating = valueMap.get("rating");
-	                Object tipo = valueMap.get("tipoActividad");
-	                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, rating, tipo));
-	            } else {
-	                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
-	            }
-            }
-        }
+		for (String idActividad: idActividadesPropias) {
+			System.out.println( "------------------------------------------------------" );
+			Actividad actividad = actividades.get(idActividad);
+			if (actividad != null) {
+				System.out.println(actividad.verActividad());
+			}
+		}
     }
     
     public static void imprimirActividadesTotales() {
-    	System.out.println( "------------------------------------------------------" );
-		System.out.println( "Lista de sus actividades" );
-		System.out.println( "------------------------------------------------------" );
 		for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
-            String id = entry.getKey();
-            Object learning = entry.getValue();
-            if (learning instanceof Map) {
-                Map<?, ?> valueMap = (Map<?, ?>) learning;
-                Object titulo = valueMap.get("titulo");
-                Object objetivo = valueMap.get("objetivo");
-                Object descripcion = valueMap.get("descripcion");
-                Object nivel = valueMap.get("nivel");
-                Object duracionMinutos = valueMap.get("duracionMinutos");
-                Object obligatorio = valueMap.get("obligatorio");
-                Object rating = valueMap.get("rating");
-                Object tipo = valueMap.get("tipoActividad");
-                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, objetivo, descripcion, nivel, duracionMinutos, obligatorio, rating, tipo));
-            } else {
-                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
-            }
+			System.out.println( "------------------------------------------------------" );
+			Actividad actividad = entry.getValue();
+            System.out.println(actividad.verActividad());
         }
     }
     
@@ -785,25 +741,12 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Agregar Prerequisitos");
     	System.out.println( "------------------------------------------------------" );
-    	// Imprime todas las actividades, solo id y titulo 
-		for (Map.Entry<String, Actividad> entry : actividades.entrySet()) {
-		String id = entry.getKey();
-        Object titulo = entry.getValue();
-
-            if (titulo instanceof Map) {
-                Map<?, ?> valueMap = (Map<?, ?>) titulo;
-                Object tituloOb = valueMap.get("titulo");
-                System.out.println(String.format("%-10s | %-20s", id, tituloOb));
-            } else {
-                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
-            }
-    	}
+    	imprimirActividadesTotales();
 		ArrayList<Actividad> listaPrerequisitos = new ArrayList<>();
     	int cantidadPrerequisitos = pedirEnteroAlUsuario("Ingrese la cantidad de prerequisitos");
     	int i = 0;
     	while (i < cantidadPrerequisitos) {
 	    	String codigoActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a agregar");
-	    	// toma la lista de actividadades totales y las filtra.
 	    	Actividad actividadAgregar = actividades.get(codigoActividad);
 	    	listaPrerequisitos.add(actividadAgregar);
 	    	i++;
@@ -826,6 +769,7 @@ public class Consola {
 				String idActividadAClonar = pedirCadenaAlUsuario("Ingrese ID");
 				Actividad actividad = actividades.get(idActividadAClonar);
 				profesorActual.clonarActividad(actividad);
+				sistemaRegistro.guardarActividad(actividad);
 				System.out.println("La actividad fue clonada exitosamente.");
 				menuProfesor();
 				break;
@@ -845,7 +789,6 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	List<String> idActividadesPropias = profesorActual.getIdActividadesCreadas();
     	imprimirActividadesPropiasProfesor(idActividadesPropias);
-    	
     	int opcion = mostrarMenu("Opciones para las actividades mostradas", opcionesVerYEditarActividades);
     	if (opcion != 8) {
     		String id = pedirCadenaAlUsuario("ID de la actividad");
@@ -895,8 +838,8 @@ public class Consola {
 	    		}
     			break;
 	    	}
-    		// TODO Guardar - actualizar
     		sistemaRegistro.cargarProfesores(actividades, learningPaths);
+    		sistemaRegistro.guardarActividad(actividadEditar);
 	    	menuProfesor();
     	} else {
     		menuProfesor();
@@ -917,6 +860,7 @@ public class Consola {
 	    	String resena = pedirCadenaAlUsuario("Ingrese la reseña");
 	    	actividad.agregarResena(resena);
 	    	System.out.println("Reseña agregada exitosamente.");
+	    	sistemaRegistro.guardarActividad(actividad);
     	} else {
     		System.out.println( "------------------------------------------------------" );
 	    	System.out.println("Agregar rating a una actividad");
@@ -930,17 +874,18 @@ public class Consola {
 	    	try {
 				actividad.agregarRating(rating);
 				System.out.println("Reseña agregada exitosamente.");
+				sistemaRegistro.guardarActividad(actividad);
 			} catch (Exception e) {
 				System.out.println("El número que ingreso no está dentro del rango permitido.");
 				e.printStackTrace();
 			}
     	}
+    	menuProfesor();
     }
     
     public static void verEstadisticas() {
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Bienvenido profesor al menú de estadísticas");
-    	System.out.println( "------------------------------------------------------" );
     	int opcion = mostrarMenu("Seleccione que desea visualizar", opcionesVerEstadisticas);
     	switch (opcion) {
     	case 1:
@@ -986,7 +931,6 @@ public class Consola {
     		// Imprimir todos los Learning Paths
     		System.out.println( "------------------------------------------------------" );
     		System.out.println( "Lista de todos los Learning Paths" );
-    		System.out.println( "------------------------------------------------------" );
     		verLearningPathsTotales();
     		System.out.println( "------------------------------------------------------" );
     		String idLearning = pedirCadenaAlUsuario("Ingrese el id del Learning Path a observar");
@@ -1018,6 +962,7 @@ public class Consola {
     		menuProfesor();
     		break;
     	}
+    	menuProfesor();
     }
     
     public static void menuEstudiante() {
@@ -1127,24 +1072,9 @@ public class Consola {
     }
     
     public static void verLearningPathsTotales() {
-    	for (Map.Entry<String, LearningPath> entry : learningPaths.entrySet()) {
-            String id = entry.getKey();
-            Object learning = entry.getValue();
-
-            if (learning instanceof Map) {
-                Map<?, ?> valueMap = (Map<?, ?>) learning;
-                Object titulo = valueMap.get("titulo");
-                Object descripcion = valueMap.get("descripcion");
-                Object nivel = valueMap.get("nivel");
-                Object fechaCreacion = valueMap.get("fechaCreacion");
-                Object fechaModificacion = valueMap.get("fechaModificacion");
-                Object duracion = valueMap.get("duracion");
-                Object rating = valueMap.get("rating");
-                Object version = valueMap.get("version");
-                System.out.println(String.format("%-10s | %-20s | %-30s | %-40s | %-50s | %-60s | %-70s | %-80s | %-90s", id, titulo, descripcion, nivel, fechaCreacion, fechaModificacion, duracion, rating, version));
-            } else {
-                System.out.println(String.format("%-10s | %-20s", id, "Tipo no soportado"));
-            }
+    	for (LearningPath learningPath : learningPaths.values()) {
+    		System.out.println( "------------------------------------------------------" );
+    		System.out.println(learningPath.verLearningPath());
         }
     }
     
