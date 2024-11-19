@@ -89,6 +89,7 @@ public class SistemaRegistro {
 		}
 		else {
 			Profesor profesor = new Profesor(this.actividades,this.learningPaths,login, passWord);
+			this.datosProfesores.put(login, profesor);
 			persistenciaProfesores.guardarProfesor(profesor);
 			return profesor;
 		}	
@@ -101,6 +102,7 @@ public class SistemaRegistro {
 	}
 		else {
 			Estudiante estudiante = new Estudiante(actividades,learningPaths,login,passWord,intereses);
+			this.datosEstudiantes.put(login, estudiante);
 			persistenciaEstudiantes.guardarEstudiante(estudiante);
 			return estudiante;
 		}
