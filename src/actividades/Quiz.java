@@ -70,23 +70,22 @@ public class Quiz extends Actividad{
 	    StringBuilder resultado = new StringBuilder();
 	    
 	    if (!this.preguntas.isEmpty()) {
-	        for (Map.Entry<String, HashMap<Opcion, HashMap<String,String>>> entradaPregunta : preguntas.entrySet()) {
-	            String enunciadoPregunta = entradaPregunta.getKey();
-	            HashMap<Opcion, HashMap<String,String>> opciones = entradaPregunta.getValue();
-
-	            resultado.append("Pregunta: ").append(enunciadoPregunta).append("\nOpciones:\n");
-	            if (!opciones.isEmpty()) {
-	                for (Map.Entry<Opcion, HashMap<String,String>> entradaOpciones : opciones.entrySet()) {
-	                    String opcion = entradaOpciones.getKey().name();
-	                    HashMap<String,String> entradaOpcion = entradaOpciones.getValue();
-	                    if(!entradaOpcion.isEmpty()) {
-	                    	for(Map.Entry<String, String> entry: entradaOpcion.entrySet()) {
-	                    		String enunciado = entry.getKey();
-	    	                    resultado.append(opcion).append("): ").append(enunciado).append("\n");
-	                    	}
+	    	int i = 1;
+	        for (Map.Entry<String, HashMap<Opcion, HashMap<String, String>>> pregunta : preguntas.entrySet()) {
+	            // Imprimir el enunciado de la pregunta
+	            resultado.append("\nPregunta #"+i+": " + pregunta.getKey()).append("\n");
+	            // Recorrer las opciones en orden definido por el enum
+	            for (Opcion opcion : Opcion.values()) { // Asegura el orden A, B, C, D
+	                if (pregunta.getValue().containsKey(opcion)) {
+	                	 resultado.append(opcion+": ");
+	                    // Imprimir el primer String del HashMap interno
+	                    for (String texto : pregunta.getValue().get(opcion).keySet()) {
+	                    	 resultado.append(texto).append("\n");
 	                    }
 	                }
 	            }
+	            resultado.append("------------");
+	            i++;
 	        }
 	    } else {
 	        return "No hay preguntas que mostrar";

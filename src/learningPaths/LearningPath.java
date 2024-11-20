@@ -153,19 +153,21 @@ public class LearningPath implements Identificable{
     	int contadorExitosas = 0;
 		for (Estudiante estudiante: estudiantes) {
 			LearningPath learningEnCurso = estudiante.getLearningPathEnCurso();
-			if (learningEnCurso.getId()==this.getId()) {
-				HashMap<String, Estado> registroAct = estudiante.getRegistroActividades();
-				for (Actividad actividad: actividadesLearning) {
-					String idActividad = actividad.getId();
-					Estado estado = registroAct.get(idActividad);
-		    		if (estado != null) {
-		    			if (estado == Estado.ENVIADA || estado == Estado.EXITOSA) {
-		    				contadorCompletadas += 1;
-		    				if (estado == Estado.EXITOSA) {
-		    					contadorExitosas += 1;
-		    				}
-		    			}
-		    		}
+			if (learningEnCurso != null) {
+				if (learningEnCurso.getId()==this.getId()) {
+					HashMap<String, Estado> registroAct = estudiante.getRegistroActividades();
+					for (Actividad actividad: actividadesLearning) {
+						String idActividad = actividad.getId();
+						Estado estado = registroAct.get(idActividad);
+			    		if (estado != null) {
+			    			if (estado == Estado.ENVIADA || estado == Estado.EXITOSA) {
+			    				contadorCompletadas += 1;
+			    				if (estado == Estado.EXITOSA) {
+			    					contadorExitosas += 1;
+			    				}
+			    			}
+			    		}
+					}
 				}
 			}
 		}
@@ -174,10 +176,6 @@ public class LearningPath implements Identificable{
     	listaRetorno.add(porcentajeCompletadas);
     	listaRetorno.add(porcentajeExitosas);
     	return listaRetorno;
-	}
-	
-	public List<Actividad> getActividades() {
-		return actividades;
 	}
 
 	public void setActividades(List<Actividad> actividades) {
@@ -223,7 +221,7 @@ public class LearningPath implements Identificable{
         informacion.append("Duración (minutos): ").append(duracion).append("\n");
         informacion.append("Rating: ").append(rating).append("\n");
         informacion.append("Versión: ").append(version).append("\n");
-        informacion.append("Cantidad acividades: ").append(getActividades().size());
+        informacion.append("Cantidad acividades: ").append(getListaActividades().size());
 
         return informacion.toString();
 	}

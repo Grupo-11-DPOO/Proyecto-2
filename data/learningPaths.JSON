@@ -13,15 +13,20 @@
     },
     {
         "descripcion": "Aprender sobre geografia latina",
-        "fechaModificacion": "2024-11-19T13:22:28.421852900",
+        "fechaModificacion": "2024-11-19T22:13:46.077172800",
         "rating": 0,
         "titulo": "Introduccion a Geografia",
         "fechaCreacion": "2024-11-19T12:58:54.063133900",
-        "duracion": 5,
+        "duracion": 31,
         "id": "6a93823f-f3bf-4c5d-956a-2953f636c6a6",
-        "actividades": ["594c3b48-c915-4e44-be93-b28b9e00a268"],
+        "actividades": [
+            "594c3b48-c915-4e44-be93-b28b9e00a268",
+            "b85e2921-7353-4ac4-be28-c405c7c197c0",
+            "b48892e7-f946-44c9-9f31-711b623a11cb",
+            "064c2345-0bfe-438d-8c09-34a6f5c7aed9"
+        ],
         "nivel": "bajo",
-        "version": 3
+        "version": 9
     },
     {
         "descripcion": "Orientada a objetos",
@@ -49,17 +54,19 @@
     },
     {
         "descripcion": "Ser cracks en geografia",
-        "fechaModificacion": "2024-11-19T15:10:01.709985300",
-        "rating": 1.8333333730697632,
+        "fechaModificacion": "2024-11-19T23:15:35.538179100",
+        "rating": 1.9166667461395264,
         "titulo": "Geografia Seccion Andrea",
         "fechaCreacion": "2024-11-19T14:53:03.358004600",
-        "duracion": 15,
+        "duracion": 35,
         "id": "4cd37215-501f-42de-834a-afd385bbe990",
         "actividades": [
             "018b9a37-ee7e-4568-a51a-61b3be7d9e74",
-            "9408875b-72de-40d4-b336-2a6d0ef563b4"
+            "9408875b-72de-40d4-b336-2a6d0ef563b4",
+            "c5996463-8bbf-44da-a33f-5819f9168068",
+            "18ffeec4-95a6-414f-9da7-0479e955e2a7"
         ],
         "nivel": "avanzado",
-        "version": 7
+        "version": 13
     }
 ]

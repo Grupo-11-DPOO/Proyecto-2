@@ -58,7 +58,7 @@ public class QuizVerdad extends Actividad {
 	public String verPreguntas() {
 		
 		StringBuilder sb = new StringBuilder();
-	    sb.append("Preguntas:\n");
+	    sb.append("Preguntas:\n\n");
 	    int contador = 1; // Para numerar las preguntas
 	    if(!preguntas.isEmpty()) {
 	    	for (String pregunta : preguntas) {

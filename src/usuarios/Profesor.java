@@ -85,37 +85,37 @@ public class Profesor extends Usuario {
 			}
 		return null;
 	}
-	public String clonarActividad(Actividad actividad) throws Exception {
+	public Actividad clonarActividad(Actividad actividad) throws Exception {
 		// Metodo madre
 		TipoActividades tipo = actividad.getTipoActividad();
-		String idActividadClonada = null;
+		Actividad actividadClonada = null;
 		switch (tipo) {
 		case Recurso:
 			Recurso recurso = (Recurso) actividad;
-			idActividadClonada = clonarRecurso(recurso);
+			actividadClonada = clonarRecurso(recurso);
 			break;
 		case Tarea:
 			Tarea tarea = (Tarea) actividad;
-			idActividadClonada = clonarTarea(tarea);
+			actividadClonada = clonarTarea(tarea);
 			break;
 		case Quiz:
 			Quiz quiz = (Quiz) actividad;
-			idActividadClonada = clonarQuiz(quiz);
+			actividadClonada = clonarQuiz(quiz);
 			break;
 		case Examen:
 			Examen examen = (Examen) actividad;
-			idActividadClonada = clonarExamen(examen);
+			actividadClonada = clonarExamen(examen);
 			break;
 		case Encuesta:
 			Encuesta encuesta = (Encuesta) actividad;
-			idActividadClonada = clonarEncuesta(encuesta);
+			actividadClonada = clonarEncuesta(encuesta);
 			break;
 		case QuizVerdad:
 			QuizVerdad quizVerdad = (QuizVerdad) actividad;
-			idActividadClonada = clonarQuizVerdad(quizVerdad);
+			actividadClonada = clonarQuizVerdad(quizVerdad);
 			break;
 		}
-		return idActividadClonada;
+		return actividadClonada;
 	}	
 	
 	public Actividad getActividadById(String id) {
@@ -127,47 +127,46 @@ public class Profesor extends Usuario {
 		} else return null;
 	}
 	
-	public String clonarTarea(Tarea tarea) throws Exception {
+	public Actividad clonarTarea(Tarea tarea) throws Exception {
 	    Tarea actiClonada = tarea.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
 	    getDataActividades().put(actiClonada.getId(), actiClonada);
-	    
-	    return actiClonada.getId();
+	    return actiClonada;
 	}
 
-	public String clonarRecurso(Recurso recurso) throws Exception {
+	public Actividad clonarRecurso(Recurso recurso) throws Exception {
 	    Recurso actiClonada = recurso.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
 	    getDataActividades().put(actiClonada.getId(), actiClonada);
-	    return actiClonada.getId();
+	    return actiClonada;
 	}
 
-	public String clonarQuizVerdad(QuizVerdad quizVerdad) throws Exception {
+	public Actividad clonarQuizVerdad(QuizVerdad quizVerdad) throws Exception {
 	    QuizVerdad actiClonada = quizVerdad.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
 	    getDataActividades().put(actiClonada.getId(), actiClonada);
-	    return actiClonada.getId();
+	    return actiClonada;
 	}
 
-	public String clonarQuiz(Quiz quiz) throws Exception {
+	public Actividad clonarQuiz(Quiz quiz) throws Exception {
 	    Quiz actiClonada = quiz.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
 	    getDataActividades().put(actiClonada.getId(), actiClonada);
-	    return actiClonada.getId();
+	    return actiClonada;
 	}
 
-	public String clonarExamen(Examen examen) throws Exception {
+	public Actividad clonarExamen(Examen examen) throws Exception {
 	    Examen actiClonada = examen.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
 	    getDataActividades().put(actiClonada.getId(), actiClonada);
-	    return actiClonada.getId();
+	    return actiClonada;
 	}
 
-	public String clonarEncuesta(Encuesta encuesta) throws Exception {
+	public Actividad clonarEncuesta(Encuesta encuesta) throws Exception {
 	    Encuesta actiClonada = encuesta.clone();
 	    idActividadesCreadas.add(actiClonada.getId());
 	    getDataActividades().put(actiClonada.getId(), actiClonada);
-	    return actiClonada.getId();
+	    return actiClonada;
 	}
 
 	public Recurso crearActividadRecurso(String titulo, String objetivo, String descripcion, String nivel, int duracionMinutos,

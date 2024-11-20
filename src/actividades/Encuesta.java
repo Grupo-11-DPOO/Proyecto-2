@@ -65,7 +65,6 @@ public class Encuesta extends Actividad{
 	}
 
 	public Estado contestarEncuesta(String idEstudiante, ArrayList<String> respuestas) {
-	
 		this.respuestasDeTodos.put(idEstudiante, respuestas);
 		return Estado.EXITOSA;
 	}

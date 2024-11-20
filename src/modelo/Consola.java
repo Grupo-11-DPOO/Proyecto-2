@@ -436,7 +436,7 @@ public class Consola {
     		String id = preReq.getId();
     		String titulo1 = preReq.getTitulo();
     		System.out.println("ID: "+id);
-    		System.out.println(titulo1);
+    		System.out.println("Título: "+titulo1);
     		System.out.println( "------------------------------------------------------" );
     	}
     }
@@ -561,14 +561,14 @@ public class Consola {
 			nivel = pedirCadenaAlUsuario("Ingrese el nivel (bajo, intermedio o avanzado)");
 			duracionMinutos = pedirEnteroAlUsuario("Ingrese el tiempo estimado en minutos");
 			obligatorioString = pedirCadenaAlUsuario("¿Es obligatorio?");
-			obligatorioString.toLowerCase();
+			obligatorioString = obligatorioString.toLowerCase();
 			// Por defecto no es
 			obligatorio = false;
 			if (obligatorioString.equals("si")) {
 				obligatorio = true;
 			}
 			String tienePrerequisitosString = pedirCadenaAlUsuario("¿Tiene prerequisitos?");
-			tienePrerequisitosString.toLowerCase();
+			tienePrerequisitosString = tienePrerequisitosString.toLowerCase();
 			// Por defecto no tiene
 			ArrayList<Actividad> listaPrerequisitos = new ArrayList<>();;
 			if (tienePrerequisitosString.equals("si")) {
@@ -633,7 +633,7 @@ public class Consola {
 				while (i2 < cantidadPreguntas2) {
 					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
 					String opcionCorrecta = pedirCadenaAlUsuario("Opción correcta (A-B-C-D)");
-					opcionCorrecta.toLowerCase();
+					opcionCorrecta = opcionCorrecta.toLowerCase();
 					Opcion opcionCorrectaEnum;
 					if (opcionCorrecta.equals("a")) {
 						opcionCorrectaEnum = Opcion.A;
@@ -714,7 +714,7 @@ public class Consola {
 				while (i21 < cantidadPreguntas21) {
 					String enunciado = pedirCadenaAlUsuario("Enunciado pregunta");
 					String opcionCorrecta = pedirCadenaAlUsuario("Opción correcta (V o F)");
-					opcionCorrecta.toLowerCase();
+					opcionCorrecta = opcionCorrecta.toLowerCase();
 					VerdaderoFalso opcionCorrectaEnum;
 					if (opcionCorrecta.equals("v")) {
 						opcionCorrectaEnum = VerdaderoFalso.Verdadero;
@@ -768,8 +768,10 @@ public class Consola {
 			case 1:
 				String idActividadAClonar = pedirCadenaAlUsuario("Ingrese ID");
 				Actividad actividad = actividades.get(idActividadAClonar);
-				profesorActual.clonarActividad(actividad);
+				Actividad actividadClonada = profesorActual.clonarActividad(actividad);
 				sistemaRegistro.guardarActividad(actividad);
+				sistemaRegistro.guardarActividad(actividadClonada);
+				sistemaRegistro.guardarProfesor(profesorActual);
 				System.out.println("La actividad fue clonada exitosamente.");
 				menuProfesor();
 				break;
@@ -880,7 +882,11 @@ public class Consola {
 				e.printStackTrace();
 			}
     	}
-    	menuProfesor();
+    	if (profesorActual == null) {
+    		menuEstudiante();
+    	} else {
+    		menuProfesor();    		
+    	}
     }
     
     public static void verEstadisticas() {
@@ -908,7 +914,7 @@ public class Consola {
         	double porcentajeCompletadas = listaProgresos.get(0);
         	double porcentajeExitosas = listaProgresos.get(1);
         	System.out.println( "------------------------------------------------------" );
-        	System.out.println( "Learning path de "+idEstudiante+"es "+tituloLearningPathEnCurso );
+        	System.out.println( "Learning path de "+idEstudiante+" es "+tituloLearningPathEnCurso );
     		switch (opcionEstadistica) {
     		case 1:
     			System.out.println( "------------------------------------------------------" );
@@ -984,7 +990,12 @@ public class Consola {
 			case 3:
 				// Terminar actividad en curso es lo mismo que iniciarla. No se pueden dejar actividades a medias.
 				Actividad actividadEnCurso = estudianteActual.getActividadEnCurso();
-				iniciarActividadEnCurso(actividadEnCurso);
+				if (actividadEnCurso != null) {
+					iniciarActividadEnCurso(actividadEnCurso);
+				} else {
+					System.out.println("No tiene una actividad en curso.");
+					menuEstudiante();
+				}
 				break;
 			case 4:
 				menuAgregarResenaORating();
@@ -1004,12 +1015,24 @@ public class Consola {
     	int opcion = mostrarMenu("Salir del Learning Path o Actividad actual", opcionSalirLearningOActividad);
     	switch (opcion) {
     	case 1:
+    		if (estudianteActual.getLearningPathEnCurso()==null) {
+    			System.out.println("No se encuentra en un Learning Path. No se puede salir de algo que no está.");
+    		} else {
     		estudianteActual.finalizarLearningPath();
+    		sistemaRegistro.guardarEstudiante(estudianteActual);
     		System.out.println("Se salió del Learning Path actual exitosamente.");
+    		}
+    		menuEstudiante();
     		break;
     	case 2:
+    		if (estudianteActual.getActividadEnCurso()==null) {
+    			System.out.println("No tiene actividad en curso. No se puede salir de algo que no está.");
+    		} else {
     		estudianteActual.finalizarActividad();
+    		sistemaRegistro.guardarEstudiante(estudianteActual);
     		System.out.println("Se salió de la actividad actual exitosamente.");
+    		}
+    		menuEstudiante();
     		break;
     	case 3:
     		menuEstudiante();
@@ -1025,13 +1048,11 @@ public class Consola {
     	switch (opcion) {
     	case 1:
     		System.out.println( "------------------------------------------------------" );
-    		System.out.println( "Porcentaje de actividades completadas y/o exitosas: "+porcentajeCompletadas+"%" );
-    		System.out.println( "------------------------------------------------------" );    		
+    		System.out.println( "Porcentaje de actividades completadas y/o exitosas: "+porcentajeCompletadas+"%" );   		
     		break;
     	case 2:
     		System.out.println( "------------------------------------------------------" );
-    		System.out.println( "Porcentaje de actividades exitosas: "+porcentajeExitosas+"%" );
-    		System.out.println( "------------------------------------------------------" );    		
+    		System.out.println( "Porcentaje de actividades exitosas: "+porcentajeExitosas+"%" );   		
     		break;
     	case 3:
     		menuEstudiante();
@@ -1040,18 +1061,18 @@ public class Consola {
     }
     
     public static void verOfertaLearningPaths() throws Exception {
-    	int opcion = mostrarMenu("Escoja la opción que más se adecue a sus necesidades.", opcionesOfertaLearningPaths);
+    	int opcion = mostrarMenu("Ver", opcionesOfertaLearningPaths);
     	switch (opcion) {
     	case 1:
     		System.out.println( "------------------------------------------------------" );
-    		System.out.println( "Lista de todos los Learning Paths disponibles:" );
-    		System.out.println( "------------------------------------------------------" );    		
+    		System.out.println( "Lista de todos los Learning Paths disponibles:" );		
     		verLearningPathsTotales();
     		inscribirseLearningPath();
     		int arrancarActividad = mostrarMenu("¿Desea empezar alguna actividad del Learning Path?", opcionesSiNo);
     		if (arrancarActividad==1) {
     			iniciarActividadLearningPathActual();
     		}
+    		menuEstudiante();
     		break;
     	case 2:
     		System.out.println( "------------------------------------------------------" );
@@ -1059,11 +1080,11 @@ public class Consola {
     		System.out.println( "------------------------------------------------------" ); 
     		verLearningPathsIntereses();
     		inscribirseLearningPath();
-    		inscribirseLearningPath();
     		int arrancarActividad1 = mostrarMenu("¿Desea empezar alguna actividad del Learning Path?", opcionesSiNo);
     		if (arrancarActividad1==1) {
     			iniciarActividadLearningPathActual();
     		}
+    		menuEstudiante();
     		break;
     	case 3:
     		menuEstudiante();
@@ -1111,13 +1132,12 @@ public class Consola {
     	System.out.println("Duración: "+learningPath.getDuracion());
     	System.out.println("Rating: "+learningPath.getRating());
     	System.out.println("Versión: "+learningPath.getVersion());
-    	System.out.println( "------------------------------------------------------" );
     	int opcion = mostrarMenu("¿Desea ver la estructura de actividades?", opcionesSiNo);
     	if (opcion == 1) {
         	System.out.println( "------------------------------------------------------" );
     		System.out.println( "Lista de las actividades del Learning Path" );
-    		System.out.println( "------------------------------------------------------" );
     		for (Actividad actividad : learningPath.getListaActividades()) {
+    			System.out.println( "------------------------------------------------" );
     			System.out.println("ID: "+actividad.getId());
     	    	System.out.println("Título: "+actividad.getTitulo());
     	    	System.out.println("Tipo actividad: "+actividad.getTipoActividad());
@@ -1128,7 +1148,6 @@ public class Consola {
     	    	System.out.println("Obligatorio: "+actividad.isObligatorio());
     	    	System.out.println("Rating: "+actividad.getRating());
     	    	System.out.println("Cantidad prerequisitos: "+actividad.getPrerequisitos().size());
-    	    	System.out.println( "------------------------------------------------------" );
             }
     	} else {
     		return;
@@ -1141,13 +1160,15 @@ public class Consola {
 		LearningPath learningPath = learningPaths.get(idLearning);
 		System.out.println( "------------------------------------------------------" );    		    		
 		verLearningPathEspecifico(learningPath);
-		int inscribirse = mostrarMenu("¿Desea inscribirse en el Learning Path "+learningPath.getTitulo(), opcionesSiNo);
+		int inscribirse = mostrarMenu("¿Desea inscribirse en el Learning Path "+learningPath.getTitulo()+"?", opcionesSiNo);
 		if (inscribirse == 1) {
 			// Verificar que no tenga un LearningPath actual
 			if (estudianteActual.getLearningPathEnCurso() != null) {
 				System.out.println("Usted ya está en un Learning Path en este momento. Solo puede tener uno a la vez.");
 			} else {
 				estudianteActual.setLearningPathEnCurso(learningPath);
+				estudianteActual.actualizarRegistroLearningPathActual();
+				sistemaRegistro.guardarEstudiante(estudianteActual);
 				System.out.println("Ha sido inscrito en el Learning Path "+learningPath.getTitulo()+" exitosamente.");
 				return;
 			}
@@ -1158,18 +1179,22 @@ public class Consola {
 				// Vuelve recursivamente a esta función
 				inscribirseLearningPath();
 			} else {
-				return;
+				menuEstudiante();
 			}
 		}
     }
     
     public static void iniciarActividadLearningPathActual() throws Exception {
     	// Se revisa primero que no tenga una actividad en curso
-    	if (estudianteActual.getActividadEnCurso()!=null) {
-    		System.out.println("Ya tiene una actividad en curso. Debe terminarla primero para empezar una nueva.");
+    	if (estudianteActual.getLearningPathEnCurso()!=null) {
+    		if (estudianteActual.getActividadEnCurso()!=null) {
+    		System.out.println("Ya tiene una actividad en curso.");
+    		System.out.println("Debe terminar primero la actividad para empezar una nueva.");
+    		
     	} else {
+    		String nombreLearning = estudianteActual.getLearningPathEnCurso().getTitulo();
 	    	System.out.println( "------------------------------------------------------" );
-			System.out.println( "Actividades disponibles en orden del Learning Path:" );
+			System.out.println( "Actividades disponibles en orden del Learning Path: "+nombreLearning );
 			System.out.println( "------------------------------------------------------" );  
 			LearningPath learningPath = estudianteActual.getLearningPathEnCurso();
 			for (Actividad actividad : learningPath.getListaActividades()) {
@@ -1188,17 +1213,25 @@ public class Consola {
 			System.out.println("Se recomienda que las ejecute en orden. Sin embargo, no es obligatorio hacerlo.");
 			String idActividad = pedirCadenaAlUsuario("Ingrese el id de la actividad a ejecutar");
 			Actividad actividad = actividades.get(idActividad);
-			verPrerequisitosActividad(actividad);
-			boolean apto = actividad.advertenciaPrerequisitos(estudianteActual);
-			if (apto) {
-				System.out.println("Usted comple con todos los prerequisitos, felicitaciones.");
+			if (actividades.containsKey(idActividad)) {
+				verPrerequisitosActividad(actividad);
+				boolean apto = actividad.advertenciaPrerequisitos(estudianteActual);
+				if (apto) {
+					System.out.println("Usted comple con todos los prerequisitos, felicitaciones.");
+				} else {
+					System.out.println("A pesar que no cumple con los prerequisitos, puede continuar bajo su propia responsabilidad.");
+				}
+				// Iniciar actividad. Se llama iniciar actividad en curso ya que oficialmente esta en curso
+				iniciarActividadEnCurso(actividad);
 			} else {
-				System.out.println("A pesar que no cumple con los prerequisitos, puede continuar bajo su propia responsabilidad.");
+				System.out.println("No existe actividad con ese ID.");
 			}
-			// Iniciar actividad. Se llama iniciar actividad en curso ya que oficialmente esta en curso
-			iniciarActividadEnCurso(actividad);
     	}
     	menuEstudiante();
+    	} else {
+    		System.out.println("No está activo en ningún Learning Path.");
+    		menuEstudiante();
+    	}
     }
     
     public static void iniciarActividadEnCurso(Actividad actividad) throws Exception {
@@ -1206,7 +1239,8 @@ public class Consola {
     	TipoActividades tipoActividad = actividad.getTipoActividad();
     	// Calculamos fecha limite
     	actividad.establecerFechaLimite(estudianteActual);
-    	
+    	estudianteActual.setActividadEnCurso(actividad);
+    	sistemaRegistro.guardarEstudiante(estudianteActual);
     	if (tipoActividad == TipoActividades.Encuesta) {
     		// Inciar actividad encuesta
     		Encuesta encuesta = (Encuesta) actividad;
@@ -1246,7 +1280,9 @@ public class Consola {
     		System.out.println("No hay actividades anteriores para sugerir.");
     	}
     	// Marcamos actividad actual como vacia.
+    	estudianteActual.actualizarRegistroLearningPathActual();
     	estudianteActual.setActividadEnCurso(null);
+    	sistemaRegistro.guardarActividad(actividad);
     	menuEstudiante();
     }
     
@@ -1257,20 +1293,19 @@ public class Consola {
     	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
     	System.out.println( "------------------------------------------------------" );
     	// Revisar fechaLimite
-    	// Imprimir el material
     	System.out.println("Preguntas: ");
-    	encuesta.verPreguntas();
+    	System.out.println(encuesta.verPreguntas());
     	// Realizar
-    	int i = 0;
+    	int i = 1;
     	ArrayList<String> respuestas = new ArrayList<>();
-    	while (i < cantidadPreguntas) {
+    	while (i <= cantidadPreguntas) {
     		String respuesta = pedirCadenaAlUsuario("Respuesta a la pregunta #"+i);
     		respuestas.add(respuesta);
     		i++;
     	}
     	// Manda las respuestas...
     	estudianteActual.realizarEncuesta(encuesta,respuestas);
-    	
+    	sistemaRegistro.guardarEstudiante(estudianteActual);
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Se ha marcado "+encuesta.getTitulo()+" como exitosa.");
     	System.out.println( "------------------------------------------------------" );
@@ -1283,20 +1318,19 @@ public class Consola {
     	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
     	System.out.println( "------------------------------------------------------" );
     	// Revisar fechaLimite
-    	// Imprimir el material
     	System.out.println("Preguntas: ");
-    	examen.verPreguntas();
+    	System.out.println(examen.verPreguntas());
     	// Realizar
-    	int i = 0;
+    	int i = 1;
     	ArrayList<String> respuestas = new ArrayList<>();
-    	while (i < cantidadPreguntas) {
+    	while (i <= cantidadPreguntas) {
     		String respuesta = pedirCadenaAlUsuario("Respuesta a la pregunta #"+i);
     		respuestas.add(respuesta);
     		i++;
     	}
     	// Manda las respuestas...
     	estudianteActual.realizarExamen(examen,respuestas);
-    	
+    	sistemaRegistro.guardarEstudiante(estudianteActual);
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Se ha marcado la actividad "+examen.getTitulo()+" enviada.");
     	System.out.println("Este pendiente a la calificación del profesor.");
@@ -1309,16 +1343,17 @@ public class Consola {
     	int cantidadPreguntas = quiz.getPreguntas().size();
     	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Preguntas:");
+    	System.out.println("Preguntas");
+    	System.out.println("---------");
     	System.out.println(quiz.verPreguntas());
     	// Realizar
     	System.out.println( "------------------------------------------------------" );
     	System.out.println( "Respuestas:" );
-    	int i = 0;
+    	int i = 1;
     	ArrayList<Opcion> respuestas = new ArrayList<>();
-    	while (i < cantidadPreguntas) {
+    	while (i <= cantidadPreguntas) {
     		String respuesta = pedirCadenaAlUsuario("Respuesta (A-B-C-D) a la pregunta #"+i);
-    		respuesta.toLowerCase();
+    		respuesta = respuesta.toLowerCase();
 			Opcion respuestaEnum;
 			if (respuesta.equals("a")) {
 				respuestaEnum = Opcion.A;
@@ -1338,6 +1373,7 @@ public class Consola {
     	System.out.println( "------------------------------------------------------" );
     	// Manda las respuestas
     	Estado resultado = estudianteActual.realizarQuiz(quiz,respuestas);
+    	sistemaRegistro.guardarEstudiante(estudianteActual);
     	// Vuelven calificadas
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("El quiz "+quiz.getTitulo()+" ha sido "+resultado);
@@ -1350,16 +1386,15 @@ public class Consola {
     	int cantidadPreguntas = quiz.getPreguntas().size();
     	System.out.println("Cantidad de preguntas: "+cantidadPreguntas);
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Preguntas:");
     	System.out.println(quiz.verPreguntas());
     	// Realizar
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println( "Respuestas:" );
-    	int i = 0;
+    	System.out.println( "Respuestas:\n" );
+    	int i = 1;
     	ArrayList<VerdaderoFalso> respuestas = new ArrayList<>();
-    	while (i < cantidadPreguntas) {
-    		String respuesta = pedirCadenaAlUsuario("Respuesta (V o F) a la pregunta #"+i);
-    		respuesta.toLowerCase();
+    	while (i <= cantidadPreguntas) {
+    		String respuesta = pedirCadenaAlUsuario("(V o F) a la pregunta #"+i);
+    		respuesta = respuesta.toLowerCase();
     		VerdaderoFalso respuestaEnum;
 			if (respuesta.equals("v")) {
 				respuestaEnum = VerdaderoFalso.Verdadero;
@@ -1373,7 +1408,10 @@ public class Consola {
     	System.out.println("Ahora, se va a calificar... ");
     	System.out.println( "------------------------------------------------------" );
     	// Manda las respuestas
+    	System.out.println(respuestas);
+    	System.out.println(quiz.getRespuestasCorrectas());
     	Estado resultado = estudianteActual.realizarQuizVerdad(quiz,respuestas);
+    	sistemaRegistro.guardarEstudiante(estudianteActual);
     	// Vuelven calificadas
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("El quiz "+quiz.getTitulo()+" ha sido "+resultado);
@@ -1391,6 +1429,7 @@ public class Consola {
     	System.out.println(recurso.getMaterial());
     	// Realizar
     	estudianteActual.realizarRecurso(recurso);
+    	sistemaRegistro.guardarEstudiante(estudianteActual);
     	System.out.println( "------------------------------------------------------" );
     	System.out.println("Se ha marcado la actividad "+recurso.getTitulo()+" enviada.");
     	System.out.println("Este pendiente a la calificación del profesor.");
@@ -1409,8 +1448,9 @@ public class Consola {
     	// Realizar
     	// Tiene que mandarle el medio de entrega
     	estudianteActual.realizarTarea(tarea, medioEntrega);
+    	sistemaRegistro.guardarEstudiante(estudianteActual);
     	System.out.println( "------------------------------------------------------" );
-    	System.out.println("Se ha marcado la actividad "+tarea.getTitulo()+" exitosa.");
+    	System.out.println("Se ha marcado la actividad "+tarea.getTitulo()+" enviada.");
     	System.out.println( "------------------------------------------------------" );
     }
     	

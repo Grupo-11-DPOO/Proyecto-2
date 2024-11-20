@@ -158,17 +158,6 @@ public class Estudiante extends Usuario {
     	return listaRetorno;
 	}
 	
-	public void realizarEncuesta(Encuesta encuesta, ArrayList<String> respuestas) {
-		// TODO 
-		// Llamar a clase encuesta
-		Estado estado = encuesta.contestarEncuesta(this.login, respuestas);
-		String id= encuesta.getId();
-		registroActividades.put(id, estado);
-
-		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
-		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
-	}
-	
 	public HashMap<String, Estado> getRegistroActividades() {
 		return registroActividades;
 	}
@@ -184,55 +173,59 @@ public class Estudiante extends Usuario {
 	public void setRegistroLearningPaths(HashMap<String, Double> registroLearningPaths) {
 		this.registroLearningPaths = registroLearningPaths;
 	}
+	
+	public void actualizarRegistroLearningPathActual() {
+		List<Actividad> listaActividades = getLearningPathEnCurso().getListaActividades();
+		int cantidadActividadesLearningActual = listaActividades.size();
+		int contador = 0;
+		HashMap<String, Estado> registroActividades = getRegistroActividades();
+		for (Actividad actividad: listaActividades) {
+			String idActividad = actividad.getId();
+			if (registroActividades.containsKey(idActividad)) {
+				contador += 1;
+			}
+		}
+		double progreso = contador/cantidadActividadesLearningActual;
+		String idLearningActual = getLearningPathEnCurso().getId();
+		registroLearningPaths.put(idLearningActual, progreso);
+	}
+	
+	public void realizarEncuesta(Encuesta encuesta, ArrayList<String> respuestas) {
+		Estado estado = encuesta.contestarEncuesta(login, respuestas);
+		String id= encuesta.getId();
+		registroActividades.put(id, estado);
+	}
 
 	public void realizarExamen(Examen examen, ArrayList<String> respuestas) {
-		// TODO 
-		// Llamar a clase examen
 		String idActividad = examen.getId();
 		Estado estado = examen.contestarExamen(login, respuestas);
 		registroActividades.put(idActividad, estado);
-
-		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
-		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
 	public Estado realizarQuizVerdad(QuizVerdad quiz, ArrayList<VerdaderoFalso> respuestas) throws Exception {
-		
 		String idActividad = quiz.getId();
 		Estado estado = quiz.calificar(login, respuestas);
 		registroActividades.put(idActividad, estado);
 		return estado;
-		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
-		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
 	public Estado realizarQuiz(Quiz quiz, ArrayList<Opcion> respuestas) throws Exception {
-		// TODO 
-		// Llamar a clase quiz
 		String idActividad = quiz.getId();
 		Estado estado = quiz.calificar(login, respuestas);
 		registroActividades.put(idActividad, estado);
 		return estado;
-		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
-		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
 	public void realizarRecurso(Recurso recurso) {
 		Estado estado = recurso.realizarRecurso();
 		String idActividad = recurso.getId();
 		registroActividades.put(idActividad, estado);
-
-		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
-		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
 	public void realizarTarea(Tarea tarea, String medioEntrega) {
 		String idActividad = tarea.getId();
 		Estado estado = tarea.realizarTarea(login, medioEntrega);
 		registroActividades.put(idActividad, estado);
-		
-		// Cargar estudiante no deberia ser. debe ser actualizar estudiante
-		//usuarios.cargarEstudiante(login, password, intereses, registroActividades);
 	}
 	
 	public int calcularSimilitud(LearningPath learningPath) {

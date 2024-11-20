@@ -66,6 +66,10 @@ public class SistemaRegistro {
 		return estudiantes;
 	}
 	
+	public void guardarEstudiante(Estudiante estudiante) {
+		persistenciaEstudiantes.guardarEstudiante(estudiante);
+	}
+	
 	public HashMap<String,Profesor> cargarProfesores(HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths){
 		HashMap<String,Profesor> profesores = persistenciaProfesores.cargarProfesores(actividades, learningPaths);
 		return profesores;

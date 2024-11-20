@@ -151,7 +151,7 @@ public abstract class Actividad implements Identificable, Cloneable {
 		return resenas;
 	}
 	
-	public boolean advertenciaPrerequisitos(Estudiante estudiante) throws Exception {
+	public boolean advertenciaPrerequisitos(Estudiante estudiante) {
 		boolean valido = true;
 		if (!prerequisitos.isEmpty()) {
 			for (Actividad act:prerequisitos) {
@@ -159,7 +159,6 @@ public abstract class Actividad implements Identificable, Cloneable {
 				HashMap<String, Estado> registroActividadesEstudiante = estudiante.getRegistroActividades();
 				if (!registroActividadesEstudiante.containsKey(codigoAct)) {
 					valido = false;
-					throw new Exception("Usted no cumple con los prerequisitos de la actividad pero puede continuar bajo su responsabilidad.");
 				}
 			}
 		}

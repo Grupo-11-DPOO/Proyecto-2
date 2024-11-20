@@ -78,7 +78,6 @@ class ProfesorPruebas {
         LearningPath encontrado2 = profesor.buscarLearningPathPorNombre("Python Básico");
         
         assertNull(encontrado2, "No debería haber encontrado un Learning Path.");
-        
     }
 
     @Test
@@ -195,8 +194,8 @@ class ProfesorPruebas {
     	assertNotNull(buscar, "No se encontro la actividad despues de ser agregada");
     	assertEquals("Encuesta de Satisfacción", buscar.getTitulo(),"El titulo de la actividad no es el esperado.");
     }
-    @Test
     
+    @Test
     void testGetActividadByIdCasoNull() {
     	Actividad acti = profesor.getActividadById("UniandesLover23");
     	assertNull(acti, "Al buscar un Id inexistente no se retorno null");
@@ -204,7 +203,6 @@ class ProfesorPruebas {
     }
     
     @Test
-    
     void testBuscarActividadPorNombre() throws Exception {
     	assertNull(profesor.buscarActividadPorNombre("JujutsuParcial"),"Se encontro una actividad cuando la lista era vacia.");
     	Encuesta encuesta = profesor.crearActividadEncuesta("Encuesta de Satisfacción", "Evaluar satisfacción", "Preguntas abiertas sin resultado sobre el LearningPath", "Fácil", 10, true);
@@ -212,11 +210,9 @@ class ProfesorPruebas {
     	assertNotNull(buscar, "No se encontro la actividad despues de ser agregada");
     	assertEquals("Encuesta de Satisfacción", buscar.getTitulo(),"El titulo de la actividad no es el esperado.");
     	assertNull(profesor.buscarActividadPorNombre("JujutsuParcial"),"Se encontro una actividad inexistente cuando la lista no era vacia.");
-    	
     }
     
     @Test
-    
     void testMostrarResenas() {
     	
     	LearningPath lp = new LearningPath("DPOO", "Clase de Diseño Y programación orientado a objetos", "Intermedio");
@@ -233,10 +229,7 @@ class ProfesorPruebas {
 		sb.append("---------------------------------------");
 		sb.append("Resena "+ 2+": " + resena2);
 		sb.append("---------------------------------------");
-		assertEquals(sb.toString(), profesor.mostrarResenas(lp),"El mensaje no es el esperado.");
-		
-		
-		
+		assertEquals(sb.toString(), profesor.mostrarResenas(lp),"El mensaje no es el esperado.");	
     }
     
     @Test
@@ -252,7 +245,6 @@ class ProfesorPruebas {
         respuestasEstudiante.add("Respuesta 2");
         respuestasEstudiante.add("Respuesta 3");
         examen.contestarExamen("IdEstudiante23", respuestasEstudiante);
-
         
         StringBuilder sb=new StringBuilder();
         sb.append("Estudiante: IdEstudiante23").append("\n");
@@ -311,14 +303,12 @@ class ProfesorPruebas {
         String idEncuestaClonada = profesor.clonarActividad(encuesta);
         String idQuizVerdadClonada = profesor.clonarActividad(quizVerdad);
 
-        
         assertNotNull(profesor.getActividadById(idTareaClonada), "La tarea clonada no fue encontrada.");
         assertNotNull(profesor.getActividadById(idRecursoClonada), "El recurso clonado no fue encontrado.");
         assertNotNull(profesor.getActividadById(idQuizClonada), "El quiz clonado no fue encontrado.");
         assertNotNull(profesor.getActividadById(idExamenClonada), "El examen clonado no fue encontrado.");
         assertNotNull(profesor.getActividadById(idEncuestaClonada), "La encuesta clonada no fue encontrada.");
         assertNotNull(profesor.getActividadById(idQuizVerdadClonada), "El quiz de verdadero o falso clonado no fue encontrado.");
-
         
         assertNotEquals(tarea.getId(), idTareaClonada, "El ID de la tarea clonada no debería ser igual al original.");
         assertNotEquals(recurso.getId(), idRecursoClonada, "El ID del recurso clonado no debería ser igual al original.");
@@ -369,5 +359,4 @@ class ProfesorPruebas {
         assertTrue(learningPath.getListaActividades().contains(tarea), "La actividad no fue añadida al Learning Path.");
         assertTrue(profesor.getDataLearningPaths().containsKey(learningPath.getId()), "El Learning Path no fue guardado en el mapa de Learning Paths.");
     }
-
 }
