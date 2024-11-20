@@ -19,6 +19,15 @@ class EstudiantePruebas {
     private HashMap<String, Actividad> actividades;
     private HashMap<String, LearningPath> learningPaths;
     private List<String> intereses;
+    private Tarea tarea;
+    private Quiz quiz;
+    private Recurso recurso;
+    private LearningPath lp1;
+    private LearningPath lp2;
+    private LearningPath lp3;
+    private Encuesta encuesta;
+    private QuizVerdad quizV;
+    private Examen examen;
 
     @BeforeEach
     void setUp() {
@@ -31,28 +40,45 @@ class EstudiantePruebas {
         intereses.add("programar");
 
         estudiante = new Estudiante(actividades, learningPaths, "estudiante1", "password123", intereses);
+        tarea = new Tarea("Tarea 1", "Resolver ejercicios", "Problemas matemáticos", "Básico", 60, true, "PDF");
+    	quiz = new Quiz("Quiz Historia Colombia", "Demostrar conocimiento sobre Colombia", "Opcion multiple", "Principiante", 30, false, 60);
+    	encuesta = new Encuesta("Encuesta 1", "Evaluar satisfacción", "Preguntas abiertas", "Básico", 15, true);
+    	recurso = new Recurso("Lectura sobre Napoleón", "Aprender sobre el inicio de la conquista", "En esta lectura aprenderas sobre Napoleon y el inicio de su conquista.", "Fácil", 40, true, "RecursoNapoleon.PDF" );
+    	quizV = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "basico", 15, true, 80);
+    	examen = new Examen("Examen Final", "Evaluar el aprendizaje del curso", "Examen escrito", "Avanzado", 60, true);
+    
+    	lp1 = new LearningPath("Curso de programar en Java", "Aprender conceptos avanzados de Java", "Intermedio");
+        lp2 = new LearningPath("Historia ", "Explorar los eventos clave del siglo XX", "Básico");
+        lp3 = new LearningPath("Fútbol para Dummies", "Vuelvete experto en fútbol", "Básico");
+
     }
 
     @AfterEach
     void tearDown() {
         estudiante = null;
+        tarea = null;
+        quiz = null;
+        encuesta = null;
+        recurso = null;
+        quizV = null;
+        examen = null;
+        
+        lp1 = null;
+        lp2 = null;
+        lp3= null;
     }
 
     @Test
     void testBuscarLearningPathPorNombre() {
-    	LearningPath lp1 = new LearningPath("Aprender Python", "Vuelvete un duro en Python", "Principiante");
-        LearningPath lp2 = new LearningPath("Aprender Java", "Java desde cero", "Principiante");
         learningPaths.put(lp1.getId(), lp1);
         learningPaths.put(lp2.getId(), lp2);
         
-        LearningPath encontrado = estudiante.buscarLearningPathPorNombre("Aprender Java");
+        LearningPath encontrado = estudiante.buscarLearningPathPorNombre("Curso de programar en Java");
         assertNotNull(encontrado, "El Learning Path no fue encontrado.");
-        assertEquals("Aprender Java", encontrado.getTitulo(), "El learningPath encontrado es distinto al esperado.");
+        assertEquals("Curso de programar en Java", encontrado.getTitulo(), "El learningPath encontrado es distinto al esperado.");
     }
     @Test
     void testBuscarLearningPathPorNombreNoEncontro() {
-    	LearningPath lp1 = new LearningPath("Aprender Python", "Vuelvete un duro en Python", "Principiante");
-        LearningPath lp2 = new LearningPath("Aprender Java", "Java desde cero", "Principiante");
         learningPaths.put(lp1.getId(), lp1);
         learningPaths.put(lp2.getId(), lp2);
         
@@ -66,7 +92,6 @@ class EstudiantePruebas {
 
     @Test
     void testBuscarActividadPorNombre() {
-        Tarea tarea = new Tarea("Tarea 1", "Resolver ejercicios", "Problemas matemáticos", "Básico", 60, true, "PDF");
         actividades.put(tarea.getId(), tarea);
         
         Actividad actividad = estudiante.buscarActividadPorNombre("Tarea 1");
@@ -76,9 +101,6 @@ class EstudiantePruebas {
     @Test
     void testBuscarActividadPorNombreCasosIfyWhile() {
     	assertNull(estudiante.buscarActividadPorNombre("Lectura sobre Raquel Bernal"), "Encontro una lectura cuando no existen actividades.");
-    	Tarea tarea = new Tarea("Tarea 1", "Resolver ejercicios", "Problemas matemáticos", "Básico", 60, true, "PDF");
-    	Quiz quiz = new Quiz("Quiz Historia Colombia", "Demostrar conocimiento sobre Colombia", "Opcion multiple", "Principiante", 30, false, 60);
-    	Recurso recurso = new Recurso("Lectura sobre Napoleón", "Aprender sobre el inicio de la conquista", "En esta lectura aprenderas sobre Napoleon y el inicio de su conquista.", "Fácil", 40, true, "RecursoNapoleon.PDF" );
     	actividades.put(quiz.getId(), quiz);
     	actividades.put(tarea.getId(), tarea);
     	actividades.put(recurso.getId(), recurso);
@@ -90,8 +112,6 @@ class EstudiantePruebas {
     
     @Test
     void testRealizarQuiz() throws Exception {
-    	
-    	Quiz quiz = new Quiz("Quiz Historia Colombia", "Demostrar conocimiento sobre Colombia", "Opcion multiple", "Principiante", 30, false, 60);
     	quiz.agregarPregunta("¿Qué año comenzó la guerra civil?", Opcion.A);
         quiz.agregarOpcion("¿Qué año comenzó la guerra civil?", "Todas Las Anteriores", Opcion.A, "Han habido varias guerras civiles en Colombia.");
         
@@ -107,29 +127,21 @@ class EstudiantePruebas {
 
     @Test
     void testEmpezarLearningPath() {
-        LearningPath lp = new LearningPath("Historia Mundial", "Explorar la historia", "Avanzado");
-        LearningPath lp2 = new LearningPath("Messi", "Aprende de la vida de Messi","Aficionado");
-        boolean resultado = estudiante.empezarLearningPath(lp);
+        boolean resultado = estudiante.empezarLearningPath(lp1);
         assertTrue(resultado, "El Learning Path no fue comenzado.");
-        assertEquals(lp, estudiante.getLearningPathEnCurso());
-        assertFalse(estudiante.empezarLearningPath(lp2));
+        assertEquals(lp1, estudiante.getLearningPathEnCurso());
+        assertFalse(estudiante.empezarLearningPath(lp2),"Se empezo un learning Path cuando ya habia otro creado");
     }
 
     @Test
     void testFinalizarLearningPath() {
-        LearningPath lp = new LearningPath("Matemáticas", "Dominar álgebra", "Intermedio");
-        estudiante.empezarLearningPath(lp);
+        estudiante.empezarLearningPath(lp1);
         estudiante.finalizarLearningPath();
-        assertNull(estudiante.getLearningPathEnCurso(), "El Learning Path no fue finalizado.");
+        assertNull(estudiante.getLearningPathEnCurso(), "El Learning Path no fue finalizado");
     }
 
 	@Test
     void testRecomendarLearningPaths() {
-        LearningPath lp1 = new LearningPath("Curso de programar en Java", "Aprender conceptos avanzados de Java", "Intermedio");
-        LearningPath lp2 = new LearningPath("Historia Moderna", "Explorar los eventos clave del siglo XX", "Básico");
-        LearningPath lp3 = new LearningPath("Fútbol para Dummies", "Vuelvete experto en fútbol", "Básico");
-
-
         learningPaths.put(lp1.getId(), lp1);
         learningPaths.put(lp2.getId(), lp2);
         learningPaths.put(lp3.getId(), lp3);
@@ -137,12 +149,11 @@ class EstudiantePruebas {
         List<LearningPath> recomendaciones = estudiante.recomendarLearningPaths(learningPaths);
         assertEquals(3, recomendaciones.size(), "La cantidad de recomendaciones no es la esperada.");
         assertEquals(lp1.getTitulo(),recomendaciones.get(0).getTitulo(), "No se encontro la recomendacion esperada");
-        assertEquals(lp3.getTitulo(), recomendaciones.get(2).getTitulo(),"No se encontro la recomendacion esperada.");
+        assertEquals(lp3.getTitulo(), recomendaciones.get(2).getTitulo(),"No se encontro la recomendacion esperada");
     }
 
     @Test
     void testRealizarEncuesta() {
-        Encuesta encuesta = new Encuesta("Encuesta 1", "Evaluar satisfacción", "Preguntas abiertas", "Básico", 15, true);
         ArrayList<String> respuestas = new ArrayList<>();
         respuestas.add("Muy satisfecho");
         
@@ -153,7 +164,7 @@ class EstudiantePruebas {
 
     @Test
     void testRealizarExamen() {
-        Examen examen = new Examen("Examen Final", "Evaluar conocimientos", "Examen escrito", "Avanzado", 60, true);
+        
         examen.agregarPregunta("¿Cuantos paises juegan las eliminatorias de conmebol?");
         ArrayList<String> respuestas = new ArrayList<>();
         respuestas.add("10");
@@ -165,7 +176,6 @@ class EstudiantePruebas {
     
     @Test
     void testRealizarRecurso() {
-        Recurso recurso = new Recurso("Documentación", "Leer sobre Java", "PDF", "Intermedio", 10, true, "Material PDF");
         estudiante.realizarRecurso(recurso);
         HashMap<String, Estado> registro = estudiante.getRegistroActividades();
         assertEquals(Estado.EXITOSA, registro.get(recurso.getId()), "El recurso no fue registrado correctamente.");
@@ -173,33 +183,26 @@ class EstudiantePruebas {
 
     @Test
     void testRealizarTarea() {
-        Tarea tarea = new Tarea("Tarea 1", "Resolver problemas", "Matemáticas básicas", "Intermedio", 30, true, "Entrega en PDF");
         estudiante.realizarTarea(tarea, "Entrega en PDF");
         HashMap<String, Estado> registro = estudiante.getRegistroActividades();
         assertEquals(Estado.ENVIADA, registro.get(tarea.getId()), "La tarea no fue registrada correctamente.");
     }
     @Test
     void testRealizarQuizVerdad() throws Exception {
-    	QuizVerdad quiz = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "Fácil", 15, true, 80);
-    	quiz.agregarPregunta("Java se usó para crear Minecraft.", VerdaderoFalso.Verdadero);
-        quiz.agregarPregunta("Los comentarios en Java se escriben con '//'.", VerdaderoFalso.Verdadero);
+    	quizV.agregarPregunta("Java se usó para crear Minecraft.", VerdaderoFalso.Verdadero);
+        quizV.agregarPregunta("Los comentarios en Java se escriben con '//'.", VerdaderoFalso.Verdadero);
 
        
         ArrayList<VerdaderoFalso> respuestasEstudiante = new ArrayList<>();
         respuestasEstudiante.add(VerdaderoFalso.Verdadero);
         respuestasEstudiante.add(VerdaderoFalso.Verdadero); 
         
-        assertEquals(Estado.EXITOSA, estudiante.realizarQuizVerdad(quiz, respuestasEstudiante),"El estado devuelto no fue el esperado");
+        assertEquals(Estado.EXITOSA, estudiante.realizarQuizVerdad(quizV, respuestasEstudiante),"El estado devuelto no fue el esperado");
 
     }
     @Test
     
     void getLearningPathById() {
-    	LearningPath lp1 = new LearningPath("Curso de programar en Java", "Aprender conceptos avanzados de Java", "Intermedio");
-        LearningPath lp2 = new LearningPath("Historia Moderna", "Explorar los eventos clave del siglo XX", "Básico");
-        LearningPath lp3 = new LearningPath("Fútbol para Dummies", "Vuelvete experto en fútbol", "Básico");
-
-
         learningPaths.put(lp1.getId(), lp1);
         learningPaths.put(lp2.getId(), lp2);
         learningPaths.put(lp3.getId(), lp3);
@@ -212,8 +215,6 @@ class EstudiantePruebas {
     void getActividadById() {
     	
     	assertNull(estudiante.getActividadById("SirPaul"),"No fue correcto y se devolvio algo, cuando debia ser null");
-    	Tarea tarea = new Tarea("Tarea 1", "Resolver problemas", "Matemáticas básicas", "Intermedio", 30, true, "Entrega en PDF");
-    	QuizVerdad quiz = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "Fácil", 15, true, 80);
     	actividades.put(tarea.getId(),tarea);
     	actividades.put(quiz.getId(), quiz);
     	
@@ -224,13 +225,13 @@ class EstudiantePruebas {
     
     @Test
     
-    void testEmpezarActividad() {
-    	Tarea tarea = new Tarea("Tarea 1", "Resolver problemas", "Matemáticas básicas", "Intermedio", 30, true, "Entrega en PDF");
-    	QuizVerdad quiz = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "Fácil", 15, true, 80);
+    void testEmpezarYFinalizarActividad() {
     	boolean empezar = estudiante.empezarActividad(quiz);
     	assertTrue(empezar,"No se empezo correctamente la actividad cuando antes era null");
     	empezar = estudiante.empezarActividad(tarea);
     	assertFalse(empezar,"Se empezó la actividad cuando ya habia una empezada");
+    	estudiante.finalizarActividad();
+    	assertNull(estudiante.getActividadEnCurso(),"No se finalizo correctamente la actividad");
     	
     	
     }
@@ -238,65 +239,55 @@ class EstudiantePruebas {
     @Test
     
     void testRecomendarActividad() {
-    	
-        Tarea tarea1 = new Tarea("Tarea 1", "Resolver ejercicios básicos", "Matemáticas básicas", "Fácil", 30, true, "PDF");
-        Tarea tarea2 = new Tarea("Tarea 2", "Resolver ejercicios intermedios", "Matemáticas intermedias", "Intermedio", 45, true, "PDF");
-        Tarea tarea3 = new Tarea("Tarea 3", "Resolver ejercicios avanzados", "Matemáticas avanzadas", "Avanzado", 60, true, "PDF");
         
-        
-        actividades.put(tarea1.getId(), tarea1);
-        actividades.put(tarea2.getId(), tarea2);
-        actividades.put(tarea3.getId(), tarea3);
+        actividades.put(quiz.getId(), quiz);
+        actividades.put(quizV.getId(), quizV);
+        actividades.put(tarea.getId(), tarea);
 
         
-        LearningPath learnPath = new LearningPath("Matemáticas", "Dominar conceptos de matemáticas", "Intermedio");
-        learnPath.agregarActividad(tarea1);
-        learnPath.agregarActividad(tarea2);
-        learnPath.agregarActividad(tarea3);
         
-        estudiante.getRegistroActividades().put(tarea1.getId(), Estado.EXITOSA);
-        estudiante.getRegistroActividades().put(tarea2.getId(), Estado.NO_EXITOSA);
-        estudiante.getRegistroActividades().put(tarea3.getId(), Estado.ENVIADA);
+        lp1.agregarActividad(quiz);
+        lp1.agregarActividad(quizV);
+        lp1.agregarActividad(tarea);
+        
+        estudiante.getRegistroActividades().put(quiz.getId(), Estado.EXITOSA);
+        estudiante.getRegistroActividades().put(quizV.getId(), Estado.NO_EXITOSA);
+        estudiante.getRegistroActividades().put(tarea.getId(), Estado.ENVIADA);
 
         // Caso 1: Actividad exitosa - recomienda la siguiente
-        Actividad recomendada = estudiante.recomendarActividad(tarea1, learnPath);
+        Actividad recomendada = estudiante.recomendarActividad(quiz, lp1);
         assertNotNull(recomendada, "No se recomendó una actividad.");
-        assertEquals(tarea2.getId(), recomendada.getId(), "La actividad recomendada no es la siguiente en la lista.");
+        assertEquals(quizV.getId(), recomendada.getId(), "La actividad recomendada no es la siguiente en la lista.");
 
         // Caso 2: Actividad no exitosa - recomienda la anterior
-        recomendada = estudiante.recomendarActividad(tarea2, learnPath);
+        recomendada = estudiante.recomendarActividad(quizV, lp1);
         assertNotNull(recomendada, "No se recomendó una actividad.");
-        assertEquals(tarea1.getId(), recomendada.getId(), "La actividad recomendada no es la anterior en la lista.");
+        assertEquals(quiz.getId(), recomendada.getId(), "La actividad recomendada no es la anterior en la lista.");
 
 
         // Caso 3: Última actividad exitosa, no hay actividad siguiente
-        recomendada = estudiante.recomendarActividad(tarea3, learnPath);
+        recomendada = estudiante.recomendarActividad(tarea, lp1);
         assertNull(recomendada, "No debería haber una actividad recomendada después de la última.");
 
         // Caso 4: Primera actividad no exitosa, no hay actividad anterior
-        estudiante.getRegistroActividades().put(tarea1.getId(), Estado.NO_EXITOSA);
-        recomendada = estudiante.recomendarActividad(tarea1, learnPath);
+        estudiante.getRegistroActividades().put(quiz.getId(), Estado.NO_EXITOSA);
+        recomendada = estudiante.recomendarActividad(quiz, lp1);
         assertNull(recomendada, "No debería haber una actividad recomendada antes de la primera.");
     }
     
     @Test
     void testVerProgresoLearningPath() {
         
-        Tarea tarea1 = new Tarea("Tarea 1", "Resolver ejercicios básicos", "Matemáticas básicas", "Fácil", 30, true, "PDF");
-        Tarea tarea2 = new Tarea("Tarea 2", "Resolver ejercicios intermedios", "Matemáticas intermedias", "Intermedio", 45, true, "PDF");
-        Tarea tarea3 = new Tarea("Tarea 3", "Resolver ejercicios avanzados", "Matemáticas avanzadas", "Avanzado", 60, true, "PDF");
-
         
-        LearningPath learningPath = new LearningPath("Matemáticas", "Dominar conceptos de matemáticas", "Intermedio");
-        learningPath.agregarActividad(tarea1);
-        learningPath.agregarActividad(tarea2);
-        learningPath.agregarActividad(tarea3);
+        lp1.agregarActividad(quiz);
+        lp1.agregarActividad(quizV);
+        lp1.agregarActividad(tarea);
 
-        estudiante.empezarLearningPath(learningPath);
+        estudiante.empezarLearningPath(lp1);
 
-        estudiante.getRegistroActividades().put(tarea1.getId(), Estado.EXITOSA);
-        estudiante.getRegistroActividades().put(tarea2.getId(), Estado.ENVIADA);
-        estudiante.getRegistroActividades().put(tarea3.getId(), Estado.NO_EXITOSA);
+        estudiante.getRegistroActividades().put(quiz.getId(), Estado.EXITOSA);
+        estudiante.getRegistroActividades().put(quizV.getId(), Estado.ENVIADA);
+        estudiante.getRegistroActividades().put(tarea.getId(), Estado.NO_EXITOSA);
 
         
         List<Double> progreso = estudiante.verProgresoLearningPath();
@@ -309,29 +300,27 @@ class EstudiantePruebas {
     @Test
     
     void testAgregarResena() {
-    	QuizVerdad quiz = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "Fácil", 15, true, 80);
     	String resena = "Actividad muy sencilla, la podria completar sin haber hecho el curso.";
     	
-    	estudiante.agregarResenaActividad(quiz, resena);
+    	estudiante.agregarResenaActividad(quizV, resena);
     	
-    	assertEquals(1,quiz.getResenas().size(),"La reseña no se añadio correctamente");
-    	assertTrue(quiz.getResenas().contains("Actividad muy sencilla, la podria completar sin haber hecho el curso."), "No se guardo correctamente la reseña");
+    	assertEquals(1,quizV.getResenas().size(),"La reseña no se añadio correctamente");
+    	assertTrue(quizV.getResenas().contains("Actividad muy sencilla, la podria completar sin haber hecho el curso."), "No se guardo correctamente la reseña");
     	
     }
     
     @Test
     void testAgregarRating() throws Exception{
-    	QuizVerdad quiz = new QuizVerdad("Quiz Java", "Demostrar conocimiento en Java a traves de preguntas verdad o falso", "Preguntas Verdadero o Falso", "Fácil", 15, true, 80);
     	Float rating = 4.6f;
     	Float rating2 = 3.3f;
     	
     	Float ratingEsperado = (Float)(rating +rating2) /2;
-    	estudiante.agregarRatingActividad(quiz, rating);
-    	estudiante.agregarRatingActividad(quiz, rating2);
+    	estudiante.agregarRatingActividad(quizV, rating);
+    	estudiante.agregarRatingActividad(quizV, rating2);
     	
-    	assertEquals(ratingEsperado,quiz.getRating(),0.1,"El rating no se añadio correctamente");
+    	assertEquals(ratingEsperado,quizV.getRating(),0.1,"El rating no se añadio correctamente");
     	Exception exception = assertThrows(Exception.class, () -> {
-            estudiante.agregarRatingActividad(quiz, 7.3f);
+            estudiante.agregarRatingActividad(quizV, 7.3f);
         });
 
         assertEquals("Rating debe estar entre 0 y 5.", exception.getMessage(), "El mensaje de excepción no es el esperado.");
@@ -339,16 +328,11 @@ class EstudiantePruebas {
     }
     @Test
     void testVerProgresoLearningPathSinActividadesCompletadas() {
-       
-        Tarea tarea1 = new Tarea("Tarea 1", "Resolver ejercicios básicos", "Matemáticas básicas", "Fácil", 30, true, "PDF");
-        Tarea tarea2 = new Tarea("Tarea 2", "Resolver ejercicios intermedios", "Matemáticas intermedias", "Intermedio", 45, true, "PDF");
+     
+        lp1.agregarActividad(tarea);
+        lp1.agregarActividad(quiz);
 
-        
-        LearningPath learningPath = new LearningPath("Ciencia", "Introducción a la ciencia", "Básico");
-        learningPath.agregarActividad(tarea1);
-        learningPath.agregarActividad(tarea2);
-
-        estudiante.empezarLearningPath(learningPath);
+        estudiante.empezarLearningPath(lp1);
 
         List<Double> progreso = estudiante.verProgresoLearningPath();
 
@@ -357,5 +341,8 @@ class EstudiantePruebas {
         assertEquals(0.0, progreso.get(0), 0.01, "El porcentaje de actividades completadas no es el esperado.");
         assertEquals(0.0, progreso.get(1), 0.01, "El porcentaje de actividades exitosas no es el esperado.");
     }
+   
+    	
+   
 
 }

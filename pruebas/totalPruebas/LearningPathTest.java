@@ -178,4 +178,5 @@ class LearningPathTest {
         assertEquals(33.34, progreso.get(1), 0.01, "El porcentaje de actividades exitosas no es el esperado.");
     }
 
+ 
 }
