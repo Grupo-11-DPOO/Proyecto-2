@@ -127,47 +127,6 @@ public class PersistenciaProfesores {
     	return profesor;
     }
     
-    public Estudiante convertirJsonToEstudiante(JSONObject estudianteJson, HashMap<String,Actividad> actividades, HashMap<String,LearningPath> learningPaths) {
-    	Estudiante estudiante = null;
-    	String login = estudianteJson.getString("login");
-        String passWord = estudianteJson.getString("passWord");
-        JSONArray interesesArray = estudianteJson.getJSONArray("intereses");
-        List<String> intereses = new ArrayList<>();
-        for (int i = 0; i < interesesArray.length(); i++) {
-            intereses.add(interesesArray.getString(i));
-        }
-        String idActividadEnCurso = estudianteJson.optString("idActividadEnCurso", null);
-        String idLearningPathEnCurso = estudianteJson.optString("idLearningPathEnCurso", null);
-        JSONObject registroJson = estudianteJson.getJSONObject("registroActividades");
-        HashMap<String, Estado> registroActividades = new HashMap<>();
-        for (String clave : registroJson.keySet()) {
-            String estadoString = registroJson.getString(clave);
-            Estado estado = Estado.valueOf(estadoString); 
-            registroActividades.put(clave, estado);
-        }
-        JSONObject registroLearningPathsJson = estudianteJson.getJSONObject("registroLearningPaths");
-        HashMap<String, Double> registroLearningPaths = new HashMap<>();
-        for (String clave : registroLearningPathsJson.keySet()) {
-            Double valor = registroLearningPathsJson.getDouble(clave);
-            registroLearningPaths.put(clave, valor);
-        }   
-        Actividad actividadEnCurso = null;
-        if (idActividadEnCurso != null && !idActividadEnCurso.isEmpty()) {
-            actividadEnCurso = actividades.get(idActividadEnCurso); // Implementar esta lógica según tu sistema
-        }
-        LearningPath learningPathEnCurso = null;
-        if (idLearningPathEnCurso != null && !idLearningPathEnCurso.isEmpty()) {
-            learningPathEnCurso = learningPaths.get(idLearningPathEnCurso) ;// Implementar esta lógica
-        }
-        estudiante = new Estudiante(actividades, learningPaths,login,passWord,intereses);
-        estudiante.setActividadEnCurso(actividadEnCurso);
-        estudiante.setRegistroActividades(registroActividades);
-        estudiante.setRegistroLearningPaths(registroLearningPaths);
-        estudiante.setLearningPathEnCurso(learningPathEnCurso);
-        estudiante.setActividadEnCurso(actividadEnCurso);
-        return estudiante;
-    }
-    
     public void guardarProfesor(Profesor profesor) {
         try {
             JSONArray profesoresArray = leerProfesores();

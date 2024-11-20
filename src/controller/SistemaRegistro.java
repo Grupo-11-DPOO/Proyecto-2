@@ -1,4 +1,4 @@
-package usuarios;
+package controller;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +13,8 @@ import persistencia.PersistenciaActividades;
 import persistencia.PersistenciaEstudiantes;
 import persistencia.PersistenciaLearningPath;
 import persistencia.PersistenciaProfesores;
+import usuarios.Estudiante;
+import usuarios.Profesor;
 
 public class SistemaRegistro {
 	private PersistenciaEstudiantes persistenciaEstudiantes;
@@ -38,9 +40,8 @@ public class SistemaRegistro {
 	} catch (UsuarioExistenteException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
-	}
+		}
 	}
 	
 	public HashMap<String, Actividad> cargarActividades() throws JSONException, ParseException {

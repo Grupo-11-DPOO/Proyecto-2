@@ -1,4 +1,4 @@
-package modelo;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +25,6 @@ import exceptions.UsuarioExistenteException;
 import learningPaths.LearningPath;
 import usuarios.Estudiante;
 import usuarios.Profesor;
-import usuarios.SistemaRegistro;
 
 public class Consola {
 	

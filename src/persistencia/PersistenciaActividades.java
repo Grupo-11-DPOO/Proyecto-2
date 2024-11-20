@@ -199,7 +199,7 @@ public class PersistenciaActividades {
         String nivel = actividad.getNivel();
         int duracionMinutos = actividad.getDuracionMinutos();
         boolean obligatorio = actividad.isObligatorio();
-        String tiempoLimite = actividad.getTiempoLimite().toString(); // TODO aca hay error porque no se puede pasar a string.
+        String tiempoLimite = actividad.getTiempoLimite().toString();
         float rating = actividad.getRating();
         int cantidadRating = actividad.getCantidadRating();
         List<String> resenas = actividad.getResenas();
