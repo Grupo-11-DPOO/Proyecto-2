@@ -165,40 +165,42 @@ public abstract class Actividad implements Identificable, Cloneable {
 		return valido;
 	}
 	
-    public void establecerFechaLimite(Estudiante estudianteActual) {
-    	// Buscamos actividad anterior
-    	LearningPath learningPath = estudianteActual.getLearningPathEnCurso();
-    	List<Actividad> listaActividades = learningPath.getListaActividades();
-    	int index = listaActividades.indexOf(this);
-    	if (index > 0) {
-    		Actividad actividadAnterior = listaActividades.get(index-1);
-			if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
-				this.tiempoLimite = null;
-			} else {
-		        Calendar calendario = Calendar.getInstance();
-		        calendario.setTime(new Date());
-		        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
-		        calendario.add(Calendar.HOUR, 1);        
-		        // Establece la nueva fecha límite
-		        this.tiempoLimite = calendario.getTime();
-	        }
-    	} else {
-    		this.tiempoLimite = null;
-    	}
-    }
+	//TODO:
+//    public void establecerFechaLimite(Estudiante estudianteActual) {
+//    	// Buscamos actividad anterior
+//    	LearningPath learningPath = estudianteActual.getLearningPathEnCurso();
+//    	List<Actividad> listaActividades = learningPath.getListaActividades();
+//    	int index = listaActividades.indexOf(this);
+//    	if (index > 0) {
+//    		Actividad actividadAnterior = listaActividades.get(index-1);
+//			if (actividadAnterior == null || actividadAnterior.getDuracionMinutos() <= 0) {
+//				this.tiempoLimite = null;
+//			} else {
+//		        Calendar calendario = Calendar.getInstance();
+//		        calendario.setTime(new Date());
+//		        calendario.add(Calendar.MINUTE, actividadAnterior.getDuracionMinutos());
+//		        calendario.add(Calendar.HOUR, 1);        
+//		        // Establece la nueva fecha límite
+//		        this.tiempoLimite = calendario.getTime();
+//	        }
+//    	} else {
+//    		this.tiempoLimite = null;
+//    	}
+//    }
     
+    //TODO:
     // Método para verificar si la actividad se está realizando después de la fecha límite
-    protected boolean revisarFechaLimiteExcedida() {
-        if (tiempoLimite != null) {
-            Date fechaActual = new Date();
-            if (fechaActual.after(tiempoLimite)) {
-                System.out.println("Advertencia: Está realizando la actividad después de la fecha límite recomendada.");
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
+//    protected boolean revisarFechaLimiteExcedida() {
+//        if (tiempoLimite != null) {
+//            Date fechaActual = new Date();
+//            if (fechaActual.after(tiempoLimite)) {
+//                System.out.println("Advertencia: Está realizando la actividad después de la fecha límite recomendada.");
+//                return true;
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
     
     // Se clona la actividad por si un profesor desea poder ser el nuevo dueño y modificarla.
 	public void agregarPrerrequisito(Actividad actividad) {

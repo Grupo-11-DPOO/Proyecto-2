@@ -49,11 +49,18 @@ class QuizPruebas {
     @Test
     void testVerPreguntas() {
         quiz.agregarPregunta("¿Cuál es la capital de Francia?", Opcion.B);
+        quiz.agregarOpcion("¿Cuál es la capital de Francia?", "Monaco", Opcion.A, "No es ");
         quiz.agregarOpcion("¿Cuál es la capital de Francia?", "París", Opcion.B, "París es la capital de Francia.");
-        
+        quiz.agregarOpcion("¿Cuál es la capital de Francia?", "Lyon", Opcion.C, "No es");
+        String preguntasSinD = quiz.verPreguntas();
+        quiz.agregarOpcion("¿Cuál es la capital de Francia?", "Champagne", Opcion.D, "No es una ciudad.");
         String preguntas = quiz.verPreguntas();
-        assertTrue(preguntas.contains("Pregunta: ¿Cuál es la capital de Francia?"), "La pregunta no aparece en la lista.");
-        assertTrue(preguntas.contains("B): París"), "La opción B no aparece en la lista.");
+        assertTrue(preguntas.contains("Pregunta #1: ¿Cuál es la capital de Francia?"), "La pregunta no aparece en la lista.");
+        assertTrue(preguntas.contains("A: Monaco"), "La opción A no aparece en la lista.");
+        assertTrue(preguntas.contains("B: París"), "La opción B no aparece en la lista.");
+        assertTrue(preguntas.contains("C: Lyon"), "La opción C no aparece en la lista.");
+        assertTrue(preguntas.contains("D: Champagne"), "La opción D no aparece en la lista.");
+        assertFalse(preguntasSinD.contains("D: Champagne"), "La opción D  aparece en la lista.");
     }
 
     @Test

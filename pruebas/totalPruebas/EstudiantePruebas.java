@@ -313,7 +313,6 @@ class EstudiantePruebas {
     void testAgregarRating() throws Exception{
     	Float rating = 4.6f;
     	Float rating2 = 3.3f;
-    	
     	Float ratingEsperado = (Float)(rating +rating2) /2;
     	estudiante.agregarRatingActividad(quizV, rating);
     	estudiante.agregarRatingActividad(quizV, rating2);
@@ -343,6 +342,34 @@ class EstudiantePruebas {
     }
    
     	
-   
+    @Test
+    void testActualizarRegistroLearningPathActual() {
+        
+        lp1.agregarActividad(quiz);
+        lp1.agregarActividad(tarea);
+        lp1.agregarActividad(encuesta);
+        estudiante.empezarLearningPath(lp1);
+        
+        estudiante.getRegistroActividades().put(quiz.getId(), Estado.EXITOSA);
+        estudiante.getRegistroActividades().put(tarea.getId(), Estado.ENVIADA);
+        estudiante.actualizarRegistroLearningPathActual();
+
+        HashMap<String, Double> registroLearningPaths = estudiante.getRegistroLearningPaths();
+        double progresoRegistrado = (double) registroLearningPaths.get(lp1.getId());    
+        double progresoEsperado = (double) 2.0 / 3.0; 
+        assertEquals(progresoEsperado, progresoRegistrado, 0.01, "El progreso registrado no es el esperado.");
+    }
+
+    @Test
+    void testActualizarRegistroLearningPathActualSinActividades() {
+        
+        estudiante.empezarLearningPath(lp1);
+        estudiante.actualizarRegistroLearningPathActual();
+        
+        HashMap<String, Double> registroLearningPaths = estudiante.getRegistroLearningPaths();
+        double progresoRegistrado = registroLearningPaths.get(lp1.getId());
+        assertEquals(0.0, progresoRegistrado, "El progreso registrado no es el esperado para un LearningPath sin actividades completadas.");
+    }
+
 
 }

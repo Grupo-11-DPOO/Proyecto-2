@@ -41,7 +41,7 @@ class QuizVerdadPruebas {
 		quiz.agregarPregunta("¿Java es un lenguaje orientado a objetos?", VerdaderoFalso.Verdadero);
 		quiz.agregarPregunta("¿Para aprender Java debes saber Python?", VerdaderoFalso.Falso);
 		StringBuilder sb =  new StringBuilder();
-		sb.append("Preguntas:\n");
+		sb.append("Preguntas:\n\n");
 		sb.append(1).append(". ").append("¿Java es un lenguaje orientado a objetos?").append("\n");
 		sb.append(2).append(". ").append("¿Para aprender Java debes saber Python?").append("\n");
 		

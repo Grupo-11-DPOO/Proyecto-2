@@ -177,6 +177,13 @@ class LearningPathTest {
         assertEquals(66.67, progreso.get(0), 0.01, "El porcentaje de actividades completadas no es el esperado.");
         assertEquals(33.34, progreso.get(1), 0.01, "El porcentaje de actividades exitosas no es el esperado.");
     }
-
+    
+    @Test
+    void testVerLearningPath(){
+    	String lp = learnPath.verLearningPath();
+    	assertTrue(lp.contains(learnPath.getId()),"Ver learningPath no muestra correctamente el id");
+    	assertTrue(lp.contains(learnPath.getTitulo()),"Ver learningPath no muestra correctamente el titulo");
+    	assertTrue(lp.contains(learnPath.getNivel()),"Ver learningPath no muestra correctamente el nivel");
+    }
  
 }

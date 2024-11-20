@@ -185,7 +185,10 @@ public class Estudiante extends Usuario {
 				contador += 1;
 			}
 		}
-		double progreso = contador/cantidadActividadesLearningActual;
+		double progreso = 0;
+		if(cantidadActividadesLearningActual!= 0) {
+		progreso = (double) contador/cantidadActividadesLearningActual;
+		}
 		String idLearningActual = getLearningPathEnCurso().getId();
 		registroLearningPaths.put(idLearningActual, progreso);
 	}

@@ -95,9 +95,9 @@ class ProfesorPruebas {
     	Tarea tarea = profesor.crearActividadTarea("Tarea 1", "Resolver ejercicios", 
     			"Matemáticas básicas", "Intermedio", 30, true, "Entrega en PDF");
         assertNotNull(tarea, "La tarea no fue creada correctamente.");
-        String idClon = profesor.clonarTarea(tarea);
+        Actividad idClon = profesor.clonarTarea(tarea);
 
-        Tarea actividadClonada = (Tarea) profesor.getActividadById(idClon);
+        Tarea actividadClonada = (Tarea) profesor.getActividadById(idClon.getId());
         assertNotNull(actividadClonada, "La actividad clonada no fue encontrada.");
         assertNotEquals(tarea.getId(), idClon, 
         		"El ID de la actividad clonada no debería ser igual al original.");
@@ -108,9 +108,9 @@ class ProfesorPruebas {
         Recurso recurso = profesor.crearActividadRecurso("Lectura Java", "Aprender conceptos básicos", 
                 "PDF sobre Java", "Intermedio", 20, true, "Material.pdf");
         assertNotNull(recurso, "El recurso no fue creado correctamente.");
-        String idClon = profesor.clonarRecurso(recurso);
+        Actividad idClon = profesor.clonarRecurso(recurso);
 
-        Recurso recursoClonado = (Recurso) profesor.getActividadById(idClon);
+        Recurso recursoClonado = (Recurso) profesor.getActividadById(idClon.getId());
         assertNotNull(recursoClonado, "El recurso clonado no fue encontrado.");
         assertNotEquals(recurso.getId(), idClon, 
                 "El ID del recurso clonado no debería ser igual al original.");
@@ -122,9 +122,9 @@ class ProfesorPruebas {
                 "Evaluar conocimientos sobre Java", "Preguntas Verdadero o Falso", 
                 "Fácil", 15, true, 80);
         assertNotNull(quizVerdad, "El quiz de verdadero o falso no fue creado correctamente.");
-        String idClon = profesor.clonarQuizVerdad(quizVerdad);
+        Actividad idClon = profesor.clonarQuizVerdad(quizVerdad);
 
-        QuizVerdad quizClonado = (QuizVerdad) profesor.getActividadById(idClon);
+        QuizVerdad quizClonado = (QuizVerdad) profesor.getActividadById(idClon.getId());
         assertNotNull(quizClonado, "El quiz clonado no fue encontrado.");
         assertNotEquals(quizVerdad.getId(), idClon, 
                 "El ID del quiz clonado no debería ser igual al original.");
@@ -135,9 +135,9 @@ class ProfesorPruebas {
         Quiz quiz = profesor.crearActividadQuiz("Quiz Historia", "Demostrar conocimiento sobre historia", 
                 "Preguntas de opción múltiple", "Intermedio", 30, true, 60);
         assertNotNull(quiz, "El quiz no fue creado correctamente.");
-        String idClon = profesor.clonarQuiz(quiz);
+        Actividad idClon = profesor.clonarQuiz(quiz);
 
-        Quiz quizClonado = (Quiz) profesor.getActividadById(idClon);
+        Quiz quizClonado = (Quiz) profesor.getActividadById(idClon.getId());
         assertNotNull(quizClonado, "El quiz clonado no fue encontrado.");
         assertNotEquals(quiz.getId(), idClon, 
                 "El ID del quiz clonado no debería ser igual al original.");
@@ -148,9 +148,9 @@ class ProfesorPruebas {
         Examen examen = profesor.crearActividadExamen("Examen Final", "Evaluar conocimientos adquiridos", 
                 "Examen escrito sobre conceptos clave", "Avanzado", 45, true);
         assertNotNull(examen, "El examen no fue creado correctamente.");
-        String idClon = profesor.clonarExamen(examen);
+        Actividad idClon = profesor.clonarExamen(examen);
 
-        Examen examenClonado = (Examen) profesor.getActividadById(idClon);
+        Examen examenClonado = (Examen) profesor.getActividadById(idClon.getId());
         assertNotNull(examenClonado, "El examen clonado no fue encontrado.");
         assertNotEquals(examen.getId(), idClon, 
                 "El ID del examen clonado no debería ser igual al original.");
@@ -162,9 +162,9 @@ class ProfesorPruebas {
                 "Medir satisfacción del estudiante", "Preguntas abiertas", 
                 "Intermedio", 20, true);
         assertNotNull(encuesta, "La encuesta no fue creada correctamente.");
-        String idClon = profesor.clonarEncuesta(encuesta);
+        Actividad idClon = profesor.clonarEncuesta(encuesta);
 
-        Encuesta encuestaClonada = (Encuesta) profesor.getActividadById(idClon);
+        Encuesta encuestaClonada = (Encuesta) profesor.getActividadById(idClon.getId());
         assertNotNull(encuestaClonada, "La encuesta clonada no fue encontrada.");
         assertNotEquals(encuesta.getId(), idClon, 
                 "El ID de la encuesta clonada no debería ser igual al original.");
@@ -296,26 +296,26 @@ class ProfesorPruebas {
                 "Preguntas de verdadero o falso", "Evaluar conocimiento rápido", 
                 "Fácil", 10, true, 80);
 
-        String idTareaClonada = profesor.clonarActividad(tarea);
-        String idRecursoClonada = profesor.clonarActividad(recurso);
-        String idQuizClonada = profesor.clonarActividad(quiz);
-        String idExamenClonada = profesor.clonarActividad(examen);
-        String idEncuestaClonada = profesor.clonarActividad(encuesta);
-        String idQuizVerdadClonada = profesor.clonarActividad(quizVerdad);
+        Actividad idTareaClonada = (Actividad) profesor.clonarActividad(tarea);
+        Actividad idRecursoClonada = (Actividad) profesor.clonarActividad(recurso);
+        Actividad idQuizClonada = (Actividad) profesor.clonarActividad(quiz);
+        Actividad idExamenClonada = (Actividad) profesor.clonarActividad(examen);
+        Actividad idEncuestaClonada = (Actividad) profesor.clonarActividad(encuesta);
+        Actividad idQuizVerdadClonada = (Actividad) profesor.clonarActividad(quizVerdad);
 
-        assertNotNull(profesor.getActividadById(idTareaClonada), "La tarea clonada no fue encontrada.");
-        assertNotNull(profesor.getActividadById(idRecursoClonada), "El recurso clonado no fue encontrado.");
-        assertNotNull(profesor.getActividadById(idQuizClonada), "El quiz clonado no fue encontrado.");
-        assertNotNull(profesor.getActividadById(idExamenClonada), "El examen clonado no fue encontrado.");
-        assertNotNull(profesor.getActividadById(idEncuestaClonada), "La encuesta clonada no fue encontrada.");
-        assertNotNull(profesor.getActividadById(idQuizVerdadClonada), "El quiz de verdadero o falso clonado no fue encontrado.");
+        assertNotNull(profesor.getActividadById(idTareaClonada.getId()), "La tarea clonada no fue encontrada.");
+        assertNotNull(profesor.getActividadById(idRecursoClonada.getId()), "El recurso clonado no fue encontrado.");
+        assertNotNull(profesor.getActividadById(idQuizClonada.getId()), "El quiz clonado no fue encontrado.");
+        assertNotNull(profesor.getActividadById(idExamenClonada.getId()), "El examen clonado no fue encontrado.");
+        assertNotNull(profesor.getActividadById(idEncuestaClonada.getId()), "La encuesta clonada no fue encontrada.");
+        assertNotNull(profesor.getActividadById(idQuizVerdadClonada.getId()), "El quiz de verdadero o falso clonado no fue encontrado.");
         
-        assertNotEquals(tarea.getId(), idTareaClonada, "El ID de la tarea clonada no debería ser igual al original.");
-        assertNotEquals(recurso.getId(), idRecursoClonada, "El ID del recurso clonado no debería ser igual al original.");
-        assertNotEquals(quiz.getId(), idQuizClonada, "El ID del quiz clonado no debería ser igual al original.");
-        assertNotEquals(examen.getId(), idExamenClonada, "El ID del examen clonado no debería ser igual al original.");
-        assertNotEquals(encuesta.getId(), idEncuestaClonada, "El ID de la encuesta clonada no debería ser igual al original.");
-        assertNotEquals(quizVerdad.getId(), idQuizVerdadClonada, "El ID del quiz de verdadero o falso clonado no debería ser igual al original.");
+        assertNotEquals(tarea.getId(), idTareaClonada.getId(), "El ID de la tarea clonada no debería ser igual al original.");
+        assertNotEquals(recurso.getId(), idRecursoClonada.getId(), "El ID del recurso clonado no debería ser igual al original.");
+        assertNotEquals(quiz.getId(), idQuizClonada.getId(), "El ID del quiz clonado no debería ser igual al original.");
+        assertNotEquals(examen.getId(), idExamenClonada.getId(), "El ID del examen clonado no debería ser igual al original.");
+        assertNotEquals(encuesta.getId(), idEncuestaClonada.getId(), "El ID de la encuesta clonada no debería ser igual al original.");
+        assertNotEquals(quizVerdad.getId(), idQuizVerdadClonada.getId(), "El ID del quiz de verdadero o falso clonado no debería ser igual al original.");
     }
     
     @Test
