@@ -8,14 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import actividades.Actividad;
-import actividades.Estado;
 import learningPaths.LearningPath;
-import usuarios.Estudiante;
 import usuarios.Profesor;
 
 public class PersistenciaProfesores {
